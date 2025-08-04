@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link href="./src/style.css" rel="stylesheet">
+    <title>plectrm</title>
+  </head>
+  <body>
+    <div class="appContainer">
+        <div class="appContent">
+            <div class="workspaceContainer"></div>
+        </div>
+        <div class="appFooter">
+            <div class="ribbonContainer"></div>
+            <div class="settingsButton"></div>
+        </div>
+    </div>
+  </body>
+  <script src="./staveBox.js"></script>
+  <script src="./textBox.js"></script>
+  <script src="./renderer.js"></script>
+</html>

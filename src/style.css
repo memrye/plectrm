@@ -1,0 +1,238 @@
+* {
+    box-sizing: border-box;
+}
+
+@font-face{
+    font-family: FantasqueSansMono;
+    src: url('../src/FantasqueSansMono-NoLoopK/FantasqueSansMono-Regular.ttf')
+}
+
+body{
+    margin: 0;
+    font-family: 'FantasqueSansMono', monospace;
+    font-size: medium;
+    overflow: hidden;
+}
+
+.appContainer{
+    background: radial-gradient(circle at 00% 0%, #282828 0%, #1d2021 100%);
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 100fr;
+    grid-template-rows: auto 4em;
+    gap: 0.5em;
+    padding: 0.5em;
+}
+
+.appContent{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #282828 transparent;
+}
+
+.appFooter{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    z-index: 2;
+}
+
+.ribbonContainer {
+    flex: 1;
+    background-color: #282828;
+    border-radius: 10px;
+    border: 1px solid #555;
+    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    transition: box-shadow 0.1s ease-in-out;
+}
+
+.ribbonContainer:hover{
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.settingsButton{
+    flex: none;
+    height: 100%;
+    width: 4em;
+    background-color: #333;
+    border-radius: 10px;
+    border: 1px solid #555;
+    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    transition: box-shadow 0.1s ease-in-out;
+}
+
+.settingsButton:hover{
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.workspaceContainer{
+    height: 150%;
+    width: calc(100% - 8em);
+    border-radius: 10px;
+    padding: 1em;
+    background-color: #fbf1c7;
+    border: 1px solid #555;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+    transition: box-shadow 0.1s ease-in-out;
+    transition: filter 0.2s ease-out;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0));
+    position: relative;
+    margin: auto;
+}
+
+.workspaceContainer:focus-visible{
+    border: 1px solid #555;
+    outline: 0;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+.prototypeContainer{
+    display: grid;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0);
+    transition: box-shadow 0.1s ease-in-out;
+    padding: 0.5em;
+    min-height: 1em;
+    min-width: 20em;
+    width: auto;
+    margin-bottom: 0.5em;
+    color: #282828;
+}
+
+.prototypeContainer:hover{
+    outline: 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.prototypeContainer:focus-within{
+    outline: 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.prototypeContainer.dragged{
+    outline: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transform: scale(102%);
+}
+
+.prototypeContainer.stave{
+    grid-template-columns: 2em auto;
+}
+
+.prototypeContainer.text{
+    grid-template-columns: 2em auto;
+}
+
+.contextMenu{
+    min-height: 1em;
+    height: 100%;
+    width: 2em;
+    opacity: 50%;
+}
+
+.dragHandle{
+    width: 2em;
+    height: 2em;
+    background-color: pink;
+}
+
+.staveBox{
+    height: 100%;
+    border-radius: 10px;
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 1em auto;
+    grid-template-rows: 100%;
+}
+
+.staveGrid{
+    grid-column: 2;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    display: grid;
+    gap: 1px 0px;
+}
+
+.staveGridCell{
+    background-color: transparent;
+    font-size: larger;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    user-select: none;
+    transition: all 50ms ease-in-out;
+}
+
+.staveGridCell.highlight{
+    background-color: #d5c4a1;
+    z-index: 0;
+}
+
+.staveGridCell.highlight:hover:not(.focus){
+    background-color: #d5c4a1;
+    outline: 1px solid #83a498;
+    outline-offset: 2px;
+    z-index: 2;
+}
+
+.staveGridCell:hover{
+    background-color: transparent;
+    outline: 1px solid #83a498;
+    outline-offset: 2px;
+    z-index: 2;
+}
+
+.staveGridCell.focus{
+    background-color: #83a498;
+    outline: 1px solid #282828;
+    outline-offset: 1px;
+    z-index: 3;
+}
+
+.staveGridCell.focus:hover{
+    background-color: #83a498;
+    outline: 1px solid #83a498;
+    outline-offset: 2px;
+    z-index: 3;
+}
+
+
+
+.stringLabels{
+    grid-column: 1;
+    height: 100%;
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+    transition: all 50ms ease-in-out;
+    background-color: transparent;
+}
+
+.stringLabels:hover{
+    background-color: transparent;
+    outline: 1px solid #83a498;
+    outline-offset: 3px;
+}
+
+.stringLabels.focused{
+    background-color: #83a498;
+    outline: 1px solid #282828;
+    outline-offset: 1px;
+}
+
+.textBox{
+    min-height: 1em;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.textBox:focus-visible{
+    outline: 0;
+}

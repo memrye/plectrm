@@ -1,0 +1,15 @@
+{
+  "name": "plectrm",
+  "version": "1.0.0",
+  "description": "Guitar Tab Notation Program",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mama",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^37.2.5"
+  }
+}
