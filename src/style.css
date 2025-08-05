@@ -100,7 +100,7 @@ body{
     padding: 0.5em;
     min-height: 1em;
     min-width: 20em;
-    width: auto;
+    width: fit-content;
     margin-bottom: 0.5em;
     color: #282828;
 }
@@ -176,16 +176,12 @@ body{
 }
 
 .staveGridCell.highlight:hover:not(.focus){
-    background-color: #d5c4a1;
-    outline: 1px solid #83a498;
-    outline-offset: 2px;
+    background-color: #928374;
     z-index: 2;
 }
 
 .staveGridCell:hover{
-    background-color: transparent;
-    outline: 1px solid #83a498;
-    outline-offset: 2px;
+    background-color: #d5c4a1;
     z-index: 2;
 }
 
@@ -197,13 +193,11 @@ body{
 }
 
 .staveGridCell.focus:hover{
-    background-color: #83a498;
-    outline: 1px solid #83a498;
-    outline-offset: 2px;
+    background-color: #458588;
+    outline: 1px solid #282828;
+    outline-offset: 1px;
     z-index: 3;
 }
-
-
 
 .stringLabels{
     grid-column: 1;
@@ -216,12 +210,11 @@ body{
 }
 
 .stringLabels:hover{
-    background-color: transparent;
-    outline: 1px solid #83a498;
-    outline-offset: 3px;
+    background-color: #d5c4a1;
+    outline: 1px solid #d5c4a1;
 }
 
-.stringLabels.focused{
+.stringLabels.focus{
     background-color: #83a498;
     outline: 1px solid #282828;
     outline-offset: 1px;
@@ -235,4 +228,14 @@ body{
 
 .textBox:focus-visible{
     outline: 0;
+}
+
+.transientInput{
+    z-index: 10;
+    background-color: #d5c4a1;
+    outline: 1px solid #282828;
+    outline-offset: 1px;
+    position:absolute;
+    min-width: 4em;
+    min-height: 1em;
 }

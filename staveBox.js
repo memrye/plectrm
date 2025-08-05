@@ -45,135 +45,54 @@ class StaveBox {
         this.setTuning(localTuning);
         this.staveBox.appendChild(this.stringLabels);
 
-        this.staveBoxGrid = document.createElement('div');
-        this.staveBoxGrid.classList.add('staveGrid');
-        this.staveBox.appendChild(this.staveBoxGrid);
-
-        let gridHeight = localTuning.length;
-
-        this.staveBoxGrid.style.gridTemplateColumns = `repeat(${gridWidth}, 1em)`
-        this.staveBoxGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1em)`
-
-        const cellArray = [];
         
-        for (let row = 0; row < gridHeight; row++){
-            for (let col = 0; col < gridWidth; col++){
-                const index = (gridWidth * row) + (col);
-                const staveGridCell = document.createElement('div');
-                let focused = false;
-                staveGridCell.classList.add('staveGridCell');
-                staveGridCell.textContent = '-';
 
-                staveGridCell.addEventListener('click', (event) => {
-                    
-                    document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
+        let cellArray = [];
 
-                    //handle clicks initial
-                    const clickHandler = (event) => {
-                        if (!staveGridCell.contains(event.target)) {
-                            focused = false;
-                            staveGridCell.classList.remove('focus');
-                            document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
-                            document.removeEventListener('click', clickHandler);
-                            document.removeEventListener('keydown', keydownHandler);
-                        } else {
-                            if (entryDirection === Direction.Horizontal){
-                                entryDirection = Direction.Vertical;
-                            } else {
-                                entryDirection = Direction.Horizontal;
-                            };
-                        }
-                    }
+        const drawGrid = (staveGrid) => {
 
-                    //handle keydowns
-                    const keydownHandler = (event) => {
-                        event.preventDefault();
-                        const key = event.key;
+            let gridHeight = localTuning.length;
 
-                        // arrow key traversal
-                        // TODO: fix out of range: make vertical go to lowest cell of next column etc
-                        if (key === 'ArrowRight'){
-                            entryDirection = Direction.Horizontal;
-                            const nextcell = cellArray[index+1];
-                            const event = new CustomEvent('click');
+            staveGrid.style.gridTemplateColumns = `repeat(${gridWidth}, 1em)`
+            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1em)`
+            
+            for (let row = 0; row < gridHeight; row++){
+                for (let col = 0; col < gridWidth; col++){
+                    const index = (gridWidth * row) + (col);
+                    const staveGridCell = document.createElement('div');
+                    let focused = false;
+                    staveGridCell.classList.add('staveGridCell');
+                    staveGridCell.textContent = '-';
 
-                            document.dispatchEvent(event);
-                            nextcell.dispatchEvent(event);
-                            return;
-                        } else if (key === 'ArrowLeft'){
-                            entryDirection = Direction.Horizontal;
-                            const nextcell = cellArray[index-1];
-                            const event = new CustomEvent('click');
-
-                            document.dispatchEvent(event);
-                            nextcell.dispatchEvent(event);
-                            return;
-                        } else if (key === 'ArrowUp'){
-                            entryDirection = Direction.Vertical;
-                            const nextcell = cellArray[index-gridWidth];
-                            const event = new CustomEvent('click');
-
-                            document.dispatchEvent(event);
-                            nextcell.dispatchEvent(event);
-                            return;
-                        } else if (key === 'ArrowDown'){
-                            entryDirection = Direction.Vertical;
-                            const nextcell = cellArray[index+gridWidth];
-                            const event = new CustomEvent('click');
-
-                            document.dispatchEvent(event);
-                            nextcell.dispatchEvent(event);
-                            return;
-                        }
-
-                        //backspace
-                        if (key === 'Backspace'){
-                            staveGridCell.textContent = '-';
-                            if (entryDirection === Direction.Vertical){
-                                const nextcell = cellArray[index+gridWidth];
-                                const event = new CustomEvent('click');
-
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            } else {
-                                entryDirection = Direction.Horizontal;
-                                const nextcell = cellArray[index-1];
-                                const event = new CustomEvent('click');
-
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            }
-                        }
-
+                    staveGridCell.addEventListener('click', (event) => {
                         
-                        if (key === ' '){
-                            if (entryDirection === Direction.Horizontal){
-                                entryDirection = Direction.Vertical;
-                                const event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                staveGridCell.dispatchEvent(event);
+                        document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
+
+                        //handle clicks initial
+                        const clickHandler = (event) => {
+                            if (!staveGridCell.contains(event.target)) {
+                                focused = false;
+                                staveGridCell.classList.remove('focus');
+                                document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
+                                document.removeEventListener('click', clickHandler);
+                                document.removeEventListener('keydown', keydownHandler);
                             } else {
-                                entryDirection = Direction.Horizontal;
-                                const event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                staveGridCell.dispatchEvent(event);
+                                if (entryDirection === Direction.Horizontal){
+                                    entryDirection = Direction.Vertical;
+                                } else {
+                                    entryDirection = Direction.Horizontal;
+                                };
                             }
                         }
 
-                        //key input
-                        if (/^[a-zA-Z0-9\/~-]$/.test(key)) {
-                            staveGridCell.textContent = key;
+                        //handle keydowns
+                        const keydownHandler = (event) => {
+                            event.preventDefault();
+                            const key = event.key;
 
-                            if (entryDirection === Direction.Vertical){
-                                const nextcell = cellArray[index-gridWidth];
-                                const event = new CustomEvent('click');
-
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            } else {
+                            // arrow key traversal
+                            // TODO: fix out of range: make vertical go to lowest cell of next column etc
+                            if (key === 'ArrowRight'){
                                 entryDirection = Direction.Horizontal;
                                 const nextcell = cellArray[index+1];
                                 const event = new CustomEvent('click');
@@ -181,56 +100,195 @@ class StaveBox {
                                 document.dispatchEvent(event);
                                 nextcell.dispatchEvent(event);
                                 return;
+                            } else if (key === 'ArrowLeft'){
+                                entryDirection = Direction.Horizontal;
+                                const nextcell = cellArray[index-1];
+                                const event = new CustomEvent('click');
+
+                                document.dispatchEvent(event);
+                                nextcell.dispatchEvent(event);
+                                return;
+                            } else if (key === 'ArrowUp'){
+                                //TODO: pressing up on top-rightmost cell goes out of bounds
+                                entryDirection = Direction.Vertical;
+                                let nextcell = cellArray[index-gridWidth];
+                                if (nextcell === undefined){
+                                    nextcell = cellArray[index + (gridWidth * (localTuning.length - 1) + 1)];
+                                }
+                                const event = new CustomEvent('click');
+
+                                document.dispatchEvent(event);
+                                nextcell.dispatchEvent(event);
+                                return;
+                            } else if (key === 'ArrowDown'){
+                                entryDirection = Direction.Vertical;
+                                let nextcell = cellArray[index+gridWidth];
+                                const event = new CustomEvent('click');
+                                if (nextcell === undefined){
+                                    nextcell = cellArray[index - 1];
+                                }
+
+                                document.dispatchEvent(event);
+                                nextcell.dispatchEvent(event);
+                                return;
+                            }
+
+                            //backspace
+                            if (key === 'Backspace'){
+                                staveGridCell.textContent = '-';
+                                if (entryDirection === Direction.Vertical){
+                                    const nextcell = cellArray[index+gridWidth];
+                                    const event = new CustomEvent('click');
+
+                                    document.dispatchEvent(event);
+                                    nextcell.dispatchEvent(event);
+                                    return;
+                                } else {
+                                    entryDirection = Direction.Horizontal;
+                                    const nextcell = cellArray[index-1];
+                                    const event = new CustomEvent('click');
+
+                                    document.dispatchEvent(event);
+                                    nextcell.dispatchEvent(event);
+                                    return;
+                                }
+                            }
+
+                            
+                            if (key === ' '){
+                                if (entryDirection === Direction.Horizontal){
+                                    entryDirection = Direction.Vertical;
+                                    const event = new CustomEvent('click');
+                                    document.dispatchEvent(event);
+                                    staveGridCell.dispatchEvent(event);
+                                } else {
+                                    entryDirection = Direction.Horizontal;
+                                    const event = new CustomEvent('click');
+                                    document.dispatchEvent(event);
+                                    staveGridCell.dispatchEvent(event);
+                                }
+                            }
+
+                            //key input
+                            if (/^[a-zA-Z0-9\/~-]$/.test(key)) {
+                                staveGridCell.textContent = key;
+
+                                if (entryDirection === Direction.Vertical){
+                                    const nextcell = cellArray[index-gridWidth];
+                                    const event = new CustomEvent('click');
+
+                                    document.dispatchEvent(event);
+                                    nextcell.dispatchEvent(event);
+                                    return;
+                                } else {
+                                    entryDirection = Direction.Horizontal;
+                                    const nextcell = cellArray[index+1];
+                                    const event = new CustomEvent('click');
+
+                                    document.dispatchEvent(event);
+                                    nextcell.dispatchEvent(event);
+                                    return;
+                                }
                             }
                         }
-                    }
 
-                    //grid cell focused
-                    if (!focused){
-                        focused = true;
-                        staveGridCell.classList.add('focus');
-                        document.addEventListener('click', clickHandler);
-                        document.addEventListener('keydown', keydownHandler);
-                    }
-
-                    //draw highlight to show entry direction
-                    if (entryDirection === Direction.Horizontal){
-                        const rowIndex = Math.floor(index/gridWidth);
-                        const highlighedCells = cellArray.slice((rowIndex * gridWidth), ((rowIndex + 1) * gridWidth));
-                        for (let cell = 0; cell < highlighedCells.length; cell++){
-                            highlighedCells[cell].classList.add('highlight');
+                        //grid cell focused
+                        if (!focused){
+                            focused = true;
+                            staveGridCell.classList.add('focus');
+                            document.addEventListener('click', clickHandler);
+                            document.addEventListener('keydown', keydownHandler);
                         }
-                    } else {
-                        const columnIndex = index % gridWidth;
-                        for (let cell = 0; cell < cellArray.length; cell++){
-                            if ((cell % gridWidth) == columnIndex){
-                                cellArray[cell].classList.add('highlight');
+
+                        //draw highlight to show entry direction
+                        if (entryDirection === Direction.Horizontal){
+                            const rowIndex = Math.floor(index/gridWidth);
+                            const highlighedCells = cellArray.slice((rowIndex * gridWidth), ((rowIndex + 1) * gridWidth));
+                            for (let cell = 0; cell < highlighedCells.length; cell++){
+                                highlighedCells[cell].classList.add('highlight');
                             }
-                        }
-                    };
+                        } else {
+                            const columnIndex = index % gridWidth;
+                            for (let cell = 0; cell < cellArray.length; cell++){
+                                if ((cell % gridWidth) == columnIndex){
+                                    cellArray[cell].classList.add('highlight');
+                                }
+                            }
+                        };
 
 
 
-                })
+                    })
 
-                this.staveBoxGrid.appendChild(staveGridCell);
-                cellArray.push(staveGridCell);
+                    staveGrid.appendChild(staveGridCell);
+                    cellArray.push(staveGridCell);
+                }
             }
         }
+
+        let staveBoxGrid = document.createElement('div');
+        staveBoxGrid.classList.add('staveGrid');
+        this.staveBox.appendChild(staveBoxGrid);
+        drawGrid(staveBoxGrid);
         
 
-        const outsideClickHandler = (event) => {
-            if (!this.stringLabels.contains(event.target)) {
-                this.stringLabels.classList.remove('focus');
-                document.removeEventListener('click', outsideClickHandler);
-            }
-
-        };
+        
 
         this.stringLabels.addEventListener('dblclick', () => {
-            //TODO: make a ghost box which displays what the user is typing, grab it's contents and send to setTuning.
+            
+            const outsideClickHandler = (event) => {
+            if (!this.stringLabels.contains(event.target)) {
+                this.stringLabels.classList.remove('focus');
+                transientInput.removeEventListener('keydown', changeTuning);
+                transientInput.remove()
+                document.removeEventListener('click', outsideClickHandler);
+            }
+            };
+
             this.stringLabels.classList.add('focus');
             document.addEventListener('click', outsideClickHandler);
+
+            const transientInput = document.createElement('div');
+            transientInput.classList.add('transientInput');
+            transientInput.contentEditable = 'true';
+            transientInput.spellcheck = false;
+            this.stringLabels.appendChild(transientInput);
+            transientInput.textContent = localTuning;
+
+            //moves cursor to end of text
+            const range = document.createRange();
+            range.selectNodeContents(transientInput);
+            range.collapse(false);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            transientInput.focus();
+
+            const changeTuning = (event) => {
+                let key = event.key
+                if (key === 'Enter'){
+                    //add confirmation if stave has been edited at all
+                    event.preventDefault();
+                    const userInput = transientInput.textContent;
+                    if(/^[a-zA-Z]+$/.test(userInput)){
+                        localTuning = userInput;
+                        cellArray.length = 0;
+
+                        staveBoxGrid.remove();
+                        staveBoxGrid = document.createElement('div');
+                        staveBoxGrid.classList.add('staveGrid');
+                        this.staveBox.appendChild(staveBoxGrid);
+                        drawGrid(staveBoxGrid);
+
+                        this.setTuning(userInput);
+                        
+                        const event = new CustomEvent('click');
+                        document.dispatchEvent(event);
+                    }
+                }
+            }
+
+            transientInput.addEventListener('keydown', changeTuning)
         });
     }
 }
