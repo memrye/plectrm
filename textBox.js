@@ -1,17 +1,13 @@
 class TextBox {
     constructor() {
 
-        const createContextMenu = () => {
-            const contextMenu = document.createElement('div');
-            contextMenu.classList.add('contextMenu');
-            return contextMenu;
-        }
+        const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
 
         const textContainer = document.createElement('div');
         textContainer.classList.add('prototypeContainer','text');
         workspaceContext.appendChild(textContainer);
 
-        const contextMenu = createContextMenu();
+        const contextMenu = new ContextMenu(textContainer, workspaceContext);
         textContainer.appendChild(contextMenu);
 
         const textBox = document.createElement('textBox');

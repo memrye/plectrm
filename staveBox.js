@@ -4,13 +4,6 @@ class StaveBox {
         const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
         //TODO: pass in settings from workspace context (tuning, strings, length etc)
 
-        //TODO: make class for context menus.
-        const createContextMenu = () => {
-            const contextMenu = document.createElement('div');
-            contextMenu.classList.add('contextMenu');
-            return contextMenu;
-        }
-
         const Direction = {
             Horizontal: 'Horizontal',
             Vertical: 'Vertical'
@@ -22,7 +15,7 @@ class StaveBox {
         this.staveContainer.classList.add('prototypeContainer','stave');
         workspaceContext.appendChild(this.staveContainer);
 
-        this.contextMenu = createContextMenu();
+        this.contextMenu = new ContextMenu(this.staveContainer, workspaceContext);
         this.staveContainer.appendChild(this.contextMenu);
 
         this.staveBox = document.createElement('div');

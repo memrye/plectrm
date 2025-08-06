@@ -93,16 +93,23 @@ body{
 }
 
 .prototypeContainer{
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
     display: grid;
+    gap: 0.5em;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0);
-    transition: box-shadow 0.1s ease-in-out;
+    transition: 
+        box-shadow 0.1s ease-in-out;
     padding: 0.5em;
     min-height: 1em;
     min-width: 20em;
     width: fit-content;
     margin-bottom: 0.5em;
     color: #282828;
+    transform: scale(100%);
+    backdrop-filter: blur(2px);
 }
 
 .prototypeContainer:hover{
@@ -116,9 +123,10 @@ body{
 }
 
 .prototypeContainer.dragged{
+    z-index: 50;
+    background-color: #fbf1c799;
     outline: 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    transform: scale(102%);
 }
 
 .prototypeContainer.stave{
@@ -129,17 +137,49 @@ body{
     grid-template-columns: 2em auto;
 }
 
+.prototypeContainer:hover .contextMenu{
+    opacity: 100%;
+}
+
 .contextMenu{
     min-height: 1em;
     height: 100%;
     width: 2em;
-    opacity: 50%;
+    border-radius: 8px 0px 0px 8px;
+    opacity: 0%;
+    transition: opacity 180ms ease-in-out;
+    display: flex;
+    flex-direction: column;
+    clip-path: border-box;
+    margin-right: 0.5em;
 }
 
 .dragHandle{
+    color: #d5c4a1;
     width: 2em;
-    height: 2em;
-    background-color: pink;
+    min-height: 1em;
+    max-height: 1.5em;
+    height: min(100%, 1.5em);
+    text-align: center;
+    align-content: center;
+    background-color: transparent;
+    user-select: none;
+    cursor: grab;
+    border: 0;
+    transition: all 50ms ease-in-out;
+}
+
+.dragHandle:hover{
+    color: #928374;
+    background-color: #d5c4a1;
+    border: 0;
+}
+
+.dragHandle:active{
+    color: #f9f5d7;
+    background-color: #928374;
+    border: 0;
+    cursor: grabbing;
 }
 
 .staveBox{
