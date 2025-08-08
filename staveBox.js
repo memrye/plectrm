@@ -42,7 +42,7 @@ class StaveBox {
 
         let cellArray = [];
 
-        const drawGrid = (staveGrid) => {
+        const drawGrid = (staveGrid, staveValues = false) => {
 
             let gridHeight = localTuning.length;
 
@@ -225,7 +225,17 @@ class StaveBox {
         drawGrid(staveBoxGrid);
         
 
-        
+        let staveEnd = document.createElement('div');
+        staveEnd.classList.add('staveEnd');
+        staveEnd.textContent = '|\r'.repeat(localTuning.length);
+        staveEnd.addEventListener('mousedown', (event) => {
+            document.addEventListener('mouseup', ()=> {
+                staveEnd.classList.remove('focus');
+            }, {once: true})
+            staveEnd.focus();
+            staveEnd.classList.add('focus');
+        });
+        this.staveBox.appendChild(staveEnd);
 
         this.stringLabels.addEventListener('dblclick', () => {
             

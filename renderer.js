@@ -7,6 +7,4 @@ const workspaceContext = document.getElementsByClassName('workspaceContainer').i
 
 new StaveBox(24, 'EADGBe')
 new TextBox()
-new StaveBox(12, 'EADGBe')
-
-func()
+new StaveBox(16, 'EADGBe')

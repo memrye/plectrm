@@ -11,7 +11,7 @@ class ContextMenu {
         let previousElementRect;
         let nextElement = parentContainer.nextElementSibling;
         let nextElementRect;
-        let yOffset = 0; //this is hacky - when element is reordered it's Y needs to be offset by the height of elements it has passed
+        let yOffset = 0;
         
 
         const elementDragging = (event) => {
@@ -26,8 +26,8 @@ class ContextMenu {
                     parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`;
 
                     workspaceContext.insertBefore(parentContainer, previousElement);
-                    //because inserting copies the object, its active flag needs to be set again so that button still shows as active
-                    dragButton.classList.add('active');
+
+                    //because inserting copies the object, css logic for displaying :active doesnt work
 
                     previousElement = parentContainer.previousElementSibling;
                     nextElement = parentContainer.nextElementSibling;
