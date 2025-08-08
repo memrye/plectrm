@@ -10,13 +10,17 @@ class TextBox {
         const contextMenu = new ContextMenu(textContainer, workspaceContext);
         textContainer.appendChild(contextMenu);
 
-        const textBox = document.createElement('textBox');
-        textBox.classList.add('textBox');
-        textBox.contentEditable = 'true';
-        textBox.spellcheck = false;
-        textBox.textContent = 'Type here...'
-        textContainer.appendChild(textBox);
+        this.textBox = document.createElement('div');
+        this.textBox.classList.add('textBox');
+        this.textBox.contentEditable = 'true';
+        this.textBox.spellcheck = false;
+        this.textBox.textContent = 'Type here...';
+        textContainer.appendChild(this.textBox);
         
+    }
+
+    parseStringContents(){
+        return this.textBox.textContent;
     }
 }
 

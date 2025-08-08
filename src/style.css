@@ -195,6 +195,7 @@ body{
 .staveGrid{
     display: grid;
     grid-column: 2;
+    grid-row: 1;
     height: 100%;
     width: fit-content;
     padding: 0;
@@ -242,6 +243,7 @@ body{
 
 .stringLabels{
     grid-column: 1;
+    grid-row: 1;
     height: 100%;
     width: 100%;
     user-select: none;
@@ -264,6 +266,7 @@ body{
 
 .staveEnd{
     grid-column: 3;
+    grid-row: 1;
     height: 100%;
     width: 100%;
     user-select: none;
@@ -285,9 +288,11 @@ body{
 }
 
 .textBox{
+    font-family: 'FantasqueSansMono', monospace;
+    font-size: medium;
     min-height: 1em;
-    border-radius: 10px;
     background-color: transparent;
+    border: 0px;
 }
 
 .textBox:focus-visible{

@@ -25,6 +25,18 @@ class StaveBox {
         this.stringLabels = document.createElement('div');
         this.stringLabels.classList.add('stringLabels');
 
+        this.staveEnd = document.createElement('div');
+        this.staveEnd.classList.add('staveEnd');
+        this.staveEnd.textContent = '|\r'.repeat(localTuning.length);
+        this.staveEnd.addEventListener('mousedown', (event) => {
+            document.addEventListener('mouseup', ()=> {
+                this.staveEnd.classList.remove('focus');
+            }, {once: true})
+            this.staveEnd.focus();
+            this.staveEnd.classList.add('focus');
+        });
+        this.staveBox.appendChild(this.staveEnd);
+
         this.setTuning = (_tuning) => {
             this.stringLabels.textContent = '';
             let tuning = _tuning;
@@ -33,6 +45,7 @@ class StaveBox {
                 labelText += tuning.charAt(i) + '|\r';
             }
             this.stringLabels.textContent = labelText;
+            this.staveEnd.textContent = '|\r'.repeat(localTuning.length);
         };
 
         this.setTuning(localTuning);
@@ -40,7 +53,7 @@ class StaveBox {
 
         
 
-        let cellArray = [];
+        this.cellArray = [];
 
         const drawGrid = (staveGrid, staveValues = false) => {
 
@@ -87,7 +100,7 @@ class StaveBox {
                             // TODO: fix out of range: make vertical go to lowest cell of next column etc
                             if (key === 'ArrowRight'){
                                 entryDirection = Direction.Horizontal;
-                                const nextcell = cellArray[index+1];
+                                const nextcell = this.cellArray[index+1];
                                 const event = new CustomEvent('click');
 
                                 document.dispatchEvent(event);
@@ -95,7 +108,7 @@ class StaveBox {
                                 return;
                             } else if (key === 'ArrowLeft'){
                                 entryDirection = Direction.Horizontal;
-                                const nextcell = cellArray[index-1];
+                                const nextcell = this.cellArray[index-1];
                                 const event = new CustomEvent('click');
 
                                 document.dispatchEvent(event);
@@ -104,9 +117,9 @@ class StaveBox {
                             } else if (key === 'ArrowUp'){
                                 //TODO: pressing up on top-rightmost cell goes out of bounds
                                 entryDirection = Direction.Vertical;
-                                let nextcell = cellArray[index-gridWidth];
+                                let nextcell = this.cellArray[index-gridWidth];
                                 if (nextcell === undefined){
-                                    nextcell = cellArray[index + (gridWidth * (localTuning.length - 1) + 1)];
+                                    nextcell = this.cellArray[index + (gridWidth * (localTuning.length - 1) + 1)];
                                 }
                                 const event = new CustomEvent('click');
 
@@ -115,10 +128,10 @@ class StaveBox {
                                 return;
                             } else if (key === 'ArrowDown'){
                                 entryDirection = Direction.Vertical;
-                                let nextcell = cellArray[index+gridWidth];
+                                let nextcell = this.cellArray[index+gridWidth];
                                 const event = new CustomEvent('click');
                                 if (nextcell === undefined){
-                                    nextcell = cellArray[index - 1];
+                                    nextcell = this.cellArray[index - 1];
                                 }
 
                                 document.dispatchEvent(event);
@@ -130,7 +143,7 @@ class StaveBox {
                             if (key === 'Backspace'){
                                 staveGridCell.textContent = '-';
                                 if (entryDirection === Direction.Vertical){
-                                    const nextcell = cellArray[index+gridWidth];
+                                    const nextcell = this.cellArray[index+gridWidth];
                                     const event = new CustomEvent('click');
 
                                     document.dispatchEvent(event);
@@ -138,7 +151,7 @@ class StaveBox {
                                     return;
                                 } else {
                                     entryDirection = Direction.Horizontal;
-                                    const nextcell = cellArray[index-1];
+                                    const nextcell = this.cellArray[index-1];
                                     const event = new CustomEvent('click');
 
                                     document.dispatchEvent(event);
@@ -167,7 +180,7 @@ class StaveBox {
                                 staveGridCell.textContent = key;
 
                                 if (entryDirection === Direction.Vertical){
-                                    const nextcell = cellArray[index-gridWidth];
+                                    const nextcell = this.cellArray[index-gridWidth];
                                     const event = new CustomEvent('click');
 
                                     document.dispatchEvent(event);
@@ -175,7 +188,7 @@ class StaveBox {
                                     return;
                                 } else {
                                     entryDirection = Direction.Horizontal;
-                                    const nextcell = cellArray[index+1];
+                                    const nextcell = this.cellArray[index+1];
                                     const event = new CustomEvent('click');
 
                                     document.dispatchEvent(event);
@@ -196,15 +209,15 @@ class StaveBox {
                         //draw highlight to show entry direction
                         if (entryDirection === Direction.Horizontal){
                             const rowIndex = Math.floor(index/gridWidth);
-                            const highlighedCells = cellArray.slice((rowIndex * gridWidth), ((rowIndex + 1) * gridWidth));
+                            const highlighedCells = this.cellArray.slice((rowIndex * gridWidth), ((rowIndex + 1) * gridWidth));
                             for (let cell = 0; cell < highlighedCells.length; cell++){
                                 highlighedCells[cell].classList.add('highlight');
                             }
                         } else {
                             const columnIndex = index % gridWidth;
-                            for (let cell = 0; cell < cellArray.length; cell++){
+                            for (let cell = 0; cell < this.cellArray.length; cell++){
                                 if ((cell % gridWidth) == columnIndex){
-                                    cellArray[cell].classList.add('highlight');
+                                    this.cellArray[cell].classList.add('highlight');
                                 }
                             }
                         };
@@ -214,7 +227,7 @@ class StaveBox {
                     })
 
                     staveGrid.appendChild(staveGridCell);
-                    cellArray.push(staveGridCell);
+                    this.cellArray.push(staveGridCell);
                 }
             }
         }
@@ -224,18 +237,6 @@ class StaveBox {
         this.staveBox.appendChild(staveBoxGrid);
         drawGrid(staveBoxGrid);
         
-
-        let staveEnd = document.createElement('div');
-        staveEnd.classList.add('staveEnd');
-        staveEnd.textContent = '|\r'.repeat(localTuning.length);
-        staveEnd.addEventListener('mousedown', (event) => {
-            document.addEventListener('mouseup', ()=> {
-                staveEnd.classList.remove('focus');
-            }, {once: true})
-            staveEnd.focus();
-            staveEnd.classList.add('focus');
-        });
-        this.staveBox.appendChild(staveEnd);
 
         this.stringLabels.addEventListener('dblclick', () => {
             
@@ -275,7 +276,7 @@ class StaveBox {
                     const userInput = transientInput.textContent;
                     if(/^[a-zA-Z]+$/.test(userInput)){
                         localTuning = userInput;
-                        cellArray.length = 0;
+                        this.cellArray.length = 0;
 
                         staveBoxGrid.remove();
                         staveBoxGrid = document.createElement('div');
@@ -293,6 +294,10 @@ class StaveBox {
 
             transientInput.addEventListener('keydown', changeTuning)
         });
+    }
+
+    parseStringContents(){
+        return;
     }
 }
 
