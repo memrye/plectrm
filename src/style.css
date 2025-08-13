@@ -264,14 +264,14 @@ body{
 }
 
 .staveGridCell.focus{
-    background-color: #83a498;
+    background-color: #d3869b;
     outline: 1px solid #282828;
     outline-offset: 1px;
     z-index: 3;
 }
 
 .staveGridCell.focus:hover{
-    background-color: #458588;
+    background-color: #b16286;
     outline: 1px solid #282828;
     outline-offset: 1px;
     z-index: 3;
@@ -332,6 +332,11 @@ body{
 
 .textBox:focus-visible{
     outline: 0;
+}
+
+.textBox::selection{
+    color: #fbf1c7;
+    background: #83a498;
 }
 
 .transientInput{
