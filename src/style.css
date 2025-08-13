@@ -10,12 +10,12 @@
 body{
     margin: 0;
     font-family: 'FantasqueSansMono', monospace;
-    font-size: medium;
+    font-size: 1.6vw;
     overflow: hidden;
 }
 
 .appContainer{
-    background: radial-gradient(circle at 00% 0%, #282828 0%, #1d2021 100%);
+    background: radial-gradient(circle at 0% 100%, #282828 0%, #1d2021 100%);
     height: 100vh;
     width: 100vw;
     display: grid;
@@ -44,9 +44,11 @@ body{
 
 .ribbonContainer {
     flex: 1;
-    background-color: #282828;
+    flex-direction: row;
+    padding: 0.5em;
+    background-color: #3c3836;
     border-radius: 10px;
-    border: 1px solid #555;
+    border: 1px solid #504945;
     box-shadow: 0 0 10px rgba(255,255,255,0.05);
     transition: box-shadow 0.1s ease-in-out;
 }
@@ -55,18 +57,53 @@ body{
     box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
-.settingsButton{
+.ribbonButton{
+    background-color: transparent;
+    height: 100%;
+    transition: all 80ms ease-in-out;
+}
+
+.ribbonButton.textBox{
+    color: #83a498;
+    font-size: 1em;
+    border-radius: 8px;
+    border: 1px solid #504945;
+    padding: 0.8em;
+    width: fit-content;
+    filter: drop-shadow(0 0 0px #83a49800);
+}
+
+.ribbonButton.textBox:hover{
+    color: #ebdbb2;
+    border: 1px solid #83a498;
+    filter: drop-shadow(0 0 5px #83a498ff);
+}
+
+.ribbonButton.textBox:active{
+    background-color: #83a498;
+    color: #ebdbb2;
+    border: 1px solid #ebdbb2;
+    filter: drop-shadow(0 0 5px #83a498ff);
+}
+
+.exportButton{
     flex: none;
     height: 100%;
     width: 4em;
-    background-color: #333;
+    background-color: #504945;
     border-radius: 10px;
-    border: 1px solid #555;
+    border: 1px solid #665c54;
     box-shadow: 0 0 10px rgba(255,255,255,0.05);
     transition: box-shadow 0.1s ease-in-out;
 }
 
-.settingsButton:hover{
+.exportButton:hover{
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.exportButton:active{
+    background-color: #665c54;
+    border: 1px solid #928374;
     box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
@@ -288,7 +325,6 @@ body{
 
 .textBox{
     font-family: 'FantasqueSansMono', monospace;
-    font-size: medium;
     min-height: 1em;
     background-color: transparent;
     border: 0px;
@@ -307,3 +343,4 @@ body{
     min-width: 4em;
     min-height: 1em;
 }
+

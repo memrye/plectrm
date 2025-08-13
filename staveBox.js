@@ -60,7 +60,7 @@ class StaveBox {
             let gridHeight = localTuning.length;
 
             staveGrid.style.gridTemplateColumns = `repeat(${gridWidth}, 1em)`
-            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1em)`
+            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.05em)`
             
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < gridWidth; col++){
@@ -180,8 +180,11 @@ class StaveBox {
                                 staveGridCell.textContent = key;
 
                                 if (entryDirection === Direction.Vertical){
-                                    const nextcell = this.cellArray[index-gridWidth];
+                                    let nextcell = this.cellArray[index-gridWidth];
                                     const event = new CustomEvent('click');
+                                    if (nextcell === undefined){
+                                    nextcell = this.cellArray[index + (gridWidth * (localTuning.length - 1) + 1)];
+                                    }
 
                                     document.dispatchEvent(event);
                                     nextcell.dispatchEvent(event);
