@@ -164,7 +164,7 @@ body{
     align-content: center;
     background-color: transparent;
     user-select: none;
-    cursor: grab;
+    cursor: pointer;
     border: 0;
     transition: all 50ms ease-in-out;
 }
@@ -179,7 +179,6 @@ body{
     color: #f9f5d7;
     background-color: #928374;
     border: 0;
-    cursor: grabbing;
 }
 
 .staveBox{

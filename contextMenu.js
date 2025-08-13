@@ -54,25 +54,34 @@ class ContextMenu {
         }
 
         dragButton.addEventListener('mousedown', (event) => {
-            const elementRect = dragButton.getBoundingClientRect();
-            elementCenterY = elementRect.top + (elementRect.height / 2);
-            parentContainer.classList.add('dragged');
-            parentContainer.style.transform = `scale(101%)`
+            if (event.button == 2){
+                //open expanded context menu on right click
 
-            previousElement = parentContainer.previousElementSibling;
-            nextElement = parentContainer.nextElementSibling;
-            if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
-            if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
+            } else {
+                //drag element
+                dragButton.style.cursor = 'grabbing';
+                const elementRect = dragButton.getBoundingClientRect();
+                elementCenterY = elementRect.top + (elementRect.height / 2);
+                parentContainer.classList.add('dragged');
+                parentContainer.style.transform = `scale(101%)`
+    
+                previousElement = parentContainer.previousElementSibling;
+                nextElement = parentContainer.nextElementSibling;
+                if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
+                if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
+    
+    
+                document.addEventListener('mousemove', elementDragging);
+    
+                document.addEventListener('mouseup', (event) => {
+                    dragButton.style.cursor = 'pointer';
+                    parentContainer.style.transform = `translateY(0px) scale(100%)`;
+                    yOffset = 0;
+                    parentContainer.classList.remove('dragged');
+                    document.removeEventListener('mousemove', elementDragging);
+                })
 
-
-            document.addEventListener('mousemove', elementDragging);
-
-            document.addEventListener('mouseup', (event) => {
-                parentContainer.style.transform = `translateY(0px) scale(100%)`;
-                yOffset = 0;
-                parentContainer.classList.remove('dragged');
-                document.removeEventListener('mousemove', elementDragging);
-            })
+            }
         })
 
         return contextMenu;
