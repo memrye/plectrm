@@ -307,7 +307,7 @@ body{
     user-select: none;
     cursor: pointer;
     border: 0;
-    transition: all 50ms ease-in-out;
+    transition: all 80ms ease-in-out;
 }
 
 .dragHandle:hover{
@@ -317,6 +317,12 @@ body{
 }
 
 .dragHandle:active{
+    color: #f9f5d7;
+    background-color: #928374;
+    border: 0;
+}
+
+.dragHandle.forceActive{
     color: #f9f5d7;
     background-color: #928374;
     border: 0;
