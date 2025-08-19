@@ -4,8 +4,6 @@ const ribbon = document.getElementsByClassName('ribbonContainer').item(0);
 new RibbonSectionTextBox(ribbon);
 new RibbonSectionStaveBox(ribbon);
 
-
-new StaveBox(24, 'EADGBe')
 new TextBox()
-new StaveBox(16, 'EADGBe')
+new StaveBox(24, 'EADGBe')
 
