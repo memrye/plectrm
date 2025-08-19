@@ -433,6 +433,15 @@ body{
     border: 0px;
 }
 
+.textBox:empty::before{
+    content: 'type here...';
+    color: #928374;
+}
+
+.textBox:not(:empty)::before{
+    content: '';
+}
+
 .textBox:focus-visible{
     outline: 0;
 }

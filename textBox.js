@@ -14,7 +14,6 @@ class TextBox {
         this.textBox.classList.add('textBox');
         this.textBox.contentEditable = 'true';
         this.textBox.spellcheck = false;
-        this.textBox.textContent = 'Type here...';
         textContainer.appendChild(this.textBox);
         
     }
