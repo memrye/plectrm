@@ -18,9 +18,6 @@ body{
     background: radial-gradient(circle at 0% 100%, #282828 0%, #1d2021 100%);
     height: 100vh;
     width: 100vw;
-    display: grid;
-    grid-template-columns: 100fr;
-    grid-template-rows: auto 5em;
 }
 
 .appContent{
@@ -33,8 +30,11 @@ body{
 }
 
 .appFooter{
-    height: 100%;
-    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 6em;
     display: flex;
     flex-direction: row;
     gap: 0.5em;
@@ -43,55 +43,153 @@ body{
 }
 
 .ribbonContainer {
+    display: flex;
     flex: 1;
     flex-direction: row;
-    padding: 0.5em;
-    background-color: #3c3836;
-    border-radius: 10px;
-    border: 1px solid #504945;
+    padding: 0.25em;
+    background-color: #3c3836a6;
+    border-radius: 8px;
+    border: 1px solid #665c54;
     box-shadow: 0 0 10px rgba(255,255,255,0.05);
     transition: box-shadow 0.1s ease-in-out;
+    backdrop-filter: blur(8px) saturate(30%);
+    gap: 0.25em;
 }
 
 .ribbonContainer:hover{
     box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
-.ribbonButton{
-    background-color: transparent;
+.ribbonSection{
     height: 100%;
-    transition: all 80ms ease-in-out;
+    width: fit-content;
+    padding: 0.5em;
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid #665c54;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
-.ribbonButton.textBox{
+.ribbonSection label{
+    font-size: 0.6em;
+    padding: 0;
+    border: 0;
+    color:#ebdbb2;
+    height: auto;
+}
+
+.ribbonButton{
+    background-color: #504945;
+    transition: all 80ms ease-in-out;
+    border: 1px solid #665c54;
+    border-radius: 8px;
+    justify-content: center;
+}
+
+.ribbonButton.textBoxButton{
     color: #83a498;
     font-size: 1em;
-    border-radius: 8px;
-    border: 1px solid #504945;
-    padding: 0.8em;
-    width: fit-content;
+    height: 9em;
     filter: drop-shadow(0 0 0px #83a49800);
+    padding: 0;
 }
 
-.ribbonButton.textBox:hover{
+.ribbonButton.textBoxButton:hover{
     color: #ebdbb2;
     border: 1px solid #83a498;
     filter: drop-shadow(0 0 5px #83a498ff);
 }
 
-.ribbonButton.textBox:active{
+.ribbonButton.textBoxButton:active{
     background-color: #83a498;
     color: #ebdbb2;
     border: 1px solid #ebdbb2;
     filter: drop-shadow(0 0 5px #83a498ff);
 }
 
+
+.ribbonButton.staveBoxButton{
+    color: #d3869b;
+    font-size: 1em;
+    height: 2.4em;
+    width: 3em;
+    filter: drop-shadow(0 0 0px #d3869b00);
+    padding: 0;
+}
+
+.ribbonButton.staveBoxButton:hover{
+    color: #ebdbb2;
+    border: 1px solid #d3869b;
+    filter: drop-shadow(0 0 5px #d3869bff);
+}
+
+.ribbonButton.staveBoxButton:active{
+    background-color: #d3869b;
+    color: #ebdbb2;
+    border: 1px solid #ebdbb2;
+    filter: drop-shadow(0 0 5px #d3869bff);
+}
+
+.staveBoxContents{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5em;
+    align-items: start;
+    height: 2.3em;
+}
+
+.staveBoxOptions{
+    width: 5em;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5em 0.8em 0.5em 0.8em;
+    gap: 0.1em;
+
+}
+
+.staveBoxOptions input{
+    appearance: none;
+    font-family: 'FantasqueSansMono';
+    color: #ebdbb2;
+    font-size: 0.8em;
+    background-color: #504945;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0px;
+    transition: all 100ms ease-in-out;
+    outline: 1px solid #ebdbb200;
+    outline-offset: 0px;
+}
+
+.staveBoxOptions input:focus-visible{
+    border: none;
+    outline: 1px solid #ebdbb2a6;
+    outline-offset: 2px;
+}
+
+.staveBoxOptions input::-webkit-outer-spin-button,
+                 input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+.staveBoxOptions label{
+    font-size: 0.5em;
+    width: 100%;
+    height: 100%;
+}
+
+
 .exportButton{
     flex: none;
     height: 100%;
-    width: 4em;
+    aspect-ratio: 1/1;
     background-color: #504945;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #665c54;
     box-shadow: 0 0 10px rgba(255,255,255,0.05);
     transition: box-shadow 0.1s ease-in-out;
@@ -108,9 +206,10 @@ body{
 }
 
 .workspaceContainer{
-    height: 120%;
+    height: fit-content;
+    min-height: 90vh;
     width: calc(100% - 8em);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 1em;
     background-color: #fbf1c7;
     border: 1px solid #555;
@@ -129,6 +228,11 @@ body{
     filter: drop-shadow(0 0 10px rgba(255,255,255,0));
 }
 
+.postWorkspaceBlankspace{
+    width: calc(100% - 8em);
+    height: 20vh;
+}
+
 .prototypeContainer{
     position: relative;
     z-index: 1;
@@ -138,10 +242,9 @@ body{
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0);
     transition: 
-        box-shadow 0.1s ease-in-out;
+        box-shadow 100ms ease-in-out;
     padding: 0.5em;
     min-height: 1em;
-    min-width: 21em;
     width: fit-content;
     margin-bottom: 0.5em;
     color: #282828;
@@ -295,7 +398,7 @@ body{
 }
 
 .stringLabels.focus{
-    background-color: #83a498;
+    background-color: #d3869b;
     outline: 1px solid #282828;
     outline-offset: 1px;
 }
@@ -318,7 +421,7 @@ body{
 }
 
 .staveEnd.focus{
-    background-color: #83a498;
+    background-color: #d3869b;
     outline: 1px solid #282828;
     outline-offset: 1px;
 }
