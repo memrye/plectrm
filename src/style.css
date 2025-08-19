@@ -154,12 +154,13 @@ body{
     appearance: none;
     font-family: 'FantasqueSansMono';
     color: #ebdbb2;
-    font-size: 0.8em;
+    font-size: 0.5em;
     background-color: #504945;
     width: 100%;
     height: 100%;
     border: 0;
     padding: 0px;
+    padding-left: 0.3em;
     transition: all 100ms ease-in-out;
     outline: 1px solid #ebdbb200;
     outline-offset: 0px;
