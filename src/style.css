@@ -293,9 +293,10 @@ body{
     opacity: 0%;
     transition: opacity 180ms ease-in-out;
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
-    clip-path: border-box;
     margin-right: 0.5em;
+    clip-path: fill-box;
 }
 
 .dragHandle{
@@ -329,6 +330,46 @@ body{
     color: #f9f5d7;
     background-color: #928374;
     border: 0;
+}
+
+.deleteButton{
+    color: #d5c4a1;
+    width: 2em;
+    min-height: 1em;
+    max-height: 1.5em;
+    height: min(100%, 1.5em);
+    text-align: center;
+    align-items: center; 
+    background-color: transparent;
+    user-select: none;
+    cursor: pointer;
+    border: 0;
+    transition: all 80ms ease-in-out;
+    display: none;
+}
+
+.deleteButton:hover{
+    color: #928374;
+    background-color: #d5c4a1;
+}
+
+.deleteButton.show{
+    display: flex;
+}
+
+.deleteButton svg{
+    width: 100%;
+    height: 60%;
+}
+
+.deleteButton.confirmDelete{
+    color: #f9f5d7;
+    background-color: #fb4934;
+}
+
+.deleteButton.confirmDelete:active{
+    color: #f9f5d7;
+    background-color: #cc241d;
 }
 
 .staveBox{
@@ -439,9 +480,11 @@ body{
 .textBox{
     font-family: 'FantasqueSansMono', monospace;
     min-height: 1em;
+    min-width: 8em;
     background-color: transparent;
     border: 0px;
     cursor: text;
+    height: fit-content;
 }
 
 .textBox:empty::before{

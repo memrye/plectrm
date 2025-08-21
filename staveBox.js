@@ -15,7 +15,7 @@ class StaveBox {
         this.staveContainer.classList.add('prototypeContainer','stave');
         workspaceContext.appendChild(this.staveContainer);
 
-        this.contextMenu = new ContextMenu(this.staveContainer, workspaceContext);
+        this.contextMenu = new ContextMenu(this, workspaceContext);
         this.staveContainer.appendChild(this.contextMenu);
 
         this.staveBox = document.createElement('div');
@@ -301,6 +301,14 @@ class StaveBox {
 
     parseStringContents(){
         return;
+    }
+
+    remove(){
+        this.staveContainer.remove();
+    }
+
+    getRootContainer(){
+        return this.staveContainer;
     }
 }
 

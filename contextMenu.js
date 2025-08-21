@@ -1,18 +1,48 @@
 class ContextMenu {
-    constructor(parentContainer, workspaceContext) {
+    constructor(parentObject, workspaceContext) {
+        const parentContainer = parentObject.getRootContainer();
         const contextMenu = document.createElement('div');
         contextMenu.classList.add('contextMenu');
         const dragButton = document.createElement('div');
         dragButton.classList.add('dragHandle');
-        dragButton.textContent = '=';
+        dragButton.textContent = '☰';
         contextMenu.appendChild(dragButton);
+        const deleteButton = document.createElement('div');
+        deleteButton.classList.add('deleteButton');
+        deleteButton.innerHTML = window.electronAPI.getIcon('trash');
+        contextMenu.appendChild(deleteButton);
         let elementCenterY;
         let previousElement = parentContainer.previousElementSibling;
         let previousElementRect;
         let nextElement = parentContainer.nextElementSibling;
         let nextElementRect;
         let yOffset = 0;
+        deleteButton.clickAcc = 0;
+
+        const resizeHandler = (entry) => {
+            //calculates the approximate height of the parent object in ems
+            const containerContentDiv = parentContainer.children[1]; //div of the container's content (textBox or staveBox)
+            const computedEm = parseFloat(getComputedStyle(parentContainer).fontSize)
+            const approxHeight = parseFloat(getComputedStyle(containerContentDiv).height) / computedEm;
+            if (approxHeight < 2){
+                deleteButton.classList.remove('show');
+            } else {
+                deleteButton.classList.add('show');
+            }
+
+            //resizeObserver should look at parentContainers content for correct height
+            //content menu is rendered before the content so we need to switch resizeObservers
+            //target when DOM is fully loaded 
+            if (entry[0].target === parentContainer){
+                
+                resizeObserver.unobserve(parentContainer);
+                resizeObserver.observe(containerContentDiv);
+            }
+        }
         
+        const resizeObserver = new ResizeObserver(resizeHandler)
+
+        resizeObserver.observe(parentContainer);
 
         const elementDragging = (event) => {
             const mouseY = event.clientY;
@@ -60,7 +90,7 @@ class ContextMenu {
         dragButton.addEventListener('mousedown', (event) => {
             if (event.button == 2){
                 //open expanded context menu on right click
-
+                
             } else {
                 //drag element
                 dragButton.style.cursor = 'grabbing';
@@ -89,6 +119,24 @@ class ContextMenu {
                 })
 
             }
+        })
+
+        deleteButton.addEventListener('mousedown', (event) => {
+            deleteButton.clickAcc += 1;
+            if (deleteButton.clickAcc === 1){
+                deleteButton.classList.add('confirmDelete');
+            }
+            if (deleteButton.clickAcc === 2){
+                parentObject.remove();
+            }
+        })
+
+        deleteButton.addEventListener('mouseleave', () => {
+            if (deleteButton.clickAcc){
+                deleteButton.clickAcc = 0;
+                deleteButton.classList.remove('confirmDelete');
+            }
+            
         })
 
         return contextMenu;
