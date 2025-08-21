@@ -78,6 +78,7 @@ body{
     border: 0;
     color:#ebdbb2;
     height: auto;
+    width: fit-content;
 }
 
 .ribbonButton{
@@ -91,9 +92,11 @@ body{
 .ribbonButton.textBoxButton{
     color: #83a498;
     font-size: 1em;
-    height: 9em;
+    height: 2em;
+    width: 3em;
     filter: drop-shadow(0 0 0px #83a49800);
     padding: 0;
+    margin: auto;
 }
 
 .ribbonButton.textBoxButton:hover{
@@ -113,7 +116,7 @@ body{
 .ribbonButton.staveBoxButton{
     color: #d3869b;
     font-size: 1em;
-    height: 2.4em;
+    height: 2em;
     width: 3em;
     filter: drop-shadow(0 0 0px #d3869b00);
     padding: 0;
@@ -438,6 +441,7 @@ body{
     min-height: 1em;
     background-color: transparent;
     border: 0px;
+    cursor: text;
 }
 
 .textBox:empty::before{
