@@ -1,12 +1,14 @@
 class RibbonSectionTextBox{
-    constructor(_ribbon) {
+    constructor(_ribbon, workspaceContext) {
         const textBoxSection = document.createElement('div');
         textBoxSection.classList.add('ribbonSection');
 
         const textBoxButton = document.createElement('button');
         textBoxButton.classList.add('ribbonButton', 'textBoxButton');
         textBoxButton.textContent = '+';
-        textBoxButton.onclick = function(){new TextBox()};
+        textBoxButton.onclick = function(){
+            workspaceContext.ChildObjects.push(new TextBox())
+        };
         textBoxSection.appendChild(textBoxButton);
 
         const textBoxLabel = document.createElement('label');
@@ -18,7 +20,7 @@ class RibbonSectionTextBox{
 }
 
 class RibbonSectionStaveBox{
-    constructor(_ribbon) {
+    constructor(_ribbon, workspaceContext) {
         const staveBoxSection = document.createElement('div');
         staveBoxSection.classList.add('ribbonSection');
 
@@ -36,7 +38,7 @@ class RibbonSectionStaveBox{
         staveBoxButton.onclick = function(){
             const size = staveBoxSizeInput.value;
             const tuning = staveBoxTuningInput.value;
-            new StaveBox(size, tuning);
+            workspaceContext.ChildObjects.push(new StaveBox(size, tuning));
         };
         staveBoxContents.appendChild(staveBoxButton);
 

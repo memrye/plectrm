@@ -55,8 +55,8 @@ class ContextMenu {
                     yOffset += previousElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
                     parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`;
 
+                    parentObject.decPositionInWorkspace();
                     workspaceContext.insertBefore(parentContainer, previousElement);
-                    
 
                     //because inserting copies the object, css logic for displaying :active doesnt work
                     //so here I force it with a class and remove the class on mouseup
@@ -75,7 +75,10 @@ class ContextMenu {
                     yOffset -= nextElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
                     parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`
 
+                    parentObject.incPositionInWorkspace();
                     nextElement.insertAdjacentElement('afterend', parentContainer);
+                    
+
                     dragButton.classList.add('forceActive');
 
                     previousElement = parentContainer.previousElementSibling;

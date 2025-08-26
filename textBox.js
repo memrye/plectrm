@@ -19,15 +19,30 @@ class TextBox {
     }
 
     parseStringContents(){
-        return this.textBox.textContent;
+        const textBuffer = this.textBox.textContent + '\n'
+        return textBuffer;
     }
 
     remove(){
+        const index = workspaceContext.ChildObjects.indexOf(this);
+        workspaceContext.ChildObjects.splice(index, 1);
         this.textContainer.remove();
     }
 
     getRootContainer(){
         return this.textContainer;
+    }
+
+    decPositionInWorkspace(){
+        const index = workspaceContext.ChildObjects.indexOf(this);
+        workspaceContext.ChildObjects.splice(index, 1);
+        workspaceContext.ChildObjects.splice(index - 1, 0, this);
+    }
+
+    incPositionInWorkspace(){
+        const index = workspaceContext.ChildObjects.indexOf(this);
+        workspaceContext.ChildObjects.splice(index, 1);
+        workspaceContext.ChildObjects.splice(index + 1, 0, this);
     }
 }
 
