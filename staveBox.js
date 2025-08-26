@@ -28,12 +28,32 @@ class StaveBox {
         this.staveEnd = document.createElement('div');
         this.staveEnd.classList.add('staveEnd');
         this.staveEnd.textContent = '|\r'.repeat(localTuning.length);
+
+        const resizeHandler = (event) => {
+            const mouseX = event.clientX;
+            const gridRect = this.staveBoxGrid.getBoundingClientRect();
+            const cellWidth = gridRect.width / gridWidth;
+            const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
+            document.body.style.cursor = 'col-resize'
+            if (tempWidth != gridWidth){
+                gridWidth = tempWidth;
+                this.cellArray.length = 0;
+                this.staveBoxGrid.replaceChildren();
+                drawGrid(this.staveBoxGrid);
+            }
+        }
         this.staveEnd.addEventListener('mousedown', (event) => {
-            document.addEventListener('mouseup', ()=> {
+            document.addEventListener('mouseup', () => {
+                document.body.style.cursor = 'auto';
                 this.staveEnd.classList.remove('focus');
+                document.removeEventListener('mousemove', resizeHandler)
             }, {once: true})
+
+            document.addEventListener('mousemove', resizeHandler)
             this.staveEnd.focus();
             this.staveEnd.classList.add('focus');
+
+
         });
         this.staveBox.appendChild(this.staveEnd);
 
@@ -59,8 +79,8 @@ class StaveBox {
 
             let gridHeight = localTuning.length;
 
-            staveGrid.style.gridTemplateColumns = `repeat(${gridWidth}, 1em)`
-            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.05em)`
+            staveGrid.style.gridTemplateColumns = `repeat(${gridWidth}, 1.04em)`
+            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
             
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < gridWidth; col++){
@@ -95,11 +115,12 @@ class StaveBox {
                         const keydownHandler = (event) => {
                             event.preventDefault();
                             const key = event.key;
+                            const altHeld = event.altKey;
 
                             // arrow key traversal
                             // TODO: fix out of range: make vertical go to lowest cell of next column etc
                             if (key === 'ArrowRight'){
-                                entryDirection = Direction.Horizontal;
+                                if (!altHeld){entryDirection = Direction.Horizontal;}
                                 const nextcell = this.cellArray[index+1];
                                 const event = new CustomEvent('click');
 
@@ -107,7 +128,7 @@ class StaveBox {
                                 nextcell.dispatchEvent(event);
                                 return;
                             } else if (key === 'ArrowLeft'){
-                                entryDirection = Direction.Horizontal;
+                                if (!altHeld){entryDirection = Direction.Horizontal;}
                                 const nextcell = this.cellArray[index-1];
                                 const event = new CustomEvent('click');
 
@@ -116,7 +137,7 @@ class StaveBox {
                                 return;
                             } else if (key === 'ArrowUp'){
                                 //TODO: pressing up on top-rightmost cell goes out of bounds
-                                entryDirection = Direction.Vertical;
+                                if (!altHeld){entryDirection = Direction.Vertical;}
                                 let nextcell = this.cellArray[index-gridWidth];
                                 if (nextcell === undefined){
                                     nextcell = this.cellArray[index + (gridWidth * (localTuning.length - 1) + 1)];
@@ -127,7 +148,7 @@ class StaveBox {
                                 nextcell.dispatchEvent(event);
                                 return;
                             } else if (key === 'ArrowDown'){
-                                entryDirection = Direction.Vertical;
+                                if (!altHeld){entryDirection = Direction.Vertical;}
                                 let nextcell = this.cellArray[index+gridWidth];
                                 const event = new CustomEvent('click');
                                 if (nextcell === undefined){
@@ -142,6 +163,9 @@ class StaveBox {
                             //backspace
                             if (key === 'Backspace'){
                                 staveGridCell.textContent = '-';
+
+                                if(altHeld){return;}
+                                
                                 if (entryDirection === Direction.Vertical){
                                     const nextcell = this.cellArray[index+gridWidth];
                                     const event = new CustomEvent('click');
@@ -178,6 +202,8 @@ class StaveBox {
                             //key input
                             if (/^[a-zA-Z0-9\/~-]$/.test(key)) {
                                 staveGridCell.textContent = key;
+
+                                if(altHeld){return;}
 
                                 if (entryDirection === Direction.Vertical){
                                     let nextcell = this.cellArray[index-gridWidth];
@@ -235,10 +261,10 @@ class StaveBox {
             }
         }
 
-        let staveBoxGrid = document.createElement('div');
-        staveBoxGrid.classList.add('staveGrid');
-        this.staveBox.appendChild(staveBoxGrid);
-        drawGrid(staveBoxGrid);
+        this.staveBoxGrid = document.createElement('div');
+        this.staveBoxGrid.classList.add('staveGrid');
+        this.staveBox.appendChild(this.staveBoxGrid);
+        drawGrid(this.staveBoxGrid);
         
 
         this.stringLabels.addEventListener('dblclick', () => {
@@ -280,12 +306,8 @@ class StaveBox {
                     if(/^[a-zA-Z]+$/.test(userInput)){
                         localTuning = userInput;
                         this.cellArray.length = 0;
-
-                        staveBoxGrid.remove();
-                        staveBoxGrid = document.createElement('div');
-                        staveBoxGrid.classList.add('staveGrid');
-                        this.staveBox.appendChild(staveBoxGrid);
-                        drawGrid(staveBoxGrid);
+                        this.staveBoxGrid.replaceChildren();
+                        drawGrid(this.staveBoxGrid);
 
                         this.setTuning(userInput);
                         
