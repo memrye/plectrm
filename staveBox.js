@@ -37,12 +37,34 @@ class StaveBox {
             const cellWidth = gridRect.width / this.gridWidth;
             const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
             document.body.style.cursor = 'col-resize'
+
             if (tempWidth != this.gridWidth){
+                
+                const gridHeight = this.localTuning.length;
+                let tempCellArray = [];
+                for (let i = 0; i < gridHeight; i++){
+                    tempCellArray.push(this.cellArray.slice(this.gridWidth * i, this.gridWidth * (i + 1)));
+                };
+
+
+                if (tempWidth < this.gridWidth){
+                    for (let row = 0; row < tempCellArray.length; row++){
+                        tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
+                    };
+                } else if (tempWidth > this.gridWidth){
+                    for (let row = 0; row < tempCellArray.length; row++){
+                        const size = tempWidth - this.gridWidth;
+                        const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
+                        tempCellArray[row].push(...diffArray);
+                    };
+                }
+
+                tempCellArray = tempCellArray.flat()
+
                 this.gridWidth = tempWidth;
-                //TODO Handle changing the cell array to keep instead of cleaing
                 this.cellArray.length = 0;
                 this.staveBoxGrid.replaceChildren();
-                drawGrid(this.staveBoxGrid);
+                drawGrid(this.staveBoxGrid, tempCellArray);
             }
         }
         this.staveEnd.addEventListener('mousedown', (event) => {
@@ -82,6 +104,7 @@ class StaveBox {
 
             let gridHeight = this.localTuning.length;
 
+
             staveGrid.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
             staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
             
@@ -91,11 +114,7 @@ class StaveBox {
                     const staveGridCell = document.createElement('div');
                     let focused = false;
                     staveGridCell.classList.add('staveGridCell');
-                    if (!staveValues){
-                        staveGridCell.textContent = '-';
-                    } else {
-                        staveGridCell.textContent = staveValues[index];
-                    }
+                    staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
                     
 
                     staveGridCell.addEventListener('click', (event) => {
