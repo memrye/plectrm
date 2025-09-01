@@ -294,59 +294,25 @@ class StaveBox {
         drawGrid(this.staveBoxGrid);
         
 
-        this.stringLabels.addEventListener('dblclick', () => {
-            
-            const outsideClickHandler = (event) => {
-            if (!this.stringLabels.contains(event.target)) {
-                this.stringLabels.classList.remove('focus');
-                transientInput.removeEventListener('keydown', changeTuning);
-                transientInput.remove()
-                document.removeEventListener('click', outsideClickHandler);
-            }
-            };
-
-            this.stringLabels.classList.add('focus');
-            document.addEventListener('click', outsideClickHandler);
-
-            const transientInput = document.createElement('div');
-            transientInput.classList.add('transientInput');
-            transientInput.contentEditable = 'true';
-            transientInput.spellcheck = false;
-            this.stringLabels.appendChild(transientInput);
-            transientInput.textContent = this.localTuning;
-
-            //moves cursor to end of text
-            const range = document.createRange();
-            range.selectNodeContents(transientInput);
-            range.collapse(false);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            transientInput.focus();
-
-            const changeTuning = (event) => {
-                let key = event.key
-                if (key === 'Enter'){
-                    //add confirmation if stave has been edited at all
-                    event.preventDefault();
-                    const userInput = transientInput.textContent;
-                    if(/^[a-zA-Z]+$/.test(userInput)){
-                        this.localTuning = userInput;
-
-                        //TODO: handle changing cell array to keep values
-                        this.cellArray.length = 0;
-                        this.staveBoxGrid.replaceChildren();
-                        drawGrid(this.staveBoxGrid);
-
-                        this.setTuning(userInput);
-                        
-                        const event = new CustomEvent('click');
-                        document.dispatchEvent(event);
-                    }
+        this.stringLabels.addEventListener('dblclick', (event) => {
+            if (document.getElementsByClassName('transientInputContainer').length){
+                for (let element of document.getElementsByClassName('transientInputContainer')){
+                    element.remove();
                 }
             }
 
-            transientInput.addEventListener('keydown', changeTuning)
+            const popUpContextMenu = new TransientInput;
+            popUpContextMenu.click(event);
+            popUpContextMenu.createAndAddTextInput(this.localTuning, (contents) => {
+                this.localTuning = contents;
+                this.cellArray.length = 0;
+                this.staveBoxGrid.replaceChildren();
+                drawGrid(this.staveBoxGrid);
+
+                this.setTuning(contents);
+
+            })
+            
         });
     }
 

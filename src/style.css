@@ -509,13 +509,59 @@ body{
     background: #83a498;
 }
 
+.transientInputContainer{
+    background-color: #fbf1c7a6;
+    box-shadow: 0px 0px 5px #282828a6;
+    backdrop-filter: brightness(90%) blur(4px);
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    position:absolute;
+    transform: translate(0px, 0px);
+    flex-direction: column;
+    gap: 0.1em;
+    left: 0;
+    top: 0;
+}
+
 .transientInput{
     z-index: 10;
-    background-color: #d5c4a1;
-    outline: 1px solid #282828;
-    outline-offset: 1px;
-    position:absolute;
+    background-color: transparent;
     min-width: 4em;
     min-height: 1em;
+    padding: 0.2em 0.3em;
+}
+
+.transientInput::before{
+    content: '> ';
+    font-size: 0.5em;
+    vertical-align: middle;
+}
+
+.transientInput:focus-visible{
+    outline: 0;
+    background-color: #d5c4a1a6;
+}
+
+.transientButton{
+    z-index: 10;
+    background-color: transparent;
+    min-width: 1em;
+    min-height: 1em;
+    user-select: none;
+    cursor: pointer;
+    padding: 0.2em 0.3em;
+}
+
+.transientButton:hover{
+    background-color: #d5c4a1a6;
+}
+
+.transientLabel{
+    z-index: 10;
+    background-color: transparent;
+    min-width: 1em;
+    min-height: 1em;
+    user-select: none;
+    padding: 0.2em 0.3em;
 }
 

@@ -93,6 +93,17 @@ class ContextMenu {
         dragButton.addEventListener('mousedown', (event) => {
             if (event.button == 2){
                 //open expanded context menu on right click
+                if (document.getElementsByClassName('transientInputContainer').length){
+                    for (let element of document.getElementsByClassName('transientInputContainer')){
+                        element.remove();
+                    }
+                }
+                const popUpContextMenu = new TransientInput;
+                popUpContextMenu.click(event);
+                popUpContextMenu.createAndAddButton('remove', () => {
+                    parentContainer.remove();
+                })
+
                 
             } else {
                 //drag element
