@@ -100,6 +100,7 @@ class ContextMenu {
                 }
                 const popUpContextMenu = new TransientInput;
                 popUpContextMenu.click(event);
+                popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString()); 
                 popUpContextMenu.createAndAddButton('remove', () => {
                     parentContainer.remove();
                 })

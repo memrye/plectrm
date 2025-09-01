@@ -48,7 +48,6 @@ body{
     flex-direction: row;
     padding: 0.25em;
     background-color: #3c3836a6;
-    border-radius: 8px;
     border: 1px solid #665c54;
     box-shadow: 0 0 10px rgba(255,255,255,0.05);
     transition: box-shadow 0.1s ease-in-out;
@@ -65,7 +64,6 @@ body{
     width: fit-content;
     padding: 0.5em;
     background-color: transparent;
-    border-radius: 8px;
     border: 1px solid #665c54;
     display: flex;
     flex-direction: column;
@@ -511,7 +509,7 @@ body{
 
 .transientInputContainer{
     background-color: #fbf1c7a6;
-    box-shadow: 0px 0px 5px #282828a6;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
     backdrop-filter: brightness(90%) blur(4px);
     border-radius: 8px;
     border-top-left-radius: 0px;
@@ -529,6 +527,7 @@ body{
     min-width: 4em;
     min-height: 1em;
     padding: 0.2em 0.3em;
+    font-size: 0.8em;
 }
 
 .transientInput::before{
@@ -550,6 +549,7 @@ body{
     user-select: none;
     cursor: pointer;
     padding: 0.2em 0.3em;
+    font-size: 0.8em;
 }
 
 .transientButton:hover{
@@ -563,5 +563,6 @@ body{
     min-height: 1em;
     user-select: none;
     padding: 0.2em 0.3em;
+    font-size: 0.5em;
 }
 

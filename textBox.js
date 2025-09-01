@@ -33,6 +33,10 @@ class TextBox {
         return this.textContainer;
     }
 
+    getObjectNameAsString(){
+        return 'TextBox'
+    }
+
     decPositionInWorkspace(){
         const index = workspaceContext.ChildObjects.indexOf(this);
         workspaceContext.ChildObjects.splice(index, 1);

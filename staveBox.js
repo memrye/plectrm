@@ -303,6 +303,7 @@ class StaveBox {
 
             const popUpContextMenu = new TransientInput;
             popUpContextMenu.click(event);
+            popUpContextMenu.createAndAddLabel('tuning:')
             popUpContextMenu.createAndAddTextInput(this.localTuning, (contents) => {
                 this.localTuning = contents;
                 this.cellArray.length = 0;
@@ -340,6 +341,10 @@ class StaveBox {
         return this.staveContainer;
     }
 
+    getObjectNameAsString(){
+        return 'StaveBox'
+    }
+
     decPositionInWorkspace(){
         const index = workspaceContext.ChildObjects.indexOf(this);
         workspaceContext.ChildObjects.splice(index, 1);
@@ -351,5 +356,6 @@ class StaveBox {
         workspaceContext.ChildObjects.splice(index, 1);
         workspaceContext.ChildObjects.splice(index + 1, 0, this);
     }
+
 }
 
