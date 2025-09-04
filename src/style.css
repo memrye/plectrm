@@ -508,9 +508,10 @@ body{
 }
 
 .transientInputContainer{
-    background-color: #fbf1c7a6;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    backdrop-filter: brightness(90%) blur(4px);
+    background-color: #504945;
+    border: 1px solid #665c54;
+    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    color: #d5c4a1;
     border-radius: 8px;
     border-top-left-radius: 0px;
     position:absolute;
@@ -538,7 +539,6 @@ body{
 
 .transientInput:focus-visible{
     outline: 0;
-    background-color: #d5c4a1a6;
 }
 
 .transientButton{
@@ -553,7 +553,7 @@ body{
 }
 
 .transientButton:hover{
-    background-color: #d5c4a1a6;
+    background-color: #d5c4a133;
 }
 
 .transientLabel{
