@@ -102,7 +102,10 @@ class ContextMenu {
                 popUpContextMenu.click(event);
                 popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString()); 
                 popUpContextMenu.createAndAddButton('remove', () => {
-                    parentContainer.remove();
+                    parentObject.remove();
+                })
+                popUpContextMenu.createAndAddButton('duplicate', () => {
+                    parentObject.duplicate();
                 })
 
                 
@@ -112,7 +115,7 @@ class ContextMenu {
                 const elementRect = dragButton.getBoundingClientRect();
                 elementCenterY = elementRect.top + (elementRect.height / 2);
                 parentContainer.classList.add('dragged');
-                parentContainer.style.transform = `scale(101%)`
+                parentContainer.style.transform = `scale(103%)`
     
                 previousElement = parentContainer.previousElementSibling;
                 nextElement = parentContainer.nextElementSibling;

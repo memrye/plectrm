@@ -1,5 +1,5 @@
 class StaveBox {
-    constructor(gridWidth, localTuning) {
+    constructor(gridWidth, localTuning, cellArray = []) {
 
         this.localTuning = localTuning;
         this.gridWidth = gridWidth;
@@ -64,7 +64,7 @@ class StaveBox {
                 this.gridWidth = tempWidth;
                 this.cellArray.length = 0;
                 this.staveBoxGrid.replaceChildren();
-                drawGrid(this.staveBoxGrid, tempCellArray);
+                this.drawGrid(this.staveBoxGrid, tempCellArray);
             }
         }
         this.staveEnd.addEventListener('mousedown', (event) => {
@@ -98,9 +98,9 @@ class StaveBox {
 
         
 
-        this.cellArray = [];
+        this.cellArray = [...cellArray];
 
-        const drawGrid = (staveGrid, staveValues = false) => {
+        this.drawGrid = (staveGrid, staveValues = false) => {
 
             let gridHeight = this.localTuning.length;
 
@@ -291,10 +291,9 @@ class StaveBox {
         this.staveBoxGrid = document.createElement('div');
         this.staveBoxGrid.classList.add('staveGrid');
         this.staveBox.appendChild(this.staveBoxGrid);
-        drawGrid(this.staveBoxGrid);
-        
+        this.drawGrid(this.staveBoxGrid, this.cellArray);
 
-        this.stringLabels.addEventListener('dblclick', (event) => {
+        const openTuningMenu = (mouseEvent) => {
             if (document.getElementsByClassName('transientInputContainer').length){
                 for (let element of document.getElementsByClassName('transientInputContainer')){
                     element.remove();
@@ -302,19 +301,22 @@ class StaveBox {
             }
 
             const popUpContextMenu = new TransientInput;
-            popUpContextMenu.click(event);
+            popUpContextMenu.click(mouseEvent);
             popUpContextMenu.createAndAddLabel('tuning:')
             popUpContextMenu.createAndAddTextInput(this.localTuning, (contents) => {
                 this.localTuning = contents;
                 this.cellArray.length = 0;
                 this.staveBoxGrid.replaceChildren();
-                drawGrid(this.staveBoxGrid);
+                this.drawGrid(this.staveBoxGrid);
 
                 this.setTuning(contents);
 
             })
-            
-        });
+        }
+        
+
+        this.stringLabels.addEventListener('dblclick', openTuningMenu);
+        this.stringLabels.addEventListener('contextmenu', openTuningMenu);
     }
 
     parseStringContents(){
@@ -335,6 +337,24 @@ class StaveBox {
         const index = workspaceContext.ChildObjects.indexOf(this);
         workspaceContext.ChildObjects.splice(index, 1);
         this.staveContainer.remove();
+    }
+
+    duplicate(){
+        const index = workspaceContext.ChildObjects.indexOf(this);
+        
+        const cloneStavebox = new StaveBox(this.gridWidth, this.localTuning);
+
+        //we have to pass in the new cell array as dummy objects so that the new cells methods are initialised properly
+        const dummyArray = this.cellArray.map(element => ({
+            textContent: element.textContent
+        }));
+        cloneStavebox.cellArray.length = 0;
+
+        //force the cloned stavebox to redraw the grid with the dummy cell array
+        cloneStavebox.staveBoxGrid.replaceChildren();
+        cloneStavebox.drawGrid(cloneStavebox.staveBoxGrid, dummyArray);
+        this.staveContainer.insertAdjacentElement('afterend', cloneStavebox.staveContainer);
+        workspaceContext.ChildObjects.splice(index + 1, 0, cloneStavebox);
     }
 
     getRootContainer(){
