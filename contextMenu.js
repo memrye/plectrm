@@ -5,7 +5,7 @@ class ContextMenu {
         contextMenu.classList.add('contextMenu');
         const dragButton = document.createElement('div');
         dragButton.classList.add('dragHandle');
-        dragButton.textContent = '☰';
+        dragButton.innerHTML = window.electronAPI.getIcon('dragHandle');
         contextMenu.appendChild(dragButton);
         const deleteButton = document.createElement('div');
         deleteButton.classList.add('deleteButton');
@@ -47,13 +47,13 @@ class ContextMenu {
         const elementDragging = (event) => {
             const mouseY = event.clientY;
             let distanceY = mouseY - elementCenterY;
-            parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`
+            parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(103%)`
 
             //dragging up
             if (previousElement){
                 if (mouseY < (previousElementRect.top + (previousElementRect.height / 2))){
                     yOffset += previousElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
-                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`;
+                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(103%)`;
 
                     parentObject.decPositionInWorkspace();
                     workspaceContext.insertBefore(parentContainer, previousElement);
@@ -73,7 +73,7 @@ class ContextMenu {
             if (nextElement){
                 if (mouseY > (nextElementRect.bottom - (nextElementRect.height/2))){
                     yOffset -= nextElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
-                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`
+                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(103%)`
 
                     parentObject.incPositionInWorkspace();
                     nextElement.insertAdjacentElement('afterend', parentContainer);

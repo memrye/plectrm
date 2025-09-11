@@ -12,10 +12,21 @@ body{
     font-family: 'FantasqueSansMono', monospace;
     font-size: 1.6vw;
     overflow: hidden;
+    --color-dark-primary: #1d2021;
+    --color-dark-secondary: #282828;
+    --color-dark-tertiary: #3c3836;
+    --color-light-primary: #EBE1D3;
+    --color-light-secondary:#BCB4A9;
+    --color-light-tertiary: #64605A;
+    --color-brown: #312616;
+    --color-red: #BB4D3A;
+    --color-red-dark: #743327;
+    --color-blue: #689A9D;
+    --color-blue-dark: #557C7E;
 }
 
 .appContainer{
-    background: radial-gradient(circle at 0% 100%, #282828 0%, #1d2021 100%);
+    background: var(--color-dark-primary);
     height: 100vh;
     width: 100vw;
 }
@@ -25,18 +36,19 @@ body{
     width: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #282828 transparent;
+    scrollbar-color: var(--color-dark-secondary) transparent;
     padding: 1em;
 }
 
 .appFooter{
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 6em;
+    inset: auto 0 0 0;
+    margin: auto;
+    width: fit-content;
+    height: 4em;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 0.5em;
     padding: 0.5em;
     z-index: 2;
@@ -45,170 +57,57 @@ body{
 .ribbonContainer {
     display: flex;
     flex: 1;
+    width: fit-content;
     flex-direction: row;
     padding: 0.25em;
-    background-color: #3c3836a6;
-    border: 1px solid #665c54;
-    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    border-radius: 8px;
+    background-color: var(--color-dark-primary);
+    border: 1px solid var(--color-dark-secondary);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.1s ease-in-out;
-    backdrop-filter: blur(8px) saturate(30%);
     gap: 0.25em;
 }
 
-.ribbonContainer:hover{
-    box-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
-
-.ribbonSection{
-    height: 100%;
-    width: fit-content;
-    padding: 0.5em;
-    background-color: transparent;
-    border: 1px solid #665c54;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-}
-
-.ribbonSection label{
-    font-size: 0.6em;
-    padding: 0;
-    border: 0;
-    color:#ebdbb2;
-    height: auto;
-    width: fit-content;
-    user-select: none;
-}
-
 .ribbonButton{
-    background-color: #504945;
+    background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
-    border: 1px solid #665c54;
+    border: 1px solid var(--color-dark-secondary);
     border-radius: 8px;
     justify-content: center;
+    aspect-ratio: 1/1;
+    color: var(--color-light-primary);
 }
 
-.ribbonButton.textBoxButton{
-    color: #83a498;
-    font-size: 1em;
-    height: 2em;
-    width: 3em;
-    filter: drop-shadow(0 0 0px #83a49800);
-    padding: 0;
-    margin: auto;
-    user-select: none;
+.ribbonButton:hover{
+    background-color: var(--color-dark-secondary);
 }
 
-.ribbonButton.textBoxButton:hover{
-    color: #ebdbb2;
-    border: 1px solid #83a498;
-    filter: drop-shadow(0 0 5px #83a498ff);
+.ribbonButton:active{
+    border: 1px solid var(--color-light-tertiary);
+    background-color: var(--color-dark-tertiary);
 }
 
-.ribbonButton.textBoxButton:active{
-    background-color: #83a498;
-    color: #ebdbb2;
-    border: 1px solid #ebdbb2;
-    filter: drop-shadow(0 0 5px #83a498ff);
+.ribbonButton.splitButton{
+    aspect-ratio: 0;
 }
-
-
-.ribbonButton.staveBoxButton{
-    color: #d3869b;
-    font-size: 1em;
-    height: 2em;
-    width: 3em;
-    filter: drop-shadow(0 0 0px #d3869b00);
-    padding: 0;
-    user-select: none;
-}
-
-.ribbonButton.staveBoxButton:hover{
-    color: #ebdbb2;
-    border: 1px solid #d3869b;
-    filter: drop-shadow(0 0 5px #d3869bff);
-}
-
-.ribbonButton.staveBoxButton:active{
-    background-color: #d3869b;
-    color: #ebdbb2;
-    border: 1px solid #ebdbb2;
-    filter: drop-shadow(0 0 5px #d3869bff);
-}
-
-.staveBoxContents{
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.5em;
-    align-items: start;
-    height: 2.3em;
-}
-
-.staveBoxOptions{
-    width: 5em;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.5em 0.8em 0.5em 0.8em;
-    gap: 0.1em;
-
-}
-
-.staveBoxOptions input{
-    appearance: none;
-    font-family: 'FantasqueSansMono';
-    color: #ebdbb2;
-    font-size: 0.5em;
-    background-color: #504945;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    padding: 0px;
-    padding-left: 0.3em;
-    transition: all 100ms ease-in-out;
-    outline: 1px solid #ebdbb200;
-    outline-offset: 0px;
-}
-
-.staveBoxOptions input:focus-visible{
-    border: none;
-    outline: 1px solid #ebdbb2a6;
-    outline-offset: 2px;
-}
-
-.staveBoxOptions input::-webkit-outer-spin-button,
-                 input::-webkit-inner-spin-button {
-    appearance: none;
-    margin: 0;
-}
-
-.staveBoxOptions label{
-    font-size: 0.5em;
-    width: 100%;
-    height: 100%;
-    user-select: none;
-}
-
 
 .exportButton{
     flex: none;
-    height: 100%;
+    transition: all 80ms ease-in-out;
     aspect-ratio: 1/1;
-    background-color: #504945;
     border-radius: 8px;
-    border: 1px solid #665c54;
-    box-shadow: 0 0 10px rgba(255,255,255,0.05);
-    transition: box-shadow 0.1s ease-in-out;
+    background-color: var(--color-dark-primary);
+    border: 1px solid var(--color-dark-secondary);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .exportButton:hover{
-    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    background-color: var(--color-dark-secondary);
 }
 
 .exportButton:active{
-    background-color: #665c54;
-    border: 1px solid #928374;
-    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    border: 1px solid var(--color-light-tertiary);
+    background-color: var(--color-dark-tertiary);
 }
 
 .workspaceContainer{
@@ -217,7 +116,7 @@ body{
     width: calc(100% - 8em);
     border-radius: 8px;
     padding: 1em;
-    background-color: #fbf1c7;
+    background-color: var(--color-light-primary);
     border: 1px solid #555;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
     transition: box-shadow 0.1s ease-in-out,
@@ -225,6 +124,7 @@ body{
     filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
     position: relative;
     margin: auto;
+    font-size: medium;
 }
 
 .workspaceContainer:focus{
@@ -270,9 +170,10 @@ body{
 
 .prototypeContainer.dragged{
     z-index: 50;
-    background-color: #fbf1c799;
+    background-color: rgba(var(--color-light-primary), 0.8);
     outline: 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transform: scale(101%);
 }
 
 .prototypeContainer.stave{
@@ -302,7 +203,7 @@ body{
 }
 
 .dragHandle{
-    color: #d5c4a1;
+    color: var(--color-light-secondary);
     width: 2em;
     min-height: 1em;
     max-height: 1.5em;
@@ -317,25 +218,25 @@ body{
 }
 
 .dragHandle:hover{
-    color: #928374;
-    background-color: #d5c4a1;
+    color: var(--color-light-tertiary);
+    background-color: var(--color-light-secondary);
     border: 0;
 }
 
 .dragHandle:active{
-    color: #f9f5d7;
-    background-color: #928374;
+    color: var(--color-light-primary);
+    background-color: var(--color-light-tertiary);
     border: 0;
 }
 
 .dragHandle.forceActive{
-    color: #f9f5d7;
-    background-color: #928374;
+    color: var(--color-light-primary);
+    background-color: var(--color-light-tertiary);
     border: 0;
 }
 
 .deleteButton{
-    color: #d5c4a1;
+    color: var(--color-light-secondary);
     width: 2em;
     min-height: 1em;
     max-height: 1.5em;
@@ -351,8 +252,8 @@ body{
 }
 
 .deleteButton:hover{
-    color: #928374;
-    background-color: #d5c4a1;
+    color: var(--color-light-tertiary);
+    background-color: var(--color-light-secondary);
 }
 
 .deleteButton.show{
@@ -366,12 +267,12 @@ body{
 
 .deleteButton.confirmDelete{
     color: #f9f5d7;
-    background-color: #fb4934;
+    background-color: var(--color-red);
 }
 
 .deleteButton.confirmDelete:active{
     color: #f9f5d7;
-    background-color: #cc241d;
+    background-color: var(--color-red-dark);
 }
 
 .staveBox{
@@ -405,31 +306,27 @@ body{
 }
 
 .staveGridCell.highlight{
-    background-color: #d5c4a1;
+    background-color: var(--color-light-secondary);
     z-index: 0;
 }
 
 .staveGridCell.highlight:hover:not(.focus){
-    background-color: #928374;
+    background-color: var(--color-light-tertiary);
     z-index: 2;
 }
 
 .staveGridCell:hover{
-    background-color: #d5c4a1;
+    background-color: var(--color-light-secondary);
     z-index: 2;
 }
 
 .staveGridCell.focus{
-    background-color: #d3869b;
-    outline: 1px solid #282828;
-    outline-offset: 1px;
+    background-color: var(--color-blue);
     z-index: 3;
 }
 
 .staveGridCell.focus:hover{
-    background-color: #b16286;
-    outline: 1px solid #282828;
-    outline-offset: 1px;
+    background-color: var(--color-blue-dark);
     z-index: 3;
 }
 
@@ -442,18 +339,10 @@ body{
     cursor: pointer;
     transition: all 70ms ease-in-out;
     background-color: transparent;
-    outline: 1px solid #d5c4a100;
 }
 
 .stringLabels:hover{
-    background-color: #d5c4a1;
-    outline: 1px solid #d5c4a1;
-}
-
-.stringLabels.focus{
-    background-color: #d3869b;
-    outline: 1px solid #282828;
-    outline-offset: 1px;
+    background-color: var(--color-light-secondary);
 }
 
 .staveEnd{
@@ -465,18 +354,15 @@ body{
     cursor: col-resize;
     transition: all 70ms ease-in-out;
     background-color: transparent;
-    outline: 1px solid #d5c4a100;
 }
 
 .staveEnd:hover{
-    background-color: #d5c4a1;
-    outline: 1px solid #d5c4a1;
+    background-color: var(--color-light-secondary);
 }
 
 .staveEnd.focus{
-    background-color: #d3869b;
-    outline: 1px solid #282828;
-    outline-offset: 1px;
+    color: var(--color-light-primary);
+    background-color: var(--color-light-tertiary);
 }
 
 .textBox{
@@ -487,11 +373,13 @@ body{
     border: 0px;
     cursor: text;
     height: fit-content;
+    align-self: center;
+    line-height: 1.5em;
 }
 
 .textBox:empty::before{
     content: 'type here...';
-    color: #928374;
+    color: var(--color-light-secondary);
 }
 
 .textBox:not(:empty)::before{
@@ -503,17 +391,16 @@ body{
 }
 
 .textBox::selection{
-    color: #fbf1c7;
-    background: #83a498;
+    color: var(--color-light-primary);
+    background: var(--color-blue);
 }
 
 .transientInputContainer{
-    background-color: #504945;
-    border: 1px solid #665c54;
-    box-shadow: 0 0 10px rgba(255,255,255,0.05);
-    color: #d5c4a1;
+    background-color: var(--color-dark-secondary);
+    border: 1px solid var(--color-dark-tertiary);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: var(--color-light-primary);
     border-radius: 8px;
-    border-top-left-radius: 0px;
     position:absolute;
     transform: translate(0px, 0px);
     flex-direction: column;
@@ -522,47 +409,45 @@ body{
     top: 0;
 }
 
-.transientInput{
+.transientItem{
     z-index: 10;
     background-color: transparent;
-    min-width: 4em;
+    min-width: 1em;
     min-height: 1em;
-    padding: 0.2em 0.3em;
-    font-size: 0.8em;
+    padding: 0.4em 0.5em;
+    font-size: 0.6em;
 }
 
-.transientInput::before{
+.transientItem:last-of-type{
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.transientItem.transientInput{
+    min-width: 4em;
+
+}
+
+.transientItem.transientInput::before{
     content: '> ';
     font-size: 0.5em;
     vertical-align: middle;
 }
 
-.transientInput:focus-visible{
+.transientItem.transientInput:focus-visible{
     outline: 0;
 }
 
-.transientButton{
-    z-index: 10;
-    background-color: transparent;
-    min-width: 1em;
-    min-height: 1em;
+.transientItem.transientButton{
     user-select: none;
     cursor: pointer;
-    padding: 0.2em 0.3em;
-    font-size: 0.8em;
 }
 
-.transientButton:hover{
-    background-color: #d5c4a133;
+.transientItem.transientButton:hover{
+    background-color: var(--color-dark-tertiary);
 }
 
-.transientLabel{
-    z-index: 10;
-    background-color: transparent;
-    min-width: 1em;
-    min-height: 1em;
+.transientItem.transientLabel{
     user-select: none;
-    padding: 0.2em 0.3em;
-    font-size: 0.5em;
 }
 

@@ -17,7 +17,7 @@ class TransientInput {
 
     createAndAddButton(textLabel, clickFn) {
         const transientButton = document.createElement('div');
-        transientButton.classList.add('transientButton');
+        transientButton.classList.add('transientItem', 'transientButton');
         transientButton.textContent = textLabel;
         this.transientInputContainer.appendChild(transientButton)
 
@@ -29,14 +29,14 @@ class TransientInput {
 
     createAndAddLabel(textLabel) {
         const transientLabel = document.createElement('div');
-        transientLabel.classList.add('transientLabel');
+        transientLabel.classList.add('transientItem', 'transientLabel');
         transientLabel.textContent = textLabel;
         this.transientInputContainer.appendChild(transientLabel);
     }
 
     createAndAddTextInput(initialText, submitFn) {
         const transientTextInput = document.createElement('div');
-        transientTextInput.classList.add('transientInput');
+        transientTextInput.classList.add('transientItem', 'transientInput');
         transientTextInput.textContent = initialText;
         transientTextInput.contentEditable = 'true';
         transientTextInput.spellcheck = false;
