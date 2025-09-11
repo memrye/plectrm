@@ -1,4 +1,4 @@
-class TransientInput {
+export class TransientInput {
     constructor() {
         this.transientInputContainer = document.createElement('div');
         this.transientInputContainer.classList.add('transientInputContainer');

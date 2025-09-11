@@ -1,4 +1,7 @@
-class TextBox {
+import { ContextMenu } from "./contextMenu";
+import { Workspace } from "./workspace";
+
+export class TextBox {
     constructor(textContent = '') {
 
         const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
@@ -25,16 +28,16 @@ class TextBox {
     }
 
     remove(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
         this.textContainer.remove();
     }
 
     duplicate(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
+        const index = Workspace.ChildObjects.indexOf(this);
         const cloneTextbox = new TextBox(this.textBox.textContent);
         this.textContainer.insertAdjacentElement('afterend', cloneTextbox.textContainer);
-        workspaceContext.ChildObjects.splice(index + 1, 0, cloneTextbox);
+        Workspace.ChildObjects.splice(index + 1, 0, cloneTextbox);
     }
 
     getRootContainer(){
@@ -46,15 +49,15 @@ class TextBox {
     }
 
     decPositionInWorkspace(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
-        workspaceContext.ChildObjects.splice(index - 1, 0, this);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
+        Workspace.ChildObjects.splice(index - 1, 0, this);
     }
 
     incPositionInWorkspace(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
-        workspaceContext.ChildObjects.splice(index + 1, 0, this);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
+        Workspace.ChildObjects.splice(index + 1, 0, this);
     }
 }
 

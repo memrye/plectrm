@@ -1,4 +1,8 @@
-class StaveBox {
+import { ContextMenu } from "./contextMenu";
+import { TransientInput } from "./transientInput";
+import { Workspace } from "./workspace";
+
+export class StaveBox {
     constructor(gridWidth, localTuning, cellArray = []) {
 
         this.localTuning = localTuning;
@@ -336,13 +340,13 @@ class StaveBox {
     }
 
     remove(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
         this.staveContainer.remove();
     }
 
     duplicate(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
+        const index = Workspace.ChildObjects.indexOf(this);
         
         const cloneStavebox = new StaveBox(this.gridWidth, this.localTuning);
 
@@ -356,7 +360,7 @@ class StaveBox {
         cloneStavebox.staveBoxGrid.replaceChildren();
         cloneStavebox.drawGrid(cloneStavebox.staveBoxGrid, dummyArray);
         this.staveContainer.insertAdjacentElement('afterend', cloneStavebox.staveContainer);
-        workspaceContext.ChildObjects.splice(index + 1, 0, cloneStavebox);
+        Workspace.ChildObjects.splice(index + 1, 0, cloneStavebox);
     }
 
     getRootContainer(){
@@ -368,15 +372,15 @@ class StaveBox {
     }
 
     decPositionInWorkspace(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
-        workspaceContext.ChildObjects.splice(index - 1, 0, this);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
+        Workspace.ChildObjects.splice(index - 1, 0, this);
     }
 
     incPositionInWorkspace(){
-        const index = workspaceContext.ChildObjects.indexOf(this);
-        workspaceContext.ChildObjects.splice(index, 1);
-        workspaceContext.ChildObjects.splice(index + 1, 0, this);
+        const index = Workspace.ChildObjects.indexOf(this);
+        Workspace.ChildObjects.splice(index, 1);
+        Workspace.ChildObjects.splice(index + 1, 0, this);
     }
 
 }

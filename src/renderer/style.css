@@ -4,7 +4,8 @@
 
 @font-face{
     font-family: FantasqueSansMono;
-    src: url('../src/FantasqueSansMono-NoLoopK/FantasqueSansMono-Regular.ttf')
+    src: url('/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
+    font-display: swap;
 }
 
 body{
@@ -45,7 +46,7 @@ body{
     inset: auto 0 0 0;
     margin: auto;
     width: fit-content;
-    height: 10vh;
+    height: 12vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -63,7 +64,7 @@ body{
     border-radius: 8px;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.1s ease-in-out;
     gap: 0.25em;
 }
@@ -94,7 +95,7 @@ body{
 .exportButton{
     flex: none;
     transition: all 80ms ease-in-out;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 /1;
     border-radius: 8px;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);

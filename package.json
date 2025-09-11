@@ -2,14 +2,19 @@
   "name": "plectrm",
   "version": "0.0.1",
   "description": "Guitar Tab Notation Program",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:vite": "vite",
+    "dev:electron": "NODE_ENV=development electron .",
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "mama",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^37.2.5"
+    "concurrently": "^9.2.1",
+    "electron": "^37.2.5",
+    "vite": "^7.1.5"
   }
 }

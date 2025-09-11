@@ -1,4 +1,6 @@
-class ContextMenu {
+import { TransientInput } from "./transientInput";
+
+export class ContextMenu {
     constructor(parentObject, workspaceContext) {
         const parentContainer = parentObject.getRootContainer();
         const contextMenu = document.createElement('div');
