@@ -129,12 +129,6 @@ class StaveBox {
                                 document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
                                 document.removeEventListener('click', clickHandler);
                                 document.removeEventListener('keydown', keydownHandler);
-                            } else {
-                                if (entryDirection === Direction.Horizontal){
-                                    entryDirection = Direction.Vertical;
-                                } else {
-                                    entryDirection = Direction.Horizontal;
-                                };
                             }
                         }
 
@@ -280,6 +274,14 @@ class StaveBox {
 
 
 
+                    })
+
+                    staveGridCell.addEventListener('dblclick', () => {
+                        if (entryDirection == Direction.Horizontal){
+                            entryDirection = Direction.Vertical;
+                        } else {
+                            entryDirection = Direction.Horizontal;
+                        }
                     })
 
                     staveGrid.appendChild(staveGridCell);
