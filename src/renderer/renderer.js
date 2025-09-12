@@ -2,8 +2,7 @@ import './style.css';
 import { initWorkspace, Workspace} from './workspace.js';
 import { TextBox } from "./textBox.js";
 import { StaveBox } from "./staveBox.js";
-import { AddTextBoxButton } from "./ribbonButtons.js";
-import { AddStaveBoxButton } from "./ribbonButtons.js";
+import { AddTextBoxButton, AddStaveBoxButton } from "./ribbon.js";
 import { exportFile } from './exportFile.js';
 
 document.addEventListener('DOMContentLoaded', () => {

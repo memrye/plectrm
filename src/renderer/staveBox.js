@@ -300,14 +300,9 @@ export class StaveBox {
         this.drawGrid(this.staveBoxGrid, this.cellArray);
 
         const openTuningMenu = (mouseEvent) => {
-            if (document.getElementsByClassName('transientInputContainer').length){
-                for (let element of document.getElementsByClassName('transientInputContainer')){
-                    element.remove();
-                }
-            }
 
             const popUpContextMenu = new TransientInput;
-            popUpContextMenu.click(mouseEvent);
+            popUpContextMenu.setPosition(mouseEvent, null);
             popUpContextMenu.createAndAddLabel('tuning:')
             popUpContextMenu.createAndAddTextInput(this.localTuning, (contents) => {
                 this.localTuning = contents;
@@ -317,7 +312,8 @@ export class StaveBox {
 
                 this.setTuning(contents);
 
-            })
+            });
+            popUpContextMenu.endTransientInput();
         }
         
 

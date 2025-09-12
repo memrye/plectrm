@@ -46,7 +46,9 @@ body{
     inset: auto 0 0 0;
     margin: auto;
     width: fit-content;
-    height: 12vh;
+    height: 10vw;
+    min-height: 6vh;
+    max-height: 14vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -88,8 +90,73 @@ body{
     background-color: var(--color-dark-tertiary);
 }
 
-.ribbonButton.splitButton{
-    aspect-ratio: 0;
+.ribbonButton svg{
+    width: 50%;
+    height: 50%;
+}
+
+.ribbonSplitDropdown{
+    background-color: transparent;
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    aspect-ratio: 1.4 / 1;
+}
+
+.ribbonSplitDropdownButton{
+    background-color: var(--color-dark-primary);
+    transition: all 80ms ease-in-out;
+    border: 1px solid var(--color-dark-secondary);
+    border-radius: 7.75px;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    color: var(--color-light-primary);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+
+.ribbonSplitDropdownButton:hover{
+    background-color: var(--color-dark-secondary);
+}
+
+.ribbonSplitDropdownButton:active{
+    border: 1px solid var(--color-light-tertiary);
+    background-color: var(--color-dark-tertiary);
+}
+
+.ribbonSplitDropdownButton svg{
+    width: 50%;
+    height: 50%;
+}
+
+.ribbonSplitDropdownDropdown{
+    background-color: var(--color-dark-primary);
+    transition: all 80ms ease-in-out;
+    border: 1px solid var(--color-dark-secondary);
+    border-radius: 7.75px;
+    justify-content: center;
+    min-width: 1em;
+    width: 100%;
+    color: var(--color-light-primary);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 100%;
+}
+
+.ribbonSplitDropdownDropdown:hover{
+    background-color: var(--color-dark-secondary);
+}
+
+.ribbonSplitDropdownDropdown:active{
+    border: 1px solid var(--color-light-tertiary);
+    background-color: var(--color-dark-tertiary);
+}
+
+.ribbonSplitDropdownDropdown svg{
+    width: 80%;
+    height: 100%;
 }
 
 .exportButton{
@@ -106,6 +173,8 @@ body{
 .exportButton svg{
     display: block;
     margin: auto;
+    height: 30%;
+    width: 30%;
 }
 
 .exportButton:hover{
@@ -131,7 +200,7 @@ body{
     filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
     position: relative;
     margin: auto;
-    font-size: medium;
+    font-size: 1em;
     overflow: hidden;
 }
 
@@ -241,6 +310,11 @@ body{
     color: var(--color-light-primary);
     background-color: var(--color-light-tertiary);
     border: 0;
+}
+
+.dragHandle svg{
+    width: 100%;
+    height: 100%;
 }
 
 .deleteButton{
@@ -404,8 +478,9 @@ body{
 }
 
 .transientInputContainer{
-    background-color: var(--color-dark-secondary);
-    border: 1px solid var(--color-dark-tertiary);
+    display: flex;
+    background-color: var(--color-dark-primary);
+    border: 1px solid var(--color-dark-secondary);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: var(--color-light-primary);
     border-radius: 8px;
@@ -415,6 +490,7 @@ body{
     gap: 0.1em;
     left: 0;
     top: 0;
+    z-index: 9;
 }
 
 .transientItem{
@@ -457,5 +533,13 @@ body{
 
 .transientItem.transientLabel{
     user-select: none;
+}
+
+.transientItem.transientDivisor{
+    width: 100%;
+    min-height: 1px;
+    height: 1px;
+    background: var(--color-dark-tertiary);
+    padding: 0;
 }
 

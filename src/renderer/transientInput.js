@@ -1,18 +1,41 @@
 export class TransientInput {
     constructor() {
+        if (document.getElementsByClassName('transientInputContainer').length){
+            for (let element of document.getElementsByClassName('transientInputContainer')){
+                element.remove();
+            }
+        }
         this.transientInputContainer = document.createElement('div');
         this.transientInputContainer.classList.add('transientInputContainer');
         document.body.appendChild(this.transientInputContainer);
 
-        document.addEventListener('click', (event) => {
-            if (!this.transientInputContainer.contains(event.target)){
+        this.x = 0;
+        this.y = 0;
+
+        const clickHandler = (_event) => {
+            if (!this.transientInputContainer.contains(_event.target)){
                 this.transientInputContainer.remove();
-            }
-        })
+                document.removeEventListener('mousedown', clickHandler)}
+        }
+
+        setTimeout(()=>{
+            document.addEventListener('mousedown', clickHandler)
+        }, 0);
+        
+
     }
 
-    click(mouseEvent){
-        this.transientInputContainer.style.transform = `translate(${mouseEvent.pageX}px, ${mouseEvent.pageY + 10}px)`;
+    setPosition(mouseEvent = null, positionOverride = null){
+        if (mouseEvent){
+            this.x = mouseEvent.pageX;
+            this.y = mouseEvent.pageY;
+        } else if (positionOverride) {
+            this.x = positionOverride.x;
+            this.y = positionOverride.y;
+        }
+
+        this.transientInputContainer.style.transform = `translate(${this.x}px, ${this.y}px)`;
+        
     }
 
     createAndAddButton(textLabel, clickFn) {
@@ -32,6 +55,7 @@ export class TransientInput {
         transientLabel.classList.add('transientItem', 'transientLabel');
         transientLabel.textContent = textLabel;
         this.transientInputContainer.appendChild(transientLabel);
+
     }
 
     createAndAddTextInput(initialText, submitFn) {
@@ -62,6 +86,22 @@ export class TransientInput {
                 }
             }
         })
+    }
+
+    createAndAddDivisor(){
+        const transientDivisor = document.createElement('div');
+        transientDivisor.classList.add('transientItem', 'transientDivisor');
+        this.transientInputContainer.appendChild(transientDivisor);
+    }
+
+    endTransientInput(){
+        const rect = this.transientInputContainer.getBoundingClientRect();
+        if (rect.top > 0 && rect.left > 0 && rect.bottom < window.innerHeight && rect.right < window.innerWidth){
+
+        } else {
+            const yOffset = rect.height;
+            this.transientInputContainer.style.transform = `translate(${this.x}px, ${this.y - yOffset}px)`;
+        };
     }
 
 }

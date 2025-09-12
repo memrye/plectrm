@@ -94,21 +94,19 @@ export class ContextMenu {
 
         dragButton.addEventListener('mousedown', (event) => {
             if (event.button == 2){
+                
                 //open expanded context menu on right click
-                if (document.getElementsByClassName('transientInputContainer').length){
-                    for (let element of document.getElementsByClassName('transientInputContainer')){
-                        element.remove();
-                    }
-                }
                 const popUpContextMenu = new TransientInput;
-                popUpContextMenu.click(event);
+                popUpContextMenu.setPosition(event, null);
                 popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString()); 
+                popUpContextMenu.createAndAddDivisor();
                 popUpContextMenu.createAndAddButton('remove', () => {
                     parentObject.remove();
                 })
                 popUpContextMenu.createAndAddButton('duplicate', () => {
                     parentObject.duplicate();
                 })
+                popUpContextMenu.endTransientInput();
 
                 
             } else {
