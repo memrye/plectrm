@@ -4,6 +4,7 @@ import { TextBox } from "./textBox.js";
 import { StaveBox } from "./staveBox.js";
 import { AddTextBoxButton } from "./ribbonButtons.js";
 import { AddStaveBoxButton } from "./ribbonButtons.js";
+import { exportFile } from './exportFile.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -11,6 +12,7 @@ const workspaceDOM = document.getElementsByClassName('workspaceContainer').item(
 initWorkspace(workspaceDOM);
 const ribbon = document.getElementsByClassName('ribbonContainer').item(0);
 const exportButton = document.getElementsByClassName('exportButton').item(0);
+exportButton.innerHTML = window.electronAPI.getIcon('saveFile');
 
 AddTextBoxButton(ribbon, workspaceDOM);
 AddStaveBoxButton(ribbon, workspaceDOM);
@@ -24,7 +26,7 @@ exportButton.onclick = () => {
         textBuffer += element.parseStringContents();
         textBuffer += `\n`;
     });
-    console.log(textBuffer);
+    exportFile(textBuffer);
 }
 });
 

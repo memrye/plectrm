@@ -21,14 +21,14 @@ const icons = {
   `.trim(),
   addStave: `
 <svg fill="currentColor" width="24" height="24" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <path class="clr-i-outline clr-i-outline-path-1" d="M 31,27 H 13 a 1,1 0 0 0 0,2 h 18 a 1,1 0 0 0 0,-2 z" id="path5" /><path class="clr-i-outline clr-i-outline-path-1"d="M31,21H13a1,1,0,0,0,0,2H31a1,1,0,0,0,0-2Z"id="path1" />
-  <path class="clr-i-outline clr-i-outline-path-2" d="M12,16a1,1,0,0,0,1,1H31a1,1,0,0,0,0-2H13A1,1,0,0,0,12,16Z" id="path2" />
-  <path class="clr-i-outline clr-i-outline-path-1" d="M 13.988848,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path6" style="stroke-width:0.813685" />
-  <path class="clr-i-outline clr-i-outline-path-4" d="M15.89,9a1,1,0,0,0-1-1H10V3.21a1,1,0,0,0-2,0V8H2.89a1,1,0,0,0,0,2H8v5.21a1,1,0,0,0,2,0V10h4.89A1,1,0,0,0,15.89,9Z" id="path4" />
-  <path class="clr-i-outline clr-i-outline-path-1" d="M 32.000356,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path7" style="stroke-width:0.813685" />
-  <path class="clr-i-outline clr-i-outline-path-1" d="M 19.966398,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path8" style="stroke-width:0.813685" />
-  <path class="clr-i-outline clr-i-outline-path-1" d="M 25.959719,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path9" style="stroke-width:0.813685" />
+  <path class="clr-i-outline clr-i-outline-path-1" d="M 31,27 H 13 a 1,1 0 0 0 0,2 h 18 a 1,1 0 0 0 0,-2 z" id="path5" /><path class="clr-i-outline clr-i-outline-path-1"d="M31,21H13a1,1,0,0,0,0,2H31a1,1,0,0,0,0-2Z"id="path1" /><path class="clr-i-outline clr-i-outline-path-2" d="M12,16a1,1,0,0,0,1,1H31a1,1,0,0,0,0-2H13A1,1,0,0,0,12,16Z" id="path2" /><path class="clr-i-outline clr-i-outline-path-1" d="M 13.988848,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path6" style="stroke-width:0.813685" /><path class="clr-i-outline clr-i-outline-path-4" d="M15.89,9a1,1,0,0,0-1-1H10V3.21a1,1,0,0,0-2,0V8H2.89a1,1,0,0,0,0,2H8v5.21a1,1,0,0,0,2,0V10h4.89A1,1,0,0,0,15.89,9Z" id="path4" /><path class="clr-i-outline clr-i-outline-path-1" d="M 32.000356,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path7" style="stroke-width:0.813685" /><path class="clr-i-outline clr-i-outline-path-1" d="M 19.966398,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path8" style="stroke-width:0.813685" /><path class="clr-i-outline clr-i-outline-path-1" d="M 25.959719,28.003346 V 16.085874 a 1,0.66208179 0 0 0 -2,0 v 11.917472 a 1,0.66208179 0 0 0 2,0 z" id="path9" style="stroke-width:0.813685" />
   <rect x="0" y="0" width="36" height="36" fill-opacity="0" id="rect4" />
+</svg>
+  `.trim(),
+  saveFile: `
+<svg fill="currentColor" width="24" height="24" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path class="clr-i-outline clr-i-outline-path-1" d="M31,31H5a1,1,0,0,0,0,2H31a1,1,0,0,0,0-2Z"></path><path class="clr-i-outline clr-i-outline-path-2" d="M18,29.48,28.61,18.87a1,1,0,0,0-1.41-1.41L19,25.65V5a1,1,0,0,0-2,0V25.65L8.81,17.46a1,1,0,1,0-1.41,1.41Z"></path>
+    <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
 </svg>
   `.trim(),
   };
@@ -38,4 +38,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getIcon: (name) => {
     return icons[name] || null;
   },
+  saveTextAsFile: (content, defaultFilename) => {
+    ipcRenderer.invoke('dialog:save-text-file', content, defaultFilename)
+  }
 });

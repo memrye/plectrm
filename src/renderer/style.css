@@ -93,13 +93,19 @@ body{
 }
 
 .exportButton{
-    flex: none;
+    display: flex;
     transition: all 80ms ease-in-out;
     aspect-ratio: 1 /1;
     border-radius: 8px;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    color: var(--color-light-primary);
+}
+
+.exportButton svg{
+    display: block;
+    margin: auto;
 }
 
 .exportButton:hover{
