@@ -14,7 +14,7 @@ body{
     font-size: 1.6vw;
     overflow: hidden;
     --color-dark-primary: #1d2021;
-    --color-dark-secondary: #282828;
+    --color-dark-secondary: #343434;
     --color-dark-tertiary: #3c3836;
     --color-light-primary: #EBE1D3;
     --color-light-secondary:#BCB4A9;
@@ -73,7 +73,7 @@ body{
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
-    border-radius: 8px;
+    border-radius: 7.75px;
     justify-content: center;
     aspect-ratio: 1/1;
     color: var(--color-light-primary);
@@ -121,7 +121,7 @@ body{
     height: fit-content;
     min-height: 90vh;
     width: calc(100% - 8em);
-    border-radius: 8px;
+    border-radius: 16px;
     padding: 1em;
     background-color: var(--color-light-primary);
     border: 1px solid #555;
@@ -132,6 +132,7 @@ body{
     position: relative;
     margin: auto;
     font-size: medium;
+    overflow: hidden;
 }
 
 .workspaceContainer:focus{
