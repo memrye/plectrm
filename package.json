@@ -5,8 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "dev:vite": "vite",
-    "dev:electron": "NODE_ENV=development electron .",
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:electron": "wait-on tcp:3000 && cross-env NODE_ENV=development electron .",
+    "dev": "concurrently -k -s first \"npm:dev:vite\" \"npm:dev:electron\"",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -14,7 +14,9 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.2.1",
+    "cross-env": "^10.0.0",
     "electron": "^37.2.5",
-    "vite": "^7.1.5"
+    "vite": "^7.1.5",
+    "wait-on": "^8.0.5"
   }
 }
