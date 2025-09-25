@@ -41,10 +41,8 @@ export function AddStaveBoxButton(_ribbon){
         })
         staveBoxOptionsMenu.createAndAddLabel('size');
         staveBoxOptionsMenu.createAndAddTextInput(staveBoxButton.Options.size, (contents) => {
-            if (/^\d+$/.test(contents)){
                 staveBoxButton.Options.size = contents
-            }
-        })
+        }, /^(?:[0-9]|[1-9][0-8])$/)
         staveBoxOptionsMenu.endTransientInput();
         
     }

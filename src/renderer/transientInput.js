@@ -58,7 +58,7 @@ export class TransientInput {
 
     }
 
-    createAndAddTextInput(initialText, submitFn) {
+    createAndAddTextInput(initialText, submitFn, regex = /[\s\S]*/) {
         const transientTextInput = document.createElement('div');
         transientTextInput.classList.add('transientItem', 'transientInput');
         transientTextInput.textContent = initialText;
@@ -80,9 +80,13 @@ export class TransientInput {
             if (key === 'Enter'){
                 event.preventDefault();
                 const contents = transientTextInput.textContent;
-                if(/^[a-zA-Z]+$/.test(contents)){
-                    submitFn(contents)
-                    this.transientInputContainer.remove();
+                submitFn(contents)
+                this.transientInputContainer.remove();
+            }
+            //filter for non-character inputs, then apply regex
+            if (key.length === 1){
+                if (!(regex.test(key))){
+                    event.preventDefault();
                 }
             }
         })
