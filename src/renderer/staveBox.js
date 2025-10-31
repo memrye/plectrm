@@ -3,8 +3,10 @@ import { TransientInput } from "./transientInput";
 import { Workspace } from "./workspace";
 
 export class StaveBox {
+
     constructor(gridWidth, localTuning, cellArray = []) {
 
+        this.resizeHandler = this.resizeHandler.bind(this);
         this.localTuning = localTuning;
         this.gridWidth = gridWidth;
         const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
@@ -35,50 +37,14 @@ export class StaveBox {
         this.staveEnd.classList.add('staveEnd');
         this.staveEnd.textContent = '|\r'.repeat(this.localTuning.length);
 
-        const resizeHandler = (event) => {
-            const mouseX = event.clientX;
-            const gridRect = this.staveBoxGrid.getBoundingClientRect();
-            const cellWidth = gridRect.width / this.gridWidth;
-            const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
-            document.body.style.cursor = 'col-resize'
-
-            if (tempWidth != this.gridWidth){
-                
-                const gridHeight = this.localTuning.length;
-                let tempCellArray = [];
-                for (let i = 0; i < gridHeight; i++){
-                    tempCellArray.push(this.cellArray.slice(this.gridWidth * i, this.gridWidth * (i + 1)));
-                };
-
-
-                if (tempWidth < this.gridWidth){
-                    for (let row = 0; row < tempCellArray.length; row++){
-                        tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
-                    };
-                } else if (tempWidth > this.gridWidth){
-                    for (let row = 0; row < tempCellArray.length; row++){
-                        const size = tempWidth - this.gridWidth;
-                        const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
-                        tempCellArray[row].push(...diffArray);
-                    };
-                }
-
-                tempCellArray = tempCellArray.flat()
-
-                this.gridWidth = tempWidth;
-                this.cellArray.length = 0;
-                this.staveBoxGrid.replaceChildren();
-                this.drawGrid(this.staveBoxGrid, tempCellArray);
-            }
-        }
         this.staveEnd.addEventListener('mousedown', (event) => {
             document.addEventListener('mouseup', () => {
                 document.body.style.cursor = 'auto';
                 this.staveEnd.classList.remove('focus');
-                document.removeEventListener('mousemove', resizeHandler)
-            }, {once: true})
+                document.removeEventListener('mousemove', this.resizeHandler)
+            })
 
-            document.addEventListener('mousemove', resizeHandler)
+            document.addEventListener('mousemove', this.resizeHandler)
             this.staveEnd.focus();
             this.staveEnd.classList.add('focus');
 
@@ -143,70 +109,110 @@ export class StaveBox {
                             const altHeld = event.altKey;
 
                             // arrow key traversal
-                            // TODO: fix out of range: make vertical go to lowest cell of next column etc
                             if (key === 'ArrowRight'){
-                                if (!altHeld){entryDirection = Direction.Horizontal;}
-                                const nextcell = this.cellArray[index+1];
-                                const event = new CustomEvent('click');
+                                let nextcell, event;
+                                if (!altHeld){entryDirection = Direction.Horizontal}
 
+                                if (altHeld && (Math.trunc((index+1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                                    nextcell = this.cellArray[index - this.gridWidth + 1];
+                                } else {
+                                    nextcell = this.cellArray[index + 1];
+                                }
+
+                                if (nextcell === undefined) { return; }
+
+                                event = new CustomEvent('click');
                                 document.dispatchEvent(event);
                                 nextcell.dispatchEvent(event);
                                 return;
                             } else if (key === 'ArrowLeft'){
-                                if (!altHeld){entryDirection = Direction.Horizontal;}
-                                const nextcell = this.cellArray[index-1];
-                                const event = new CustomEvent('click');
+                                let nextcell, event;
+                                if (!altHeld){entryDirection = Direction.Horizontal}
 
+                                if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                                    nextcell = this.cellArray[index + this.gridWidth - 1];
+                                } else {
+                                    nextcell = this.cellArray[index - 1];
+                                }
+
+                                if (nextcell === undefined) { return; }
+
+                                event = new CustomEvent('click');
                                 document.dispatchEvent(event);
                                 nextcell.dispatchEvent(event);
                                 return;
                             } else if (key === 'ArrowUp'){
-                                //TODO: pressing up on top-rightmost cell goes out of bounds
-                                if (!altHeld){entryDirection = Direction.Vertical;}
-                                let nextcell = this.cellArray[index-this.gridWidth];
-                                if (nextcell === undefined){
-                                    nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1) + 1)];
-                                }
-                                const event = new CustomEvent('click');
+                                let nextcell, event;
+                                if (!altHeld){entryDirection = Direction.Vertical}
 
+                                nextcell = this.cellArray[index - this.gridWidth];
+
+                                if (nextcell === undefined){
+                                    if (altHeld) {nextcell =    this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1))]}
+                                    else {nextcell =            this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1]}
+                                }
+
+                                if (nextcell === undefined) { return; }
+
+                                event = new CustomEvent('click');
                                 document.dispatchEvent(event);
                                 nextcell.dispatchEvent(event);
                                 return;
                             } else if (key === 'ArrowDown'){
+                                let nextcell, event;
                                 if (!altHeld){entryDirection = Direction.Vertical;}
-                                let nextcell = this.cellArray[index+this.gridWidth];
-                                const event = new CustomEvent('click');
+                                nextcell = this.cellArray[index+this.gridWidth];
+                                
                                 if (nextcell === undefined){
-                                    nextcell = this.cellArray[index - 1];
+                                    if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
+                                    else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
                                 }
 
+                                if (nextcell === undefined) { return; }
+                                event = new CustomEvent('click');
                                 document.dispatchEvent(event);
                                 nextcell.dispatchEvent(event);
-                                return;
                             }
 
                             //backspace
                             if (key === 'Backspace'){
+                                let nextcell, event;
                                 staveGridCell.textContent = '-';
 
-                                if(altHeld){return;}
-
                                 if (entryDirection === Direction.Vertical){
-                                    const nextcell = this.cellArray[index+this.gridWidth];
-                                    const event = new CustomEvent('click');
+                                    nextcell = this.cellArray[index+this.gridWidth];
+                                
+                                    if (nextcell === undefined){
+                                        if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
+                                        else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
+                                    }
 
+                                    if (nextcell === undefined) { return; }
+                                    event = new CustomEvent('click');
                                     document.dispatchEvent(event);
                                     nextcell.dispatchEvent(event);
-                                    return;
                                 } else {
                                     entryDirection = Direction.Horizontal;
-                                    const nextcell = this.cellArray[index-1];
-                                    const event = new CustomEvent('click');
 
+                                    if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                                        nextcell = this.cellArray[index + this.gridWidth - 1];
+                                    } else {
+                                        nextcell = this.cellArray[index - 1];
+                                    }
+
+                                    if (nextcell === undefined) { return; }
+
+                                    event = new CustomEvent('click');
                                     document.dispatchEvent(event);
                                     nextcell.dispatchEvent(event);
-                                    return;
                                 }
+
+                                //if cell is still undefined then dont move
+                                if (nextcell === undefined) { return; }
+
+                                document.dispatchEvent(event);
+                                nextcell.dispatchEvent(event);
+                                return;
                             }
 
                             
@@ -230,21 +236,26 @@ export class StaveBox {
 
                                 if(altHeld){return;}
 
-                                if (entryDirection === Direction.Vertical){
-                                    let nextcell = this.cellArray[index-this.gridWidth];
-                                    const event = new CustomEvent('click');
-                                    if (nextcell === undefined){
-                                    nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1) + 1)];
-                                    }
+                                let nextcell, event;
 
+                                if (entryDirection === Direction.Vertical){
+
+                                    nextcell = this.cellArray[index - this.gridWidth];
+
+                                    if (nextcell === undefined){ nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1] }
+
+                                    if (nextcell === undefined) { return; }
+
+                                    event = new CustomEvent('click');
                                     document.dispatchEvent(event);
                                     nextcell.dispatchEvent(event);
                                     return;
                                 } else {
-                                    entryDirection = Direction.Horizontal;
-                                    const nextcell = this.cellArray[index+1];
-                                    const event = new CustomEvent('click');
 
+                                    nextcell = this.cellArray[index + 1];
+                                    if (nextcell === undefined) { return; }
+
+                                    event = new CustomEvent('click');
                                     document.dispatchEvent(event);
                                     nextcell.dispatchEvent(event);
                                     return;
@@ -319,6 +330,43 @@ export class StaveBox {
 
         this.stringLabels.addEventListener('dblclick', openTuningMenu);
         this.stringLabels.addEventListener('contextmenu', openTuningMenu);
+    }
+
+    resizeHandler(event){
+        const mouseX = event.clientX;
+        const gridRect = this.staveBoxGrid.getBoundingClientRect();
+        const cellWidth = gridRect.width / this.gridWidth;
+        const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
+        document.body.style.cursor = 'col-resize'
+
+        if (tempWidth != this.gridWidth){
+            
+            const gridHeight = this.localTuning.length;
+            let tempCellArray = [];
+            for (let i = 0; i < gridHeight; i++){
+                tempCellArray.push(this.cellArray.slice(this.gridWidth * i, this.gridWidth * (i + 1)));
+            };
+
+
+            if (tempWidth < this.gridWidth){
+                for (let row = 0; row < tempCellArray.length; row++){
+                    tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
+                };
+            } else if (tempWidth > this.gridWidth){
+                for (let row = 0; row < tempCellArray.length; row++){
+                    const size = tempWidth - this.gridWidth;
+                    const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
+                    tempCellArray[row].push(...diffArray);
+                };
+            }
+
+            tempCellArray = tempCellArray.flat()
+
+            this.gridWidth = tempWidth;
+            this.cellArray.length = 0;
+            this.staveBoxGrid.replaceChildren();
+            this.drawGrid(this.staveBoxGrid, tempCellArray);
+        }
     }
 
     parseStringContents(){

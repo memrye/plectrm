@@ -225,7 +225,7 @@ body{
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0);
     transition: 
-        box-shadow 100ms ease-in-out;
+        box-shadow 80ms ease-in-out;
     padding: 0.5em;
     min-height: 1em;
     width: fit-content;
@@ -249,8 +249,7 @@ body{
     z-index: 50;
     background-color: rgba(var(--color-light-primary), 0.8);
     outline: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    transform: scale(101%);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
 }
 
 .prototypeContainer.stave{
@@ -275,7 +274,6 @@ body{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    margin-right: 0.5em;
     clip-path: fill-box;
 }
 
