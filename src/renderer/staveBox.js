@@ -420,10 +420,11 @@ export class StaveBox {
         document.body.appendChild(this.hoverMenu);
 
         this.openHoverMenu = (mouseEvent) => {
-        const r = this.staveContainer.getBoundingClientRect();
+        if (this.staveContainer.classList.contains('dragged')) { return; }
         if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
         if (!this.hoverMenu.classList.replace('hidden', 'shown')) { return; }
         if (!this.staveContainer.classList.toggle('hover', true )) { return; }
+        const r = this.staveContainer.getBoundingClientRect();
         this.hoverHelper.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
         this.hoverMenu.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
         }

@@ -279,6 +279,10 @@ body{
     opacity: 100%;
 }
 
+.prototypeContainer.dragged .contextMenu{
+    opacity: 100%;
+}
+
 .contextMenu{
     min-height: 1em;
     height: 100%;
