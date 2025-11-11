@@ -419,7 +419,7 @@ export class StaveBox {
         this.hoverMenu.innerHTML = window.electronAPI.getIcon('addTabArticulation');
         document.body.appendChild(this.hoverMenu);
 
-        const openHoverMenu = (mouseEvent) => {
+        this.openHoverMenu = (mouseEvent) => {
         const r = this.staveContainer.getBoundingClientRect();
         if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
         if (!this.hoverMenu.classList.replace('hidden', 'shown')) { return; }
@@ -428,19 +428,19 @@ export class StaveBox {
         this.hoverMenu.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
         }
 
-        const closeHoverMenu = (mouseEvent) => {
+        this.closeHoverMenu = (mouseEvent) => {
             if (!this.hoverHelper.classList.replace('shown', 'hidden')) { return; }
             if (!this.hoverMenu.classList.replace('shown', 'hidden')) { return; }
             if (!this.staveContainer.classList.toggle('hover', false )) { return; }
         }
 
-        this.staveContainer.addEventListener('mouseenter', openHoverMenu);
-        this.hoverHelper.addEventListener('mouseenter', openHoverMenu);
-        this.hoverMenu.addEventListener('mouseenter', openHoverMenu);
+        this.staveContainer.addEventListener('mouseenter', this.openHoverMenu);
+        this.hoverHelper.addEventListener('mouseenter', this.openHoverMenu);
+        this.hoverMenu.addEventListener('mouseenter', this.openHoverMenu);
 
         this.hoverMenu.onclick = (mouseEvent) => {
-            this.staveContainer.removeEventListener('mouseenter', openHoverMenu);
-            this.staveContainer.removeEventListener('mouseleave', closeHoverMenu);
+            this.staveContainer.removeEventListener('mouseenter', this.openHoverMenu);
+            this.staveContainer.removeEventListener('mouseleave', this.closeHoverMenu);
             this.staveContainer.classList.toggle('hover', false );
 
             this.initStaveArticulation(mouseEvent.detail);
@@ -450,9 +450,9 @@ export class StaveBox {
             this.hoverMenu.remove();
         }
         
-        this.staveContainer.addEventListener('mouseleave', closeHoverMenu);
-        this.hoverHelper.addEventListener('mouseleave', closeHoverMenu);
-        this.hoverMenu.addEventListener('mouseleave', closeHoverMenu);
+        this.staveContainer.addEventListener('mouseleave', this.closeHoverMenu);
+        this.hoverHelper.addEventListener('mouseleave', this.closeHoverMenu);
+        this.hoverMenu.addEventListener('mouseleave', this.closeHoverMenu);
 
     }
 

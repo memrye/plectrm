@@ -275,6 +275,10 @@ body{
     opacity: 100%;
 }
 
+.prototypeContainer.hover .contextMenu{
+    opacity: 100%;
+}
+
 .contextMenu{
     min-height: 1em;
     height: 100%;

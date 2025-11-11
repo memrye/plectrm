@@ -116,7 +116,8 @@ export class ContextMenu {
                 const elementRect = dragButton.getBoundingClientRect();
                 elementCenterY = elementRect.top + (elementRect.height / 2);
                 parentContainer.classList.add('dragged');
-                parentContainer.style.transform = `scale(101%)`
+                parentContainer.style.transform = `scale(101%)`;
+                parentObject.closeHoverMenu();
     
                 previousElement = parentContainer.previousElementSibling;
                 nextElement = parentContainer.nextElementSibling;
@@ -127,13 +128,12 @@ export class ContextMenu {
                 document.addEventListener('mousemove', elementDragging);
     
                 document.addEventListener('mouseup', (event) => {
-                    if (dragButton.classList.contains('forceActive')){
-                        dragButton.classList.remove('forceActive')
-                    }
+                    dragButton.classList.toggle('forceActive', false)
                     dragButton.style.cursor = 'pointer';
                     parentContainer.style.transform = `translateY(0px) scale(100%)`;
                     yOffset = 0;
                     parentContainer.classList.remove('dragged');
+                    if (parentContainer.contains(event.target)) { parentObject.openHoverMenu(); }
                     document.removeEventListener('mousemove', elementDragging);
                 })
 
