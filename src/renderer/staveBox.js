@@ -10,7 +10,6 @@ export class StaveBox {
         this.localTuning = localTuning;
         this.gridWidth = gridWidth;
         const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
-        //TODO: pass in settings from workspace context (tuning, strings, length etc)
 
         const Direction = {
             Horizontal: 'Horizontal',
@@ -66,9 +65,8 @@ export class StaveBox {
         this.setTuning(this.localTuning);
         this.staveBox.appendChild(this.stringLabels);
 
-        
-
         this.cellArray = [...cellArray];
+        this.cellArray.hasFocus = false;
 
         this.drawGrid = (staveGrid, staveValues = false) => {
 
@@ -83,6 +81,7 @@ export class StaveBox {
                     const index = (this.gridWidth * row) + (col);
                     const staveGridCell = document.createElement('div');
                     let focused = false;
+                    this.cellArray.hasFocus = false;
                     staveGridCell.classList.add('staveGridCell');
                     staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
                     
@@ -95,6 +94,7 @@ export class StaveBox {
                         const clickHandler = (event) => {
                             if (!staveGridCell.contains(event.target)) {
                                 focused = false;
+                                this.cellArray.hasFocus = false;
                                 staveGridCell.classList.remove('focus');
                                 document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
                                 document.removeEventListener('click', clickHandler);
@@ -266,6 +266,7 @@ export class StaveBox {
                         //grid cell focused
                         if (!focused){
                             focused = true;
+                            this.cellArray.hasFocus = true;
                             staveGridCell.classList.add('focus');
                             document.addEventListener('click', clickHandler);
                             document.addEventListener('keydown', keydownHandler);
@@ -326,10 +327,133 @@ export class StaveBox {
             });
             popUpContextMenu.endTransientInput();
         }
-        
 
         this.stringLabels.addEventListener('dblclick', openTuningMenu);
         this.stringLabels.addEventListener('contextmenu', openTuningMenu);
+
+        this.initStaveArticulation = (artCellValues = nil) => {
+            if(!this.staveContainer.classList.toggle('articulated', true )) {console.warn('failed applying stave articulation layout: style already applied');};
+            this.staveArticulationContainer = document.createElement('div');
+            this.staveArticulationContainer.classList.add('staveArticulationContainer');
+            this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
+            this.staveContainer.appendChild(this.staveArticulationContainer);
+            
+            this.articulationCellArray = [];
+            this.articulationCellArray.hasFocus = false;
+
+
+            const scaffoldText = typeof artCellValues === 'string' ? artCellValues: 'PM----|';
+
+            const handleClick = (ev) => {
+                const cell = ev.target;
+                if (ev.button) { return; }
+                this.articulationCellArray.hasFocus = true;
+                cell.classList.add('focus','highlight');
+
+                const outsideClick = (ev) => {
+                    if (ev.button) { return; }
+                    if (ev.target !== cell) {
+                        cell.classList.remove('focus');
+                        cell.classList.remove('highlight');
+                        this.articulationCellArray.hasFocus = false;
+                        document.removeEventListener('click', outsideClick);
+                        document.removeEventListener('keydown', keydownHandler);
+                    }
+                }
+
+                const keydownHandler = (ev) => {
+                    const key = ev.key;
+                    const index = this.articulationCellArray.indexOf(cell)
+                    if (key === 'ArrowLeft'){
+                        let nextcell, event;
+                        nextcell = this.articulationCellArray[Math.max(index - 1, 0)];
+                        event = new CustomEvent('click', { button: 0 });
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                    } else if (key === 'ArrowRight'){
+                        let nextcell, event;
+                        nextcell = this.articulationCellArray[Math.min(index + 1, this.articulationCellArray.length - 1)];
+                        event = new CustomEvent('click', { button: 0 });
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                    } else if (/^[A-Za-z0-9 !"%&'()*+,\-./:;<=>?@\[\]^`{|}~]+$/.test(key) && key.length === 1) {
+                        cell.textContent = key;
+                        let nextcell, event;
+                        nextcell = this.articulationCellArray[Math.min(index + 1, this.articulationCellArray.length - 1)];
+                        event = new CustomEvent('click', { button: 0 });
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                    } else if (key === 'Backspace'){
+                        cell.textContent = ' ';
+                        let nextcell, event;
+                        nextcell = this.articulationCellArray[Math.max(index - 1, 0)];
+                        event = new CustomEvent('click', { button: 0 });
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                    }
+                }
+
+                document.addEventListener('click', outsideClick);
+                document.addEventListener('keydown', keydownHandler);
+            }
+
+            this.createArtCell = (i) => {
+                const articulationCell = document.createElement('div');
+                articulationCell.classList.add('staveGridCell', 'articulationCell');
+                articulationCell.textContent = i < scaffoldText.length ? scaffoldText.charAt(i) : ' ';
+
+                articulationCell.addEventListener('click', handleClick);
+                this.articulationCellArray.push(this.staveArticulationContainer.appendChild(articulationCell));
+            }
+
+            for (let i = 0; i < this.gridWidth; i++){
+                this.createArtCell(i);
+            }
+        }
+
+        this.hoverHelper = document.createElement('div');
+        this.hoverHelper.classList.add('hoverHelper', 'hidden');
+        document.body.appendChild(this.hoverHelper);
+        this.hoverMenu = document.createElement('button');
+        this.hoverMenu.classList.add('hoverMenu', 'hidden');
+        this.hoverMenu.innerHTML = window.electronAPI.getIcon('addTabArticulation');
+        document.body.appendChild(this.hoverMenu);
+
+        const openHoverMenu = (mouseEvent) => {
+        const r = this.staveContainer.getBoundingClientRect();
+        if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
+        if (!this.hoverMenu.classList.replace('hidden', 'shown')) { return; }
+        if (!this.staveContainer.classList.toggle('hover', true )) { return; }
+        this.hoverHelper.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
+        this.hoverMenu.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
+        }
+
+        const closeHoverMenu = (mouseEvent) => {
+            if (!this.hoverHelper.classList.replace('shown', 'hidden')) { return; }
+            if (!this.hoverMenu.classList.replace('shown', 'hidden')) { return; }
+            if (!this.staveContainer.classList.toggle('hover', false )) { return; }
+        }
+
+        this.staveContainer.addEventListener('mouseenter', openHoverMenu);
+        this.hoverHelper.addEventListener('mouseenter', openHoverMenu);
+        this.hoverMenu.addEventListener('mouseenter', openHoverMenu);
+
+        this.hoverMenu.onclick = (mouseEvent) => {
+            this.staveContainer.removeEventListener('mouseenter', openHoverMenu);
+            this.staveContainer.removeEventListener('mouseleave', closeHoverMenu);
+            this.staveContainer.classList.toggle('hover', false );
+
+            this.initStaveArticulation(mouseEvent.detail);
+
+
+            this.hoverHelper.remove();
+            this.hoverMenu.remove();
+        }
+        
+        this.staveContainer.addEventListener('mouseleave', closeHoverMenu);
+        this.hoverHelper.addEventListener('mouseleave', closeHoverMenu);
+        this.hoverMenu.addEventListener('mouseleave', closeHoverMenu);
+
     }
 
     resizeHandler(event){
@@ -347,16 +471,27 @@ export class StaveBox {
                 tempCellArray.push(this.cellArray.slice(this.gridWidth * i, this.gridWidth * (i + 1)));
             };
 
-
             if (tempWidth < this.gridWidth){
                 for (let row = 0; row < tempCellArray.length; row++){
                     tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
+                    if (this.articulationCellArray) { 
+                        const tempArtCells = this.articulationCellArray.splice(0, tempWidth);
+                        this.articulationCellArray.forEach((cell) => { cell.remove(); });
+                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
+                        this.articulationCellArray = tempArtCells;
+                    };
                 };
             } else if (tempWidth > this.gridWidth){
                 for (let row = 0; row < tempCellArray.length; row++){
                     const size = tempWidth - this.gridWidth;
                     const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
                     tempCellArray[row].push(...diffArray);
+                };
+                if (this.articulationCellArray) { 
+                    for (let i = this.gridWidth; i < tempWidth; i++){
+                        this.createArtCell(i);
+                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
+                    }
                 };
             }
 
@@ -378,7 +513,12 @@ export class StaveBox {
             cellrow.forEach((cell) =>{
                 textBuffer += cell.textContent;
             });
-            textBuffer += '|\n'
+            textBuffer += '|\n';
+        }
+        if (this.articulationCellArray){
+            textBuffer += ' '.repeat(2);
+            this.articulationCellArray.forEach((cell) => { textBuffer += cell.textContent; })
+            textBuffer += ' \n';
         }
         return textBuffer;
     }
@@ -387,6 +527,8 @@ export class StaveBox {
         const index = Workspace.ChildObjects.indexOf(this);
         Workspace.ChildObjects.splice(index, 1);
         this.staveContainer.remove();
+        this.hoverHelper.remove();
+        this.hoverMenu.remove();
     }
 
     duplicate(){
@@ -403,6 +545,13 @@ export class StaveBox {
         //force the cloned stavebox to redraw the grid with the dummy cell array
         cloneStavebox.staveBoxGrid.replaceChildren();
         cloneStavebox.drawGrid(cloneStavebox.staveBoxGrid, dummyArray);
+
+        if (this.articulationCellArray){
+            const newartCells = this.articulationCellArray.map(div => div.textContent)
+            let event = new CustomEvent('click', { detail: newartCells.join('') });
+            cloneStavebox.hoverMenu.dispatchEvent(event);
+        }
+
         this.staveContainer.insertAdjacentElement('afterend', cloneStavebox.staveContainer);
         Workspace.ChildObjects.splice(index + 1, 0, cloneStavebox);
     }
