@@ -117,7 +117,7 @@ export class ContextMenu {
                 elementCenterY = elementRect.top + (elementRect.height / 2);
                 parentContainer.classList.add('dragged');
                 parentContainer.style.transform = `scale(101%)`;
-                parentObject.closeHoverMenu();
+                if(parentContainer.classList.contains('staveBox')) { parentObject.closeHoverMenu() };
     
                 previousElement = parentContainer.previousElementSibling;
                 nextElement = parentContainer.nextElementSibling;
@@ -133,7 +133,7 @@ export class ContextMenu {
                     parentContainer.style.transform = `translateY(0px) scale(100%)`;
                     yOffset = 0;
                     parentContainer.classList.remove('dragged');
-                    if (parentContainer.contains(event.target)) { parentObject.openHoverMenu(); }
+                    if (parentContainer.contains(event.target) && parentContainer.classList.contains('staveBox')) { parentObject.openHoverMenu(); }
                     document.removeEventListener('mousemove', elementDragging);
                 })
 
