@@ -1,6 +1,6 @@
 import { ContextMenu } from "@/component/contextMenu.js";
 import { TransientInput } from "@/lib/transientInput.js";
-import { Workspace } from "@/lib/workspace.js";
+import { Workspace, getDom } from "@/lib/workspace.js";
 
 export class StaveBox {
 
@@ -9,7 +9,7 @@ export class StaveBox {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.localTuning = localTuning;
         this.gridWidth = gridWidth;
-        const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
+        const workspaceContext = getDom();
 
         const Direction = {
             Horizontal: 'Horizontal',
@@ -481,11 +481,11 @@ export class StaveBox {
     }
 
     resizeHandler(event){
-        const mouseX = event.clientX;
+        const mouseX = Math.min(event.clientX, parseInt(getDom().getBoundingClientRect().right - (Workspace.getEmRect().width * 2)));
         const gridRect = this.staveBoxGrid.getBoundingClientRect();
         const cellWidth = gridRect.width / this.gridWidth;
         const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
-        document.body.style.cursor = 'col-resize'
+        document.body.style.cursor = 'col-resize';
 
         if (tempWidth != this.gridWidth){
             
