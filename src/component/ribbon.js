@@ -1,7 +1,7 @@
-import { Workspace } from "./workspace";
-import { TextBox } from "./textBox";
-import { StaveBox } from "./staveBox";
-import { TransientInput } from "./transientInput";
+import { Workspace } from "@/lib/workspace.js";
+import { TextBox } from "@/component/textBox.js";
+import { StaveBox } from "@/component/staveBox.js";
+import { TransientInput } from "@/lib/transientInput.js";
 
 export function AddTextBoxButton (_ribbon){ 
     const textBoxButton = document.createElement('button');

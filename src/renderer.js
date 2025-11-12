@@ -1,9 +1,8 @@
-import './style.css'; 
-import { initWorkspace, Workspace} from './workspace.js';
-import { TextBox } from "./textBox.js";
-import { StaveBox } from "./staveBox.js";
-import { AddTextBoxButton, AddStaveBoxButton } from "./ribbon.js";
-import { exportFile } from './exportFile.js';
+import { initWorkspace, Workspace} from '@/lib/workspace.js';
+import { TextBox } from "@/component/textBox.js";
+import { StaveBox } from "@/component/staveBox.js";
+import { AddTextBoxButton, AddStaveBoxButton } from "@/component/ribbon.js";
+import { exportFile } from '@/exportFile.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
