@@ -337,6 +337,24 @@ export class StaveBox {
             this.staveArticulationContainer.classList.add('staveArticulationContainer');
             this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
             this.staveContainer.appendChild(this.staveArticulationContainer);
+            this.staveArticulationContainer.addEventListener('mousedown', (ev) => {
+                if (ev.button != 2) { return; }
+                ev.preventDefault();
+                
+                const popUpContextMenu = new TransientInput;
+                popUpContextMenu.setPosition(ev, null);
+                popUpContextMenu.createAndAddLabel('stave articulation');
+                popUpContextMenu.createAndAddDivisor()
+                popUpContextMenu.createAndAddButton('clear', (ev) => {
+                    this.articulationCellArray.forEach((cell) => {cell.textContent = ' '})
+                })
+                popUpContextMenu.createAndAddButton('remove', (ev) => {
+                    this.staveContainer.classList.toggle('articulated', false);
+                    this.staveArticulationContainer.remove();
+                    this.initHoverMenu();
+                })
+                popUpContextMenu.endTransientInput();
+            })
             
             this.articulationCellArray = [];
             this.articulationCellArray.hasFocus = false;
@@ -411,22 +429,45 @@ export class StaveBox {
             }
         }
 
-        this.hoverHelper = document.createElement('div');
-        this.hoverHelper.classList.add('hoverHelper', 'hidden');
-        document.body.appendChild(this.hoverHelper);
-        this.hoverMenu = document.createElement('button');
-        this.hoverMenu.classList.add('hoverMenu', 'hidden');
-        this.hoverMenu.innerHTML = window.electronAPI.getIcon('addTabArticulation');
-        document.body.appendChild(this.hoverMenu);
+        this.initHoverMenu = () => {
+            this.hoverHelper = document.createElement('div');
+            this.hoverHelper.classList.add('hoverHelper', 'hidden');
+            document.body.appendChild(this.hoverHelper);
+            this.hoverMenu = document.createElement('button');
+            this.hoverMenu.classList.add('hoverMenu', 'hidden');
+            this.hoverMenu.innerHTML = window.electronAPI.getIcon('addTabArticulation');
+            document.body.appendChild(this.hoverMenu);
+            this.staveContainer.addEventListener('mouseenter', this.openHoverMenu);
+            this.hoverHelper.addEventListener('mouseenter', this.openHoverMenu);
+            this.hoverMenu.addEventListener('mouseenter', this.openHoverMenu);
 
+            this.hoverMenu.onclick = (mouseEvent) => {
+                this.staveContainer.removeEventListener('mouseenter', this.openHoverMenu);
+                this.staveContainer.removeEventListener('mouseleave', this.closeHoverMenu);
+                this.staveContainer.classList.toggle('hover', false );
+
+                this.initStaveArticulation(mouseEvent.detail);
+
+
+                this.hoverHelper.remove();
+                this.hoverMenu.remove();
+            }
+            
+            this.staveContainer.addEventListener('mouseleave', this.closeHoverMenu);
+            this.hoverHelper.addEventListener('mouseleave', this.closeHoverMenu);
+            this.hoverMenu.addEventListener('mouseleave', this.closeHoverMenu);
+
+        }
+
+        
         this.openHoverMenu = (mouseEvent) => {
-        if (this.staveContainer.classList.contains('dragged')) { return; }
-        if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
-        if (!this.hoverMenu.classList.replace('hidden', 'shown')) { return; }
-        if (!this.staveContainer.classList.toggle('hover', true )) { return; }
-        const r = this.staveContainer.getBoundingClientRect();
-        this.hoverHelper.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
-        this.hoverMenu.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
+            if (this.staveContainer.classList.contains('dragged')) { return; }
+            if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
+            if (!this.hoverMenu.classList.replace('hidden', 'shown')) { return; }
+            if (!this.staveContainer.classList.toggle('hover', true )) { return; }
+            const r = this.staveContainer.getBoundingClientRect();
+            this.hoverHelper.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
+            this.hoverMenu.style.transform = `translate(${r.left + (r.width / 2)}px, ${r.bottom}px)`;
         }
 
         this.closeHoverMenu = (mouseEvent) => {
@@ -435,25 +476,7 @@ export class StaveBox {
             if (!this.staveContainer.classList.toggle('hover', false )) { return; }
         }
 
-        this.staveContainer.addEventListener('mouseenter', this.openHoverMenu);
-        this.hoverHelper.addEventListener('mouseenter', this.openHoverMenu);
-        this.hoverMenu.addEventListener('mouseenter', this.openHoverMenu);
-
-        this.hoverMenu.onclick = (mouseEvent) => {
-            this.staveContainer.removeEventListener('mouseenter', this.openHoverMenu);
-            this.staveContainer.removeEventListener('mouseleave', this.closeHoverMenu);
-            this.staveContainer.classList.toggle('hover', false );
-
-            this.initStaveArticulation(mouseEvent.detail);
-
-
-            this.hoverHelper.remove();
-            this.hoverMenu.remove();
-        }
-        
-        this.staveContainer.addEventListener('mouseleave', this.closeHoverMenu);
-        this.hoverHelper.addEventListener('mouseleave', this.closeHoverMenu);
-        this.hoverMenu.addEventListener('mouseleave', this.closeHoverMenu);
+        this.initHoverMenu();
 
     }
 
