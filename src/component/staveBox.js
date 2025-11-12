@@ -1,6 +1,6 @@
-import { ContextMenu } from "./contextMenu";
-import { TransientInput } from "./transientInput";
-import { Workspace } from "./workspace";
+import { ContextMenu } from "@/component/contextMenu.js";
+import { TransientInput } from "@/lib/transientInput.js";
+import { Workspace } from "@/lib/workspace.js";
 
 export class StaveBox {
 

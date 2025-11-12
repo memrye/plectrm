@@ -1,5 +1,5 @@
-import { ContextMenu } from "./contextMenu";
-import { Workspace } from "./workspace";
+import { ContextMenu } from "@/component/contextMenu.js";
+import { Workspace } from "@/lib/workspace.js";
 
 export class TextBox {
     constructor(textContent = '') {

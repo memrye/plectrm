@@ -1,4 +1,4 @@
-import { TransientInput } from "./transientInput";
+import { TransientInput } from "@/lib/transientInput.js";
 
 export class ContextMenu {
     constructor(parentObject, workspaceContext) {
