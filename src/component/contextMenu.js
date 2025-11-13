@@ -49,14 +49,14 @@ export class ContextMenu {
         const elementDragging = (event) => {
             const mouseY = event.clientY;
             let distanceY = mouseY - elementCenterY;
-            parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`
+            parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`
             
 
             //dragging up
             if (previousElement){
                 if (mouseY < (previousElementRect.top + (previousElementRect.height / 2))){
                     yOffset += previousElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
-                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`;
+                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`;
 
                     parentObject.decPositionInWorkspace();
                     workspaceContext.insertBefore(parentContainer, previousElement);
@@ -76,7 +76,7 @@ export class ContextMenu {
             if (nextElement){
                 if (mouseY > (nextElementRect.bottom - (nextElementRect.height/2))){
                     yOffset -= nextElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
-                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(101%)`
+                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`
 
                     parentObject.incPositionInWorkspace();
                     nextElement.insertAdjacentElement('afterend', parentContainer);
@@ -116,7 +116,7 @@ export class ContextMenu {
                 const elementRect = dragButton.getBoundingClientRect();
                 elementCenterY = elementRect.top + (elementRect.height / 2);
                 parentContainer.classList.add('dragged');
-                parentContainer.style.transform = `scale(101%)`;
+                parentContainer.style.transform = `scale(102%)`;
                 if(parentContainer.classList.contains('staveBox')) { parentObject.closeHoverMenu() };
     
                 previousElement = parentContainer.previousElementSibling;
