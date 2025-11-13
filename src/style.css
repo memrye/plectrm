@@ -11,7 +11,7 @@
 body{
     margin: 0;
     font-family: 'FantasqueSansMono', monospace;
-    font-size: 1.6vw;
+    font-size: 18px;
     overflow: hidden;
     --color-dark-primary: #1d2021;
     --color-dark-secondary: #343434;
@@ -45,15 +45,13 @@ body{
     position: absolute;
     inset: auto 0 0 0;
     margin: auto;
+    margin-bottom: 1em;
     width: fit-content;
-    height: 10vw;
-    min-height: 6vh;
-    max-height: 14vh;
+    height: 8rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.5em;
-    padding: 0.5em;
+    gap: 1em;
     z-index: 2;
 }
 
@@ -62,13 +60,13 @@ body{
     flex: 1;
     width: fit-content;
     flex-direction: row;
-    padding: 0.25em;
+    padding: 0.5em;
     border-radius: 8px;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     transition: box-shadow 0.1s ease-in-out;
-    gap: 0.25em;
+    gap: 0.5em;
 }
 
 .ribbonButton{
@@ -188,8 +186,8 @@ body{
 
 .workspaceContainer{
     height: fit-content;
-    min-height: 90vh;
-    width: calc(100% - 8em);
+    min-height: 110em;
+    width: 80em;
     border-radius: 16px;
     padding: 1em;
     background-color: var(--color-light-primary);
@@ -200,6 +198,7 @@ body{
     filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
     position: static;
     margin: auto;
+    margin-top: 1em;
     font-size: 1em;
     overflow: hidden;
 }
@@ -237,24 +236,24 @@ body{
 
 .prototypeContainer:hover{
     outline: 0;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
 .prototypeContainer.hover{
     outline: 0;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
 .prototypeContainer:focus-within{
     outline: 0;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
 .prototypeContainer.dragged{
     z-index: 50;
     background-color: rgba(var(--color-light-primary), 0.8);
     outline: 0;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
 }
 
 .prototypeContainer.stave{
@@ -513,7 +512,7 @@ body{
     top: 1.5em;
     left: 0;
     transition: opacity 160ms ease-in-out, background-color 80ms ease-in-out, color 80ms ease-in-out;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
     backdrop-filter: blur(4px);
 }
 
@@ -599,7 +598,7 @@ body{
     display: flex;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     color: var(--color-light-primary);
     border-radius: 8px;
     position:absolute;
@@ -616,8 +615,8 @@ body{
     background-color: transparent;
     min-width: 1em;
     min-height: 1em;
-    padding: 0.4em 0.5em;
-    font-size: 0.6em;
+    padding: 0.6em 1em;
+    font-size: 1em;
 }
 
 .transientItem:last-of-type{
