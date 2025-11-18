@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron/main')
+const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron/main')
 const path = require('node:path')
 const fs = require('fs').promises;
 
@@ -32,6 +32,7 @@ ipcMain.handle('dialog:save-text-file', async (event, content, defaultFilename =
 
 const createWindow = () => {
   const win = new BrowserWindow({
+  icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrm256px.png')),
   autoHideMenuBar : true,
   width: 1280,
   height: 720,
