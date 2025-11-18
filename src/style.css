@@ -379,15 +379,24 @@ body{
     background-color: transparent;
     display: grid;
     grid-template-columns: 1em auto 0.5em;
-    grid-template-rows: 100%;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+    "label grid end";
     gap: 2px;
+}
+
+.staveGridContainer{
+    grid-area: grid;
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    gap: 0px 0px;
 }
 
 .staveGrid{
     display: grid;
-    grid-column: 2;
-    grid-row: 1;
-    height: 100%;
     width: fit-content;
     padding: 0;
     gap: 0px 0px;
@@ -429,8 +438,7 @@ body{
 }
 
 .stringLabels{
-    grid-column: 1;
-    grid-row: 1;
+    grid-area: label;
     height: 100%;
     width: 100%;
     user-select: none;
@@ -444,8 +452,7 @@ body{
 }
 
 .staveEnd{
-    grid-column: 3;
-    grid-row: 1;
+    grid-area: end;
     height: 100%;
     width: 100%;
     user-select: none;
@@ -459,6 +466,24 @@ body{
 }
 
 .staveEnd.focus{
+    color: var(--color-light-primary);
+    background-color: var(--color-light-tertiary);
+}
+
+.staveBreak{
+    height: 100%;
+    width: 0.5em;
+    user-select: none;
+    cursor: col-resize;
+    transition: all 70ms ease-in-out;
+    background-color: transparent;
+}
+
+.staveBreak:hover{
+    background-color: var(--color-light-secondary);
+}
+
+.staveBreak.focus{
     color: var(--color-light-primary);
     background-color: var(--color-light-tertiary);
 }

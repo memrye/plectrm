@@ -1,6 +1,7 @@
 import { ContextMenu } from "@/component/contextMenu.js";
 import { TransientInput } from "@/lib/transientInput.js";
 import { Workspace, getDom } from "@/lib/workspace.js";
+import { StaveBreak } from "@/component/staveBreak.js";
 
 export class StaveBox {
 
@@ -9,6 +10,9 @@ export class StaveBox {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.localTuning = localTuning;
         this.gridWidth = gridWidth;
+
+        this.staveGrids = [ ];
+
         const workspaceContext = getDom();
 
         const Direction = {
@@ -68,248 +72,275 @@ export class StaveBox {
         this.cellArray = [...cellArray];
         this.cellArray.hasFocus = false;
 
-        this.drawGrid = (staveGrid, staveValues = false) => {
+        this.staveGridContainer = document.createElement('div');
+        this.staveGridContainer.classList.add('staveGridContainer');
+        this.staveBox.appendChild(this.staveGridContainer)
 
-            let gridHeight = this.localTuning.length;
+        this.initGridCell = (col, row, grid, staveValues = false) => {
+            const index = (this.gridWidth * row) + (col);
+            const staveGridCell = document.createElement('div');
+            let focused = false;
+            this.cellArray.hasFocus = false;
+            staveGridCell.classList.add('staveGridCell');
+            staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
 
-
-            staveGrid.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
-            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
-            
-            for (let row = 0; row < gridHeight; row++){
-                for (let col = 0; col < this.gridWidth; col++){
-                    const index = (this.gridWidth * row) + (col);
-                    const staveGridCell = document.createElement('div');
-                    let focused = false;
-                    this.cellArray.hasFocus = false;
-                    staveGridCell.classList.add('staveGridCell');
-                    staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
+            staveGridCell.addEventListener('click', (event) => {
                     
+                document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
 
-                    staveGridCell.addEventListener('click', (event) => {
-                        
+                //handle clicks initial
+                const clickHandler = (event) => {
+                    if (!staveGridCell.contains(event.target)) {
+                        focused = false;
+                        this.cellArray.hasFocus = false;
+                        staveGridCell.classList.remove('focus');
                         document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
+                        document.removeEventListener('click', clickHandler);
+                        document.removeEventListener('keydown', keydownHandler);
+                    }
+                }
 
-                        //handle clicks initial
-                        const clickHandler = (event) => {
-                            if (!staveGridCell.contains(event.target)) {
-                                focused = false;
-                                this.cellArray.hasFocus = false;
-                                staveGridCell.classList.remove('focus');
-                                document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
-                                document.removeEventListener('click', clickHandler);
-                                document.removeEventListener('keydown', keydownHandler);
-                            }
-                        }
+                //handle keydowns
+                const keydownHandler = (event) => {
+                    event.preventDefault();
+                    const key = event.key;
+                    const altHeld = event.altKey;
 
-                        //handle keydowns
-                        const keydownHandler = (event) => {
-                            event.preventDefault();
-                            const key = event.key;
-                            const altHeld = event.altKey;
+                    // arrow key traversal
+                    if (key === 'ArrowRight'){
+                        let nextcell, event;
+                        if (!altHeld){entryDirection = Direction.Horizontal}
 
-                            // arrow key traversal
-                            if (key === 'ArrowRight'){
-                                let nextcell, event;
-                                if (!altHeld){entryDirection = Direction.Horizontal}
-
-                                if (altHeld && (Math.trunc((index+1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
-                                    nextcell = this.cellArray[index - this.gridWidth + 1];
-                                } else {
-                                    nextcell = this.cellArray[index + 1];
-                                }
-
-                                if (nextcell === undefined) { return; }
-
-                                event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            } else if (key === 'ArrowLeft'){
-                                let nextcell, event;
-                                if (!altHeld){entryDirection = Direction.Horizontal}
-
-                                if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
-                                    nextcell = this.cellArray[index + this.gridWidth - 1];
-                                } else {
-                                    nextcell = this.cellArray[index - 1];
-                                }
-
-                                if (nextcell === undefined) { return; }
-
-                                event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            } else if (key === 'ArrowUp'){
-                                let nextcell, event;
-                                if (!altHeld){entryDirection = Direction.Vertical}
-
-                                nextcell = this.cellArray[index - this.gridWidth];
-
-                                if (nextcell === undefined){
-                                    if (altHeld) {nextcell =    this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1))]}
-                                    else {nextcell =            this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1]}
-                                }
-
-                                if (nextcell === undefined) { return; }
-
-                                event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            } else if (key === 'ArrowDown'){
-                                let nextcell, event;
-                                if (!altHeld){entryDirection = Direction.Vertical;}
-                                nextcell = this.cellArray[index+this.gridWidth];
-                                
-                                if (nextcell === undefined){
-                                    if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
-                                    else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
-                                }
-
-                                if (nextcell === undefined) { return; }
-                                event = new CustomEvent('click');
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                            }
-
-                            //backspace
-                            if (key === 'Backspace'){
-                                let nextcell, event;
-                                staveGridCell.textContent = '-';
-
-                                if (entryDirection === Direction.Vertical){
-                                    nextcell = this.cellArray[index+this.gridWidth];
-                                
-                                    if (nextcell === undefined){
-                                        if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
-                                        else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
-                                    }
-
-                                    if (nextcell === undefined) { return; }
-                                    event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    nextcell.dispatchEvent(event);
-                                } else {
-                                    entryDirection = Direction.Horizontal;
-
-                                    if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
-                                        nextcell = this.cellArray[index + this.gridWidth - 1];
-                                    } else {
-                                        nextcell = this.cellArray[index - 1];
-                                    }
-
-                                    if (nextcell === undefined) { return; }
-
-                                    event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    nextcell.dispatchEvent(event);
-                                }
-
-                                //if cell is still undefined then dont move
-                                if (nextcell === undefined) { return; }
-
-                                document.dispatchEvent(event);
-                                nextcell.dispatchEvent(event);
-                                return;
-                            }
-
-                            
-                            if (key === ' '){
-                                if (entryDirection === Direction.Horizontal){
-                                    entryDirection = Direction.Vertical;
-                                    const event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    staveGridCell.dispatchEvent(event);
-                                } else {
-                                    entryDirection = Direction.Horizontal;
-                                    const event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    staveGridCell.dispatchEvent(event);
-                                }
-                            }
-
-                            //key input
-                            if (/^[a-zA-Z0-9\/~-]$/.test(key)) {
-                                staveGridCell.textContent = key;
-
-                                if(altHeld){return;}
-
-                                let nextcell, event;
-
-                                if (entryDirection === Direction.Vertical){
-
-                                    nextcell = this.cellArray[index - this.gridWidth];
-
-                                    if (nextcell === undefined){ nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1] }
-
-                                    if (nextcell === undefined) { return; }
-
-                                    event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    nextcell.dispatchEvent(event);
-                                    return;
-                                } else {
-
-                                    nextcell = this.cellArray[index + 1];
-                                    if (nextcell === undefined) { return; }
-
-                                    event = new CustomEvent('click');
-                                    document.dispatchEvent(event);
-                                    nextcell.dispatchEvent(event);
-                                    return;
-                                }
-                            }
-                        }
-
-                        //grid cell focused
-                        if (!focused){
-                            focused = true;
-                            this.cellArray.hasFocus = true;
-                            staveGridCell.classList.add('focus');
-                            document.addEventListener('click', clickHandler);
-                            document.addEventListener('keydown', keydownHandler);
-                        }
-
-                        //draw highlight to show entry direction
-                        if (entryDirection === Direction.Horizontal){
-                            const rowIndex = Math.floor(index/this.gridWidth);
-                            const highlighedCells = this.cellArray.slice((rowIndex * this.gridWidth), ((rowIndex + 1) * this.gridWidth));
-                            for (let cell = 0; cell < highlighedCells.length; cell++){
-                                highlighedCells[cell].classList.add('highlight');
-                            }
+                        if (altHeld && (Math.trunc((index+1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                            nextcell = this.cellArray[index - this.gridWidth + 1];
                         } else {
-                            const columnIndex = index % this.gridWidth;
-                            for (let cell = 0; cell < this.cellArray.length; cell++){
-                                if ((cell % this.gridWidth) == columnIndex){
-                                    this.cellArray[cell].classList.add('highlight');
-                                }
+                            nextcell = this.cellArray[index + 1];
+                        }
+
+                        if (nextcell === undefined) { return; }
+
+                        event = new CustomEvent('click');
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                        return;
+                    } else if (key === 'ArrowLeft'){
+                        let nextcell, event;
+                        if (!altHeld){entryDirection = Direction.Horizontal}
+
+                        if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                            nextcell = this.cellArray[index + this.gridWidth - 1];
+                        } else {
+                            nextcell = this.cellArray[index - 1];
+                        }
+
+                        if (nextcell === undefined) { return; }
+
+                        event = new CustomEvent('click');
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                        return;
+                    } else if (key === 'ArrowUp'){
+                        let nextcell, event;
+                        if (!altHeld){entryDirection = Direction.Vertical}
+
+                        nextcell = this.cellArray[index - this.gridWidth];
+
+                        if (nextcell === undefined){
+                            if (altHeld) {nextcell =    this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1))]}
+                            else {nextcell =            this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1]}
+                        }
+
+                        if (nextcell === undefined) { return; }
+
+                        event = new CustomEvent('click');
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                        return;
+                    } else if (key === 'ArrowDown'){
+                        let nextcell, event;
+                        if (!altHeld){entryDirection = Direction.Vertical;}
+                        nextcell = this.cellArray[index+this.gridWidth];
+                        
+                        if (nextcell === undefined){
+                            if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
+                            else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
+                        }
+
+                        if (nextcell === undefined) { return; }
+                        event = new CustomEvent('click');
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                    }
+
+                    //backspace
+                    if (key === 'Backspace'){
+                        let nextcell, event;
+                        staveGridCell.textContent = '-';
+
+                        if (entryDirection === Direction.Vertical){
+                            nextcell = this.cellArray[index+this.gridWidth];
+                        
+                            if (nextcell === undefined){
+                                if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
+                                else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
                             }
-                        };
 
-
-
-                    })
-
-                    staveGridCell.addEventListener('dblclick', () => {
-                        if (entryDirection == Direction.Horizontal){
-                            entryDirection = Direction.Vertical;
+                            if (nextcell === undefined) { return; }
+                            event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            nextcell.dispatchEvent(event);
                         } else {
                             entryDirection = Direction.Horizontal;
-                        }
-                    })
 
-                    staveGrid.appendChild(staveGridCell);
-                    this.cellArray.push(staveGridCell);
+                            if (altHeld && (Math.trunc((index-1) / this.gridWidth) != Math.trunc((index) / this.gridWidth))){
+                                nextcell = this.cellArray[index + this.gridWidth - 1];
+                            } else {
+                                nextcell = this.cellArray[index - 1];
+                            }
+
+                            if (nextcell === undefined) { return; }
+
+                            event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            nextcell.dispatchEvent(event);
+                        }
+
+                        //if cell is still undefined then dont move
+                        if (nextcell === undefined) { return; }
+
+                        document.dispatchEvent(event);
+                        nextcell.dispatchEvent(event);
+                        return;
+                    }
+
+                    
+                    if (key === ' '){
+                        if (entryDirection === Direction.Horizontal){
+                            entryDirection = Direction.Vertical;
+                            const event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            staveGridCell.dispatchEvent(event);
+                        } else {
+                            entryDirection = Direction.Horizontal;
+                            const event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            staveGridCell.dispatchEvent(event);
+                        }
+                    }
+
+                    //key input
+                    if (/^[a-zA-Z0-9\/~-]$/.test(key)) {
+                        staveGridCell.textContent = key;
+
+                        if(altHeld){return;}
+
+                        let nextcell, event;
+
+                        if (entryDirection === Direction.Vertical){
+
+                            nextcell = this.cellArray[index - this.gridWidth];
+
+                            if (nextcell === undefined){ nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1] }
+
+                            if (nextcell === undefined) { return; }
+
+                            event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            nextcell.dispatchEvent(event);
+                            return;
+                        } else {
+
+                            nextcell = this.cellArray[index + 1];
+                            if (nextcell === undefined) { return; }
+
+                            event = new CustomEvent('click');
+                            document.dispatchEvent(event);
+                            nextcell.dispatchEvent(event);
+                            return;
+                        }
+                    }
+                }
+
+                //grid cell focused
+                if (!focused){
+                    focused = true;
+                    this.cellArray.hasFocus = true;
+                    staveGridCell.classList.add('focus');
+                    document.addEventListener('click', clickHandler);
+                    document.addEventListener('keydown', keydownHandler);
+                }
+
+                //draw highlight to show entry direction
+                if (entryDirection === Direction.Horizontal){
+                    const rowIndex = Math.floor(index/this.gridWidth);
+                    const highlighedCells = this.cellArray.slice((rowIndex * this.gridWidth), ((rowIndex + 1) * this.gridWidth));
+                    for (let cell = 0; cell < highlighedCells.length; cell++){
+                        highlighedCells[cell].classList.add('highlight');
+                    }
+                } else {
+                    const columnIndex = index % this.gridWidth;
+                    for (let cell = 0; cell < this.cellArray.length; cell++){
+                        if ((cell % this.gridWidth) == columnIndex){
+                            this.cellArray[cell].classList.add('highlight');
+                        }
+                    }
+                };
+
+
+
+            })
+
+            staveGridCell.addEventListener('dblclick', () => {
+                if (entryDirection == Direction.Horizontal){
+                    entryDirection = Direction.Vertical;
+                } else {
+                    entryDirection = Direction.Horizontal;
+                }
+            })
+
+            grid.appendChild(staveGridCell);
+            this.cellArray.splice(index, 0, staveGridCell);
+
+        }
+
+        this.drawGrid = (staveGrids, staveValues = false, gridSplitIndex = 0) => {
+            let gridHeight = this.localTuning.length;
+
+            if (staveGrids.length > 1){
+                staveGrids.forEach((grid, index) => {
+                    const gridCols = index === 0 ? gridSplitIndex : this.gridWidth - gridSplitIndex;  
+                    grid.style.gridTemplateColumns = `repeat(${gridCols}, 1.04em)`
+                    grid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
+
+                    for (let row = 0; row < gridHeight; row++){
+                        for (let col = gridSplitIndex * index; col < gridCols + (gridSplitIndex * index); col++ ){
+                            this.initGridCell(col, row, grid, staveValues);
+                        }
+                    }
+                })
+            } else {
+                staveGrids[0].style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
+                staveGrids[0].style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
+
+                for (let row = 0; row < gridHeight; row++){
+                    for (let col = 0; col < this.gridWidth; col++){
+                        this.initGridCell(col, row, staveGrids[0], staveValues);
+                    }
                 }
             }
+            
         }
 
         this.staveBoxGrid = document.createElement('div');
         this.staveBoxGrid.classList.add('staveGrid');
-        this.staveBox.appendChild(this.staveBoxGrid);
-        this.drawGrid(this.staveBoxGrid, this.cellArray);
+        this.staveGrids.push(this.staveGridContainer.appendChild(this.staveBoxGrid));
+
+        this.drawGrid(this.staveGrids, this.cellArray, 5);
+
+        this.staveGrids = [];
+        this.staveGridContainer.innerHTML = '';
+
+        const staveBreak = new StaveBreak(this, 3);
 
         const openTuningMenu = (mouseEvent) => {
 
@@ -527,6 +558,8 @@ export class StaveBox {
             this.drawGrid(this.staveBoxGrid, tempCellArray);
         }
     }
+
+    
 
     parseStringContents(){
         let textBuffer = ``;
