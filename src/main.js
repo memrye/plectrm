@@ -32,7 +32,7 @@ ipcMain.handle('dialog:save-text-file', async (event, content, defaultFilename =
 
 const createWindow = () => {
   const win = new BrowserWindow({
-  icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrm256px.png')),
+  icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrm32px.png')),
   autoHideMenuBar : true,
   width: 1280,
   height: 720,
