@@ -626,13 +626,26 @@ body{
 
 .transientItem.transientInput{
     min-width: 4em;
+    transition: all 80ms ease-in-out;
+}
 
+.transientItem.transientInput:hover{
+    background-color: var(--color-dark-secondary);
+}
+
+.transientItem.transientInput:focus{
+    background-color: var(--color-dark-tertiary);
 }
 
 .transientItem.transientInput::before{
+    color: var(--color-light-tertiary);
     content: '> ';
-    font-size: 0.5em;
+    font-size: 1em;
     vertical-align: middle;
+}
+
+.transientItem.transientInput:focus::before{
+    color: var(--color-light-primary);
 }
 
 .transientItem.transientInput:focus-visible{
@@ -645,6 +658,10 @@ body{
 }
 
 .transientItem.transientButton:hover{
+    background-color: var(--color-dark-secondary);
+}
+
+.transientItem.transientButton:active{
     background-color: var(--color-dark-tertiary);
 }
 
