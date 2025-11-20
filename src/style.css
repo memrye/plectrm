@@ -231,7 +231,7 @@ body{
     margin-bottom: 0.5em;
     color: #282828;
     transform: scale(100%);
-    backdrop-filter: blur(2px);
+    backdrop-filter: 0;
 }
 
 .prototypeContainer:hover{
@@ -254,6 +254,7 @@ body{
     background-color: rgba(var(--color-light-primary), 0.8);
     outline: 0;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
+    backdrop-filter: saturate(80%) brightness(93%) blur(4px);
 }
 
 .prototypeContainer.stave{
