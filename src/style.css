@@ -315,18 +315,21 @@ body{
     color: var(--color-light-tertiary);
     background-color: var(--color-light-secondary);
     border: 0;
+    cursor: grab;
 }
 
 .dragHandle:active{
     color: var(--color-light-primary);
     background-color: var(--color-light-tertiary);
     border: 0;
+    cursor: grabbing;
 }
 
 .dragHandle.forceActive{
     color: var(--color-light-primary);
     background-color: var(--color-light-tertiary);
     border: 0;
+    cursor: grabbing;
 }
 
 .dragHandle svg{
@@ -531,11 +534,13 @@ body{
 .hoverMenu.hidden{
     pointer-events: none;
     opacity: 0%;
+    filter: blur(4px);
 }
 
 .hoverMenu.shown{
     pointer-events: all;
     opacity: 100%;
+    filter: blur(0px);
 }
 
 .articulationCell{

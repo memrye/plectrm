@@ -112,7 +112,7 @@ export class ContextMenu {
                 
             } else {
                 //drag element
-                dragButton.style.cursor = 'grabbing';
+                document.body.style.cursor = 'grabbing';
                 const elementRect = dragButton.getBoundingClientRect();
                 elementCenterY = elementRect.top + (elementRect.height / 2);
                 parentContainer.classList.add('dragged');
@@ -129,7 +129,7 @@ export class ContextMenu {
     
                 document.addEventListener('mouseup', (event) => {
                     dragButton.classList.toggle('forceActive', false)
-                    dragButton.style.cursor = 'pointer';
+                    document.body.style.cursor = 'auto';
                     parentContainer.style.transform = `translateY(0px) scale(100%)`;
                     yOffset = 0;
                     parentContainer.classList.remove('dragged');
