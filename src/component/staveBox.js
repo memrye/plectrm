@@ -1,15 +1,14 @@
 import { ContextMenu } from "@/component/contextMenu.js";
 import { TransientInput } from "@/lib/transientInput.js";
-import { Workspace, getDom } from "@/lib/workspace.js";
 
 export class StaveBox {
 
-    constructor(gridWidth, localTuning, cellArray = []) {
+    constructor(workspace, gridWidth, localTuning, cellArray = []) {
 
         this.resizeHandler = this.resizeHandler.bind(this);
         this.localTuning = parseTuning(localTuning);
         this.gridWidth = gridWidth;
-        const workspaceContext = getDom();
+        this.parentWorkspace = workspace;
 
         const Direction = {
             Horizontal: 'Horizontal',
@@ -20,9 +19,9 @@ export class StaveBox {
 
         this.staveContainer = document.createElement('div');
         this.staveContainer.classList.add('prototypeContainer','stave');
-        workspaceContext.appendChild(this.staveContainer);
+        this.parentWorkspace.el.appendChild(this.staveContainer);
 
-        this.contextMenu = new ContextMenu(this, workspaceContext);
+        this.contextMenu = new ContextMenu(this, this.parentWorkspace.el);
         this.staveContainer.appendChild(this.contextMenu);
 
         this.staveBox = document.createElement('div');
@@ -501,7 +500,7 @@ export class StaveBox {
     }
 
     resizeHandler(event){
-        const mouseX = Math.min(event.clientX, parseInt(getDom().getBoundingClientRect().right - (Workspace.getEmRect().width * 2)));
+        const mouseX = Math.min(event.clientX, parseInt(this.parentWorkspace.el.getBoundingClientRect().right - (this.parentWorkspace.emSize.width * 2)));
         const gridRect = this.staveBoxGrid.getBoundingClientRect();
         const cellWidth = gridRect.width / this.gridWidth;
         const tempWidth = Math.max(parseInt((mouseX - gridRect.left) / cellWidth), 1);
@@ -576,17 +575,17 @@ export class StaveBox {
     }
 
     remove(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
         this.staveContainer.remove();
         this.hoverHelper.remove();
         this.hoverMenu.remove();
     }
 
     duplicate(){
-        const index = Workspace.ChildObjects.indexOf(this);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
         
-        const cloneStavebox = new StaveBox(this.gridWidth, this.localTuning.join("/"));
+        const cloneStavebox = new StaveBox(this.parentWorkspace, this.gridWidth, this.localTuning.join("/"));
 
         //we have to pass in the new cell array as dummy objects so that the new cells methods are initialised properly
         const dummyArray = this.cellArray.map(element => ({
@@ -605,7 +604,7 @@ export class StaveBox {
         }
 
         this.staveContainer.insertAdjacentElement('afterend', cloneStavebox.staveContainer);
-        Workspace.ChildObjects.splice(index + 1, 0, cloneStavebox);
+        this.parentWorkspace.ChildObjects.splice(index + 1, 0, cloneStavebox);
     }
 
     getRootContainer(){
@@ -617,15 +616,15 @@ export class StaveBox {
     }
 
     decPositionInWorkspace(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
-        Workspace.ChildObjects.splice(index - 1, 0, this);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
+        this.parentWorkspace.ChildObjects.splice(index - 1, 0, this);
     }
 
     incPositionInWorkspace(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
-        Workspace.ChildObjects.splice(index + 1, 0, this);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
+        this.parentWorkspace.ChildObjects.splice(index + 1, 0, this);
     }
 
 }

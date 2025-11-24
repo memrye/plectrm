@@ -215,6 +215,26 @@ body{
     height: 20vh;
 }
 
+.foreground{
+    z-index: 3;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    transition: backdrop-filter 240ms ease-out;
+    display: flex;
+    align-items: center;
+    background-color: color-mix(in srgb, var(--color-dark-primary) 0%, transparent);
+}
+
+.foreground.active{
+    pointer-events: all;
+    backdrop-filter: blur(4px);
+    background-color: color-mix(in srgb, var(--color-dark-primary) 80%, transparent);
+}
+
 .prototypeContainer{
     position: relative;
     z-index: auto;
@@ -683,3 +703,97 @@ body{
     padding: 0;
 }
 
+.startscreen-container{
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    max-width: 80vw;
+    max-height: 80vh;
+    border: 1px solid var(--color-dark-secondary);
+    background-color: var(--color-dark-primary);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    color: var(--color-light-primary);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-dark-secondary) transparent;
+    transition: filter 160ms ease-in-out;
+    filter: 0;
+    opacity: 100%;
+}
+
+.startscreen-container h1{
+    color: var(--color-light-primary);
+    font-size: 2.5rem;
+    user-select: none;
+    font-weight: normal;
+    margin: 0;
+}
+
+.startscreen-container h2{
+    color: var(--color-light-primary);
+    font-size: 1.4rem;
+    user-select: none;
+    font-weight: normal;
+    margin: 0;
+}
+
+.startscreen-container.hidden{
+    filter: blur(30px) brightness(20%);
+    opacity: 0%;
+    pointer-events: none;
+}
+
+.logo-container{
+    color: var(--color-blue);
+}
+
+.menu-container{
+    background-color: var(--color-dark-primary);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.menuButton{
+    height: 15rem;
+    background-color: var(--color-dark-primary);
+    transition: all 80ms ease-in-out;
+    border: 1px solid var(--color-dark-secondary);
+    border-radius: 7.75px;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    color: var(--color-light-primary);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    font-family: 'FantasqueSansMono';
+    font-size: large;
+    user-select: none;
+}
+
+.menuButton:hover:enabled{
+    background-color: var(--color-dark-secondary);
+}
+
+.menuButton:active:enabled{
+    border: 1px solid var(--color-light-tertiary);
+    background-color: var(--color-dark-tertiary);
+}
+
+.menuButton:disabled{
+    color: var(--color-dark-secondary);
+    cursor: not-allowed;
+}
+
+.menuButton svg{
+    max-width: 60%;
+    margin: auto;
+}

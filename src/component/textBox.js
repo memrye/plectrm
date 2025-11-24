@@ -1,16 +1,15 @@
 import { ContextMenu } from "@/component/contextMenu.js";
-import { Workspace } from "@/lib/workspace.js";
 
 export class TextBox {
-    constructor(textContent = '') {
+    constructor(workspace, textContent = '') {
 
-        const workspaceContext = document.getElementsByClassName('workspaceContainer').item(0);
+        this.parentWorkspace = workspace;
 
         this.textContainer = document.createElement('div');
         this.textContainer.classList.add('prototypeContainer','text');
-        workspaceContext.appendChild(this.textContainer);
+        this.parentWorkspace.el.appendChild(this.textContainer);
 
-        const contextMenu = new ContextMenu(this, workspaceContext);
+        const contextMenu = new ContextMenu(this, this.parentWorkspace.el);
         this.textContainer.appendChild(contextMenu);
 
         this.textBox = document.createElement('div');
@@ -28,16 +27,16 @@ export class TextBox {
     }
 
     remove(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
         this.textContainer.remove();
     }
 
     duplicate(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        const cloneTextbox = new TextBox(this.textBox.textContent);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        const cloneTextbox = new TextBox(this.parentWorkspace, this.textBox.textContent);
         this.textContainer.insertAdjacentElement('afterend', cloneTextbox.textContainer);
-        Workspace.ChildObjects.splice(index + 1, 0, cloneTextbox);
+        this.parentWorkspace.ChildObjects.splice(index + 1, 0, cloneTextbox);
     }
 
     getRootContainer(){
@@ -49,15 +48,15 @@ export class TextBox {
     }
 
     decPositionInWorkspace(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
-        Workspace.ChildObjects.splice(index - 1, 0, this);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
+        this.parentWorkspace.ChildObjects.splice(index - 1, 0, this);
     }
 
     incPositionInWorkspace(){
-        const index = Workspace.ChildObjects.indexOf(this);
-        Workspace.ChildObjects.splice(index, 1);
-        Workspace.ChildObjects.splice(index + 1, 0, this);
+        const index = this.parentWorkspace.ChildObjects.indexOf(this);
+        this.parentWorkspace.ChildObjects.splice(index, 1);
+        this.parentWorkspace.ChildObjects.splice(index + 1, 0, this);
     }
 }
 
