@@ -20,7 +20,7 @@ export function AddStaveBoxButton(_ribbon){
     const staveBoxButton = document.createElement('button');
     staveBoxButton.classList.add('ribbonSplitDropdownButton');
     staveBoxButton.innerHTML = window.electronAPI.getIcon('addStave');
-    staveBoxButton.Options = {size: 24, tuning: 'EADGBe'}
+    staveBoxButton.Options = {size: 24, tuning: 'E/A/D/G/B/e/'}
     staveBoxButton.onclick = function(){
         Workspace.ChildObjects.push(new StaveBox(staveBoxButton.Options.size, staveBoxButton.Options.tuning))
     };
