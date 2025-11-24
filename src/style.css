@@ -7,11 +7,14 @@
     src: url('/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
     font-display: swap;
 }
+html{
+    font-size: 12px;
+    background-color: var(--color-dark-primary);
+}
 
 body{
     margin: 0;
     font-family: 'FantasqueSansMono', monospace;
-    font-size: 18px;
     overflow: hidden;
     --color-dark-primary: #1d2021;
     --color-dark-secondary: #343434;
@@ -232,7 +235,7 @@ body{
 .foreground.active{
     pointer-events: all;
     backdrop-filter: blur(4px);
-    background-color: color-mix(in srgb, var(--color-dark-primary) 80%, transparent);
+    background-color: color-mix(in srgb, var(--color-dark-primary) 90%, transparent);
 }
 
 .prototypeContainer{
@@ -751,6 +754,7 @@ body{
 
 .logo-container{
     color: var(--color-blue);
+    height: 18rem;
 }
 
 .menu-container{
@@ -763,7 +767,7 @@ body{
 }
 
 .menuButton{
-    height: 15rem;
+    height: 12rem;
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
