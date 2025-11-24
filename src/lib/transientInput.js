@@ -9,6 +9,8 @@ export class TransientInput {
         this.transientInputContainer.classList.add('transientInputContainer');
         document.body.appendChild(this.transientInputContainer);
 
+        this.callbackList = [];
+
         this.x = 0;
         this.y = 0;
 
@@ -42,11 +44,11 @@ export class TransientInput {
         const transientButton = document.createElement('div');
         transientButton.classList.add('transientItem', 'transientButton');
         transientButton.textContent = textLabel;
-        this.transientInputContainer.appendChild(transientButton)
+        this.transientInputContainer.appendChild(transientButton);
 
-        transientButton.addEventListener('click', (event) => {
-            clickFn();
-            this.transientInputContainer.remove();
+        transientButton.addEventListener('click', () => {
+            this.callbackList.push({fn: clickFn, param: null, type:'button'});
+            this.submit();
         })
     }
 
@@ -75,13 +77,19 @@ export class TransientInput {
         selection.addRange(range);
         transientTextInput.focus();
 
+        let contents = transientTextInput.textContent;
+        this.callbackList.push({fn: submitFn, param: contents, el: transientTextInput, type: 'textinput'});
+
         transientTextInput.addEventListener('keydown', (event) => {
             let key = event.key
             if (key === 'Enter'){
                 event.preventDefault();
-                const contents = transientTextInput.textContent;
-                submitFn(contents)
-                this.transientInputContainer.remove();
+                contents = transientTextInput.textContent;
+                this.callbackList.forEach((element) => {
+                    if (!element.type === 'textinput') { return; }
+                    element.param = element.el.textContent;
+                })
+                this.submit();
             }
             //filter for non-character inputs, then apply regex
             if (key.length === 1){
@@ -96,6 +104,14 @@ export class TransientInput {
         const transientDivisor = document.createElement('div');
         transientDivisor.classList.add('transientItem', 'transientDivisor');
         this.transientInputContainer.appendChild(transientDivisor);
+    }
+
+    submit(){
+        this.callbackList.forEach(({fn, param}) => {
+            if (param) { fn(param); return; };
+            fn(); 
+        })
+        this.transientInputContainer.remove();
     }
 
     endTransientInput(){
