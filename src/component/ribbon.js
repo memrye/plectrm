@@ -1,19 +1,18 @@
-import { Workspace } from "@/lib/workspace.js";
 import { TextBox } from "@/component/textBox.js";
 import { StaveBox } from "@/component/staveBox.js";
 import { TransientInput } from "@/lib/transientInput.js";
 
-export function AddTextBoxButton (_ribbon){ 
+export function AddTextBoxButton (_ribbon, workspace){ 
     const textBoxButton = document.createElement('button');
     textBoxButton.classList.add('ribbonButton');
     textBoxButton.innerHTML = window.electronAPI.getIcon('addText');
     textBoxButton.onclick = function(){
-        Workspace.ChildObjects.push(new TextBox())
+        workspace.ChildObjects.push(new TextBox(workspace))
     };
     _ribbon.appendChild(textBoxButton);
 }
 
-export function AddStaveBoxButton(_ribbon){
+export function AddStaveBoxButton(_ribbon, workspace){
     const staveBoxContainer = document.createElement('div');
     staveBoxContainer.classList.add('ribbonSplitDropdown');
 
@@ -22,7 +21,7 @@ export function AddStaveBoxButton(_ribbon){
     staveBoxButton.innerHTML = window.electronAPI.getIcon('addStave');
     staveBoxButton.Options = {size: 24, tuning: 'E/A/D/G/B/e/'}
     staveBoxButton.onclick = function(){
-        Workspace.ChildObjects.push(new StaveBox(staveBoxButton.Options.size, staveBoxButton.Options.tuning))
+        workspace.ChildObjects.push(new StaveBox(workspace, staveBoxButton.Options.size, staveBoxButton.Options.tuning))
     };
 
     const staveBoxDropdown = document.createElement('button');

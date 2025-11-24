@@ -1,30 +1,13 @@
-import { initWorkspace, Workspace} from '@/lib/workspace.js';
-import { TextBox } from "@/component/textBox.js";
-import { StaveBox } from "@/component/staveBox.js";
-import { AddTextBoxButton, AddStaveBoxButton } from "@/component/ribbon.js";
-import { exportFile } from '@/exportFile.js';
+import { Workspace } from '@/lib/workspace';
+import { Foreground } from '@/lib/foreground';
+import { initStartscreen } from '@/component/startscreen';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-const workspaceDOM = document.getElementsByClassName('workspaceContainer').item(0);
-initWorkspace(workspaceDOM);
-const ribbon = document.getElementsByClassName('ribbonContainer').item(0);
-const exportButton = document.getElementsByClassName('exportButton').item(0);
-exportButton.innerHTML = window.electronAPI.getIcon('saveFile');
+const foreground = new Foreground(document.getElementsByClassName('foreground').item(0));
+const workspace = new Workspace(document.getElementsByClassName('workspaceContainer').item(0));
 
-AddTextBoxButton(ribbon, workspaceDOM);
-AddStaveBoxButton(ribbon, workspaceDOM);
+initStartscreen(foreground, workspace);
 
-Workspace.ChildObjects.push(new TextBox())
-Workspace.ChildObjects.push(new StaveBox(24, 'E/Ab/D/G/B/e/'))
-
-exportButton.onclick = () => {
-    let textBuffer = ``
-    Workspace.ChildObjects.forEach(element => {
-        textBuffer += element.parseStringContents();
-        textBuffer += `\n`;
-    });
-    exportFile(textBuffer);
-}
 });
 
