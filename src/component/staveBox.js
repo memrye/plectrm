@@ -8,7 +8,6 @@ export class StaveBox {
 
         this.resizeHandler = this.resizeHandler.bind(this);
         this.localTuning = parseTuning(localTuning);
-        console.log(this.localTuning)
         this.gridWidth = gridWidth;
         const workspaceContext = getDom();
 
