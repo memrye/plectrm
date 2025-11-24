@@ -7,7 +7,8 @@ export class StaveBox {
     constructor(gridWidth, localTuning, cellArray = []) {
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.localTuning = localTuning;
+        this.localTuning = parseTuning(localTuning);
+        console.log(this.localTuning)
         this.gridWidth = gridWidth;
         const workspaceContext = getDom();
 
@@ -30,7 +31,7 @@ export class StaveBox {
         this.staveContainer.appendChild(this.staveBox);
 
         this.stringLabels = document.createElement('div');
-        this.stringLabels.classList.add('stringLabels');
+        this.stringLabels.classList.add('staveTuningContainer');
 
         this.staveEnd = document.createElement('div');
         this.staveEnd.classList.add('staveEnd');
@@ -51,14 +52,35 @@ export class StaveBox {
         });
         this.staveBox.appendChild(this.staveEnd);
 
+        function parseTuning(tuning_As_String) {
+            const t_string = tuning_As_String;
+            if (!t_string.includes('/')){
+                return false;
+            }
+
+            let t_array = t_string.split('/');
+            t_array = t_array.filter(Boolean);
+            return t_array;
+        }
+
         this.setTuning = (_tuning) => {
             this.stringLabels.textContent = '';
             let tuning = _tuning;
-            let labelText = '';
+            let hasAccidentals = /[#b]/.test(tuning);
             for (let i = tuning.length - 1; i >= 0; i--){
-                labelText += tuning.charAt(i) + '|\r';
+                const stringTuning = tuning.at(i);
+                let labelText;
+                // if current string label has accidental
+                if ((stringTuning.length > 1) || !hasAccidentals){
+                    labelText = `${tuning.at(i)}|`;
+                } else {
+                    labelText = `${tuning.at(i)} |`;
+                }
+                const textContainer = document.createElement('div');
+                textContainer.style.whiteSpace = 'nowrap';
+                textContainer.textContent = labelText;
+                this.stringLabels.appendChild(textContainer);
             }
-            this.stringLabels.textContent = labelText;
             this.staveEnd.textContent = '|\r'.repeat(this.localTuning.length);
         };
 
@@ -315,14 +337,13 @@ export class StaveBox {
 
             const popUpContextMenu = new TransientInput;
             popUpContextMenu.setPosition(mouseEvent, null);
-            popUpContextMenu.createAndAddLabel('tuning:')
-            popUpContextMenu.createAndAddTextInput(this.localTuning, (contents) => {
-                this.localTuning = contents;
+            popUpContextMenu.createAndAddLabel('tuning:');
+            popUpContextMenu.createAndAddTextInput(this.localTuning.join('/'), (contents) => {
+                this.localTuning = parseTuning(contents);
                 this.cellArray.length = 0;
                 this.staveBoxGrid.replaceChildren();
                 this.drawGrid(this.staveBoxGrid);
-
-                this.setTuning(contents);
+                this.setTuning(this.localTuning);
 
             });
             popUpContextMenu.endTransientInput();
@@ -529,16 +550,24 @@ export class StaveBox {
     }
 
     parseStringContents(){
+        const tuning = this.localTuning
         let textBuffer = ``;
-        for (let row = 0; row < this.localTuning.length; row++){
-            textBuffer += `${this.localTuning.charAt(this.localTuning.length - (row + 1))}`;
-            textBuffer += '|';
+        let hasAccidentals = /[#b]/.test(tuning);
+
+        for (let row = 0; row < tuning.length; row++){
+            const stringLabel = tuning.at(tuning.length - (row + 1));
+            if ((stringLabel.length > 1) || !hasAccidentals){
+                textBuffer += `${stringLabel}|`;
+            } else {
+                textBuffer += `${stringLabel} |`;
+            }
             const cellrow = this.cellArray.slice(this.gridWidth * row, (this.gridWidth * row) + (this.gridWidth));
             cellrow.forEach((cell) =>{
                 textBuffer += cell.textContent;
             });
             textBuffer += '|\n';
         }
+
         if (this.articulationCellArray){
             textBuffer += ' '.repeat(2);
             this.articulationCellArray.forEach((cell) => { textBuffer += cell.textContent; })
@@ -558,7 +587,7 @@ export class StaveBox {
     duplicate(){
         const index = Workspace.ChildObjects.indexOf(this);
         
-        const cloneStavebox = new StaveBox(this.gridWidth, this.localTuning);
+        const cloneStavebox = new StaveBox(this.gridWidth, this.localTuning.join("/"));
 
         //we have to pass in the new cell array as dummy objects so that the new cells methods are initialised properly
         const dummyArray = this.cellArray.map(element => ({

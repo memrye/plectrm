@@ -16,7 +16,7 @@ AddTextBoxButton(ribbon, workspaceDOM);
 AddStaveBoxButton(ribbon, workspaceDOM);
 
 Workspace.ChildObjects.push(new TextBox())
-Workspace.ChildObjects.push(new StaveBox(24, 'EADGBe'))
+Workspace.ChildObjects.push(new StaveBox(24, 'E/Ab/D/G/B/e/'))
 
 exportButton.onclick = () => {
     let textBuffer = ``

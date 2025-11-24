@@ -382,7 +382,7 @@ body{
     border-radius: 10px;
     background-color: transparent;
     display: grid;
-    grid-template-columns: 1em auto 0.5em;
+    grid-template-columns: auto auto 0.5em;
     grid-template-rows: 100%;
     gap: 2px;
 }
@@ -432,18 +432,18 @@ body{
     z-index: 3;
 }
 
-.stringLabels{
+.staveTuningContainer{
     grid-column: 1;
     grid-row: 1;
     height: 100%;
-    width: 100%;
+    width: fit-content;
     user-select: none;
     cursor: pointer;
     transition: all 70ms ease-in-out;
     background-color: transparent;
 }
 
-.stringLabels:hover{
+.staveTuningContainer:hover{
     background-color: var(--color-light-secondary);
 }
 
