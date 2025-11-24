@@ -779,7 +779,7 @@ body{
     flex-direction: column;
     padding: 1rem;
     font-family: 'FantasqueSansMono';
-    font-size: large;
+    font-size: small;
     user-select: none;
 }
 
