@@ -6,8 +6,15 @@ export class StaveBox {
     constructor(workspace, gridWidth, localTuning, cellArray = []) {
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.localTuning = parseTuning(localTuning);
-        this.gridWidth = gridWidth;
+
+        let t = parseTuning(localTuning);
+        if (t.err) { console.error('Error creating StaveBox:', t.err); return; }
+        else { this.localTuning = t}
+
+        let w = parseInt(gridWidth, 10);
+        if (!Number.isInteger(w)) { console.error('Error creating StaveBox: Unexpected typeof gridWidth'); return; }
+        else { this.gridWidth = w };
+
         this.parentWorkspace = workspace;
 
         const Direction = {
@@ -51,11 +58,9 @@ export class StaveBox {
         this.staveBox.appendChild(this.staveEnd);
 
         function parseTuning(tuning_As_String) {
+            if (typeof(tuning_As_String) !== "string") { return { err: `Expected type string but recieved ${typeof(tuning_As_String)}` }; }
             const t_string = tuning_As_String;
-            if (!t_string.includes('/')){
-                return false;
-            }
-
+            if (!t_string.includes('/')){ return { err: `Tunings must be seperated by '/'` } }
             let t_array = t_string.split('/');
             t_array = t_array.filter(Boolean);
             return t_array;
