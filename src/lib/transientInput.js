@@ -122,6 +122,9 @@ export class TransientInput {
     }
 
     endTransientInput(){
+        const transientInputEnd = document.createElement('div');
+        transientInputEnd.classList.add('transientItem', 'end');
+        this.transientInputContainer.appendChild(transientInputEnd);
         const rect = this.transientInputContainer.getBoundingClientRect();
         if (rect.top > 0 && rect.left > 0 && rect.bottom < window.innerHeight && rect.right < window.innerWidth){
 

@@ -2,13 +2,18 @@
     box-sizing: border-box;
 }
 
+*::selection{
+    color: var(--color-light-primary);
+    background: var(--color-blue);
+}
+
 @font-face{
     font-family: FantasqueSansMono;
     src: url('/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
     font-display: swap;
 }
 html{
-    font-size: 12px;
+    font-size: 14px;
     background-color: var(--color-dark-primary);
 }
 
@@ -63,20 +68,20 @@ body{
     flex: 1;
     width: fit-content;
     flex-direction: row;
-    padding: 0.5em;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border-radius: 1rem;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     transition: box-shadow 0.1s ease-in-out;
-    gap: 0.5em;
+    gap: 0.5rem;
 }
 
 .ribbonButton{
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
-    border-radius: 7.75px;
+    border-radius: 0.5rem;
     justify-content: center;
     aspect-ratio: 1/1;
     color: var(--color-light-primary);
@@ -109,7 +114,7 @@ body{
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
-    border-radius: 7.75px;
+    border-radius: 0.5rem;
     justify-content: center;
     aspect-ratio: 1/1;
     color: var(--color-light-primary);
@@ -136,7 +141,7 @@ body{
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
-    border-radius: 7.75px;
+    border-radius: 0.5rem;
     justify-content: center;
     min-width: 1em;
     width: 100%;
@@ -164,7 +169,7 @@ body{
     display: flex;
     transition: all 80ms ease-in-out;
     aspect-ratio: 1 /1;
-    border-radius: 8px;
+    border-radius: 1rem;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -191,8 +196,8 @@ body{
     height: fit-content;
     min-height: 110em;
     width: 80em;
-    border-radius: 16px;
-    padding: 1em;
+    border-radius: 2rem;
+    padding: 1rem;
     background-color: var(--color-light-primary);
     border: 1px solid #555;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
@@ -203,7 +208,6 @@ body{
     margin: auto;
     margin-top: 1em;
     font-size: 1em;
-    overflow: hidden;
 }
 
 .workspaceContainer:focus{
@@ -243,12 +247,11 @@ body{
     z-index: auto;
     background-color: transparent;
     display: grid;
-    gap: 0.5em;
-    border-radius: 8px;
+    border-radius: 1rem;
     box-shadow: 0 0 5px rgba(0,0,0,0);
     transition:
         box-shadow 80ms ease-in-out;
-    padding: 0.5em;
+    padding: 0.5rem;
     min-height: 1em;
     width: fit-content;
     margin-bottom: 0.5em;
@@ -278,6 +281,10 @@ body{
     outline: 0;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
     backdrop-filter: saturate(80%) brightness(93%) blur(4px);
+}
+
+.prototypeContainer.dragged:not(.dragHandle) div{
+    pointer-events: none;
 }
 
 .prototypeContainer.stave{
@@ -310,7 +317,7 @@ body{
     min-height: 1em;
     height: 100%;
     width: 2em;
-    border-radius: 8px 0px 0px 8px;
+    border-radius: 0.5rem 0rem 0rem 0.5rem;
     opacity: 0%;
     transition: opacity 180ms ease-in-out;
     display: flex;
@@ -338,7 +345,6 @@ body{
     color: var(--color-light-tertiary);
     background-color: var(--color-light-secondary);
     border: 0;
-    cursor: grab;
 }
 
 .dragHandle:active{
@@ -402,12 +408,11 @@ body{
 
 .staveBox{
     height: 100%;
-    border-radius: 10px;
     background-color: transparent;
     display: grid;
-    grid-template-columns: auto auto 0.5em;
+    grid-template-columns: auto auto 0.8rem;
     grid-template-rows: 100%;
-    gap: 2px;
+    align-content: center;
 }
 
 .staveGrid{
@@ -416,7 +421,7 @@ body{
     grid-row: 1;
     height: 100%;
     width: fit-content;
-    padding: 0;
+    padding: 0.1rem 0;
     gap: 0px 0px;
 }
 
@@ -460,10 +465,12 @@ body{
     grid-row: 1;
     height: 100%;
     width: fit-content;
+    padding: 0.1rem 0.1rem;
     user-select: none;
     cursor: pointer;
     transition: all 70ms ease-in-out;
     background-color: transparent;
+    align-content: center;
 }
 
 .staveTuningContainer:hover{
@@ -474,11 +481,15 @@ body{
     grid-column: 3;
     grid-row: 1;
     height: 100%;
-    width: 100%;
+    width: fit-content;
     user-select: none;
     cursor: col-resize;
     transition: all 70ms ease-in-out;
     background-color: transparent;
+    text-align: center;
+    align-content: center;
+    padding: 0.2rem 0 0 0;
+    border-radius: 0rem 0.5rem 0.5rem 0rem;
 }
 
 .staveEnd:hover{
@@ -503,10 +514,10 @@ body{
     pointer-events: none;
     position: absolute;
     z-index: 999;
-    width: 20em;
-    height: 6em;
-    top: -4em;
-    left: -9.2em;
+    width: 20rem;
+    height: 8rem;
+    top: -5rem;
+    left: -8.5rem;
     border-radius: 0;
     clip-path: polygon(50% 60%, 100% 60%, 50% 100%, 0 60%);
 }
@@ -531,9 +542,9 @@ body{
     background-color: transparent;
     border: 0;
     margin: 0;
-    padding: 0;
-    width: 3em;
-    height: 3em;
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     aspect-ratio: 1 / 1;
     top: 1.5em;
@@ -594,6 +605,7 @@ body{
 }
 
 .textBox{
+    margin: 0 0.3rem;
     font-family: 'FantasqueSansMono', monospace;
     min-height: 1em;
     min-width: 8em;
@@ -618,18 +630,13 @@ body{
     outline: 0;
 }
 
-.textBox::selection{
-    color: var(--color-light-primary);
-    background: var(--color-blue);
-}
-
 .transientInputContainer{
     display: flex;
     background-color: var(--color-dark-primary);
     border: 1px solid var(--color-dark-secondary);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     color: var(--color-light-primary);
-    border-radius: 8px;
+    border-radius: 1rem;
     position:absolute;
     transform: translate(0px, 0px);
     flex-direction: column;
@@ -637,6 +644,7 @@ body{
     left: 0;
     top: 0;
     z-index: 9;
+    max-width: 20rem;
 }
 
 .transientItem{
@@ -644,18 +652,26 @@ body{
     background-color: transparent;
     min-width: 1em;
     min-height: 1em;
-    padding: 0.6em 1em;
+    padding: 0.5em 1em;
     font-size: 1em;
 }
 
+.transientItem:first-of-type{
+    padding: 1em 1em 0.5em 1em;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
 .transientItem:last-of-type{
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 .transientItem.transientInput{
-    min-width: 4em;
+    max-width: 100%;
     transition: all 80ms ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .transientItem.transientInput:hover{
@@ -713,24 +729,33 @@ body{
     height: 1px;
     background: var(--color-dark-tertiary);
     padding: 0;
+    margin: 0.5em 0;
 }
+
+.transientItem.end{
+    width: 100%;
+    height: 0.5rem;
+    background: var(--color-dark-primary);
+    padding: 0;
+}
+
 
 .startscreen-container{
     margin: auto;
     width: fit-content;
     height: fit-content;
     max-width: 80vw;
-    max-height: 80vh;
+    max-height: 90vh;
     border: 1px solid var(--color-dark-secondary);
     background-color: var(--color-dark-primary);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     color: var(--color-light-primary);
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--color-dark-secondary) transparent;
@@ -741,7 +766,7 @@ body{
 
 .startscreen-container h1{
     color: var(--color-light-primary);
-    font-size: 2.5rem;
+    font-size: 2rem;
     user-select: none;
     font-weight: normal;
     margin: 0;
@@ -749,7 +774,7 @@ body{
 
 .startscreen-container h2{
     color: var(--color-light-primary);
-    font-size: 1.4rem;
+    font-size: 1rem;
     user-select: none;
     font-weight: normal;
     margin: 0;
@@ -772,15 +797,15 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .menuButton{
-    height: 12rem;
+    height: 10rem;
     background-color: var(--color-dark-primary);
     transition: all 80ms ease-in-out;
     border: 1px solid var(--color-dark-secondary);
-    border-radius: 7.75px;
+    border-radius: 0.5rem;
     justify-content: center;
     aspect-ratio: 1/1;
     color: var(--color-light-primary);

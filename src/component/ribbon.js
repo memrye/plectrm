@@ -48,7 +48,7 @@ export function AddStaveBoxButton(_ribbon, workspace){
           if (contents < 1 || contents > 70) { return false;  }
           staveBoxButton.Options.size = contents;
           return true;
-        }, /^(?:[0-9]|[1-9][0-8])$/)
+        }, /^(?:[0-9]|[1-9][0-8])$/);
         staveBoxOptionsMenu.endTransientInput();
     }
     staveBoxContainer.appendChild(staveBoxButton);
