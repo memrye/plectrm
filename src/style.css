@@ -246,7 +246,7 @@ body{
     gap: 0.5em;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0);
-    transition: 
+    transition:
         box-shadow 80ms ease-in-out;
     padding: 0.5em;
     min-height: 1em;
@@ -367,7 +367,7 @@ body{
     max-height: 1.5em;
     height: min(100%, 1.5em);
     text-align: center;
-    align-items: center; 
+    align-items: center;
     background-color: transparent;
     user-select: none;
     cursor: pointer;
@@ -679,6 +679,15 @@ body{
 
 .transientItem.transientInput:focus-visible{
     outline: 0;
+}
+
+.transientItem.transientInput.error::before{
+    content: 'x ';
+    color: var(--color-red);
+}
+
+.transientItem.transientInput.error:focus{
+    background-color: var(--color-red-dark);
 }
 
 .transientItem.transientButton{

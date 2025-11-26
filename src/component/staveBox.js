@@ -100,7 +100,7 @@ export class StaveBox {
 
             staveGrid.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
             staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
-            
+
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < this.gridWidth; col++){
                     const index = (this.gridWidth * row) + (col);
@@ -109,10 +109,10 @@ export class StaveBox {
                     this.cellArray.hasFocus = false;
                     staveGridCell.classList.add('staveGridCell');
                     staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
-                    
+
 
                     staveGridCell.addEventListener('click', (event) => {
-                        
+
                         document.querySelectorAll(".staveGridCell.highlight").forEach((cell) => cell.classList.remove('highlight'));
 
                         //handle clicks initial
@@ -187,7 +187,7 @@ export class StaveBox {
                                 let nextcell, event;
                                 if (!altHeld){entryDirection = Direction.Vertical;}
                                 nextcell = this.cellArray[index+this.gridWidth];
-                                
+
                                 if (nextcell === undefined){
                                     if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
                                     else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
@@ -206,7 +206,7 @@ export class StaveBox {
 
                                 if (entryDirection === Direction.Vertical){
                                     nextcell = this.cellArray[index+this.gridWidth];
-                                
+
                                     if (nextcell === undefined){
                                         if (altHeld) {nextcell =    this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1))]}
                                         else {nextcell =            this.cellArray[index - (this.gridWidth * (this.localTuning.length - 1)) - 1]}
@@ -240,7 +240,7 @@ export class StaveBox {
                                 return;
                             }
 
-                            
+
                             if (key === ' '){
                                 if (entryDirection === Direction.Horizontal){
                                     entryDirection = Direction.Vertical;
@@ -342,11 +342,16 @@ export class StaveBox {
             popUpContextMenu.setPosition(mouseEvent, null);
             popUpContextMenu.createAndAddLabel('tuning:');
             popUpContextMenu.createAndAddTextInput(this.localTuning.join('/'), (contents) => {
-                this.localTuning = parseTuning(contents);
-                this.cellArray.length = 0;
-                this.staveBoxGrid.replaceChildren();
-                this.drawGrid(this.staveBoxGrid);
-                this.setTuning(this.localTuning);
+              if (!contents.includes('/')) { return false; };
+              contents = contents.trim();
+              const t = parseTuning(contents);
+              if (!t) { return false; }
+              this.localTuning = t;
+              this.cellArray.length = 0;
+              this.staveBoxGrid.replaceChildren();
+              this.drawGrid(this.staveBoxGrid);
+              this.setTuning(this.localTuning);
+              return true;
 
             });
             popUpContextMenu.endTransientInput();
@@ -364,22 +369,24 @@ export class StaveBox {
             this.staveArticulationContainer.addEventListener('mousedown', (ev) => {
                 if (ev.button != 2) { return; }
                 ev.preventDefault();
-                
+
                 const popUpContextMenu = new TransientInput;
                 popUpContextMenu.setPosition(ev, null);
                 popUpContextMenu.createAndAddLabel('stave articulation');
                 popUpContextMenu.createAndAddDivisor()
                 popUpContextMenu.createAndAddButton('clear', (ev) => {
-                    this.articulationCellArray.forEach((cell) => {cell.textContent = ' '})
+                  this.articulationCellArray.forEach((cell) => {cell.textContent = ' '})
+                  return true;
                 })
                 popUpContextMenu.createAndAddButton('remove', (ev) => {
-                    this.staveContainer.classList.toggle('articulated', false);
-                    this.staveArticulationContainer.remove();
-                    this.initHoverMenu();
+                  this.staveContainer.classList.toggle('articulated', false);
+                  this.staveArticulationContainer.remove();
+                  this.initHoverMenu();
+                  return true;
                 })
                 popUpContextMenu.endTransientInput();
             })
-            
+
             this.articulationCellArray = [];
             this.articulationCellArray.hasFocus = false;
 
@@ -476,14 +483,14 @@ export class StaveBox {
                 this.hoverHelper.remove();
                 this.hoverMenu.remove();
             }
-            
+
             this.staveContainer.addEventListener('mouseleave', this.closeHoverMenu);
             this.hoverHelper.addEventListener('mouseleave', this.closeHoverMenu);
             this.hoverMenu.addEventListener('mouseleave', this.closeHoverMenu);
 
         }
 
-        
+
         this.openHoverMenu = (mouseEvent) => {
             if (this.staveContainer.classList.contains('dragged')) { return; }
             if (!this.hoverHelper.classList.replace('hidden', 'shown')) { return; }
@@ -512,7 +519,7 @@ export class StaveBox {
         document.body.style.cursor = 'col-resize';
 
         if (tempWidth != this.gridWidth){
-            
+
             const gridHeight = this.localTuning.length;
             let tempCellArray = [];
             for (let i = 0; i < gridHeight; i++){
@@ -522,7 +529,7 @@ export class StaveBox {
             if (tempWidth < this.gridWidth){
                 for (let row = 0; row < tempCellArray.length; row++){
                     tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
-                    if (this.articulationCellArray) { 
+                    if (this.articulationCellArray) {
                         const tempArtCells = this.articulationCellArray.splice(0, tempWidth);
                         this.articulationCellArray.forEach((cell) => { cell.remove(); });
                         this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
@@ -535,7 +542,7 @@ export class StaveBox {
                     const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
                     tempCellArray[row].push(...diffArray);
                 };
-                if (this.articulationCellArray) { 
+                if (this.articulationCellArray) {
                     for (let i = this.gridWidth; i < tempWidth; i++){
                         this.createArtCell(i);
                         this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
@@ -589,7 +596,7 @@ export class StaveBox {
 
     duplicate(){
         const index = this.parentWorkspace.ChildObjects.indexOf(this);
-        
+
         const cloneStavebox = new StaveBox(this.parentWorkspace, this.gridWidth, this.localTuning.join("/"));
 
         //we have to pass in the new cell array as dummy objects so that the new cells methods are initialised properly
@@ -633,4 +640,3 @@ export class StaveBox {
     }
 
 }
-

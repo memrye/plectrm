@@ -2,7 +2,7 @@ import { TextBox } from "@/component/textBox.js";
 import { StaveBox } from "@/component/staveBox.js";
 import { TransientInput } from "@/lib/transientInput.js";
 
-export function AddTextBoxButton (_ribbon, workspace){ 
+export function AddTextBoxButton (_ribbon, workspace){
     const textBoxButton = document.createElement('button');
     textBoxButton.classList.add('ribbonButton');
     textBoxButton.innerHTML = window.electronAPI.getIcon('addText');
@@ -36,18 +36,22 @@ export function AddStaveBoxButton(_ribbon, workspace){
         staveBoxOptionsMenu.createAndAddDivisor();
         staveBoxOptionsMenu.createAndAddLabel('tuning');
         staveBoxOptionsMenu.createAndAddTextInput(staveBoxButton.Options.tuning, (contents) => {
-            staveBoxButton.Options.tuning = contents;
-        })
+          if (!contents.includes('/')) { return false; };
+          contents = contents.trim();
+          staveBoxButton.Options.tuning = contents;
+          return true;
+        }, /^[A-Za-z/# ]+$/)
         staveBoxOptionsMenu.createAndAddLabel('size');
         staveBoxOptionsMenu.createAndAddTextInput(staveBoxButton.Options.size, (contents) => {
-                staveBoxButton.Options.size = contents
+          contents = parseInt(contents);
+          if (!Number.isFinite(contents)) { return false; }
+          if (contents < 1 || contents > 70) { return false;  }
+          staveBoxButton.Options.size = contents;
+          return true;
         }, /^(?:[0-9]|[1-9][0-8])$/)
         staveBoxOptionsMenu.endTransientInput();
-        
     }
-    
     staveBoxContainer.appendChild(staveBoxButton);
     staveBoxContainer.appendChild(staveBoxDropdown);
     _ribbon.appendChild(staveBoxContainer);
-
 }

@@ -23,7 +23,7 @@ export class TransientInput {
         setTimeout(()=>{
             document.addEventListener('mousedown', clickHandler)
         }, 0);
-        
+
 
     }
 
@@ -37,7 +37,7 @@ export class TransientInput {
         }
 
         this.transientInputContainer.style.transform = `translate(${this.x}px, ${this.y}px)`;
-        
+
     }
 
     createAndAddButton(textLabel, clickFn) {
@@ -47,7 +47,7 @@ export class TransientInput {
         this.transientInputContainer.appendChild(transientButton);
 
         transientButton.addEventListener('click', () => {
-            this.callbackList.push({fn: clickFn, param: null, type:'button'});
+            this.callbackList.push({fn: clickFn, param: null, el: transientButton});
             this.submit();
         })
     }
@@ -78,15 +78,16 @@ export class TransientInput {
         transientTextInput.focus();
 
         let contents = transientTextInput.textContent;
-        this.callbackList.push({fn: submitFn, param: contents, el: transientTextInput, type: 'textinput'});
+        this.callbackList.push({fn: submitFn, param: contents, el: transientTextInput});
 
         transientTextInput.addEventListener('keydown', (event) => {
+            transientTextInput.classList.toggle('error', false);
             let key = event.key
             if (key === 'Enter'){
                 event.preventDefault();
                 contents = transientTextInput.textContent;
                 this.callbackList.forEach((element) => {
-                    if (!element.type === 'textinput') { return; }
+                    if (!element.el.classList.contains('transientInput')) { return; }
                     element.param = element.el.textContent;
                 })
                 this.submit();
@@ -107,11 +108,17 @@ export class TransientInput {
     }
 
     submit(){
-        this.callbackList.forEach(({fn, param}) => {
-            if (param) { fn(param); return; };
-            fn(); 
+        const successful = []
+        this.callbackList.forEach(({fn, param, el}) => {
+          if (!fn(param)) {
+            el.classList.toggle('error', true);
+            successful.push(false);
+          } else {
+            el.classList.toggle('error', false);
+            successful.push(true);
+          }
         })
-        this.transientInputContainer.remove();
+        if (!successful.includes(false)) { this.transientInputContainer.remove(); }
     }
 
     endTransientInput(){
