@@ -34,14 +34,14 @@ export class ContextMenu {
 
             //resizeObserver should look at parentContainers content for correct height
             //content menu is rendered before the content so we need to switch resizeObservers
-            //target when DOM is fully loaded 
+            //target when DOM is fully loaded
             if (entry[0].target === parentContainer){
-                
+
                 resizeObserver.unobserve(parentContainer);
                 resizeObserver.observe(containerContentDiv);
             }
         }
-        
+
         const resizeObserver = new ResizeObserver(resizeHandler)
 
         resizeObserver.observe(parentContainer);
@@ -50,7 +50,7 @@ export class ContextMenu {
             const mouseY = event.clientY;
             let distanceY = mouseY - elementCenterY;
             parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`
-            
+
 
             //dragging up
             if (previousElement){
@@ -80,7 +80,7 @@ export class ContextMenu {
 
                     parentObject.incPositionInWorkspace();
                     nextElement.insertAdjacentElement('afterend', parentContainer);
-                    
+
 
                     dragButton.classList.add('forceActive');
 
@@ -95,21 +95,23 @@ export class ContextMenu {
 
         dragButton.addEventListener('mousedown', (event) => {
             if (event.button == 2){
-                
+
                 //open expanded context menu on right click
                 const popUpContextMenu = new TransientInput;
                 popUpContextMenu.setPosition(event, null);
-                popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString()); 
+                popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString());
                 popUpContextMenu.createAndAddDivisor();
                 popUpContextMenu.createAndAddButton('remove', () => {
                     parentObject.remove();
+                    return true;
                 })
                 popUpContextMenu.createAndAddButton('duplicate', () => {
                     parentObject.duplicate();
+                    return true;
                 })
                 popUpContextMenu.endTransientInput();
 
-                
+
             } else {
                 //drag element
                 document.body.style.cursor = 'grabbing';
@@ -118,15 +120,15 @@ export class ContextMenu {
                 parentContainer.classList.add('dragged');
                 parentContainer.style.transform = `scale(102%)`;
                 if(parentContainer.classList.contains('stave')) { parentObject.closeHoverMenu() };
-    
+
                 previousElement = parentContainer.previousElementSibling;
                 nextElement = parentContainer.nextElementSibling;
                 if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
                 if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
-    
-    
+
+
                 document.addEventListener('mousemove', elementDragging);
-    
+
                 document.addEventListener('mouseup', (event) => {
                     dragButton.classList.toggle('forceActive', false)
                     document.body.style.cursor = 'auto';
@@ -155,7 +157,7 @@ export class ContextMenu {
                 deleteButton.clickAcc = 0;
                 deleteButton.classList.remove('confirmDelete');
             }
-            
+
         })
 
         return contextMenu;
