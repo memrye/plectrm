@@ -3,7 +3,7 @@ import { TransientInput } from "@/lib/transientInput.js";
 
 export class StaveBox {
 
-    constructor(workspace, gridWidth, localTuning, cellArray = []) {
+    constructor(workspace, gridWidth, localTuning, cellValues = []) {
 
         this.resizeHandler = this.resizeHandler.bind(this);
 
@@ -15,6 +15,16 @@ export class StaveBox {
         if (!Number.isInteger(w)) { console.error('Error creating StaveBox: Unexpected typeof gridWidth'); return; }
         else { this.gridWidth = w };
 
+        if (cellValues.length){
+            let v = parseCellValues(cellValues)
+            if (v.err) { console.error('Error creating StaveBox:', t.err); return; }
+            else { 
+                this.cellValues = v;
+            };
+        }
+
+        this.cellArray = [];
+        this.cellArray.hasFocus = false;
         this.parentWorkspace = workspace;
 
         const Direction = {
@@ -66,6 +76,16 @@ export class StaveBox {
             return t_array;
         }
 
+        function parseCellValues(_cellValues){
+            let r;
+            try {
+                r = [..._cellValues];
+                return r;
+            } catch (error) {
+                return {err: error};
+            };
+        }
+
         this.setTuning = (_tuning) => {
             this.stringLabels.textContent = '';
             let tuning = _tuning;
@@ -90,10 +110,7 @@ export class StaveBox {
         this.setTuning(this.localTuning);
         this.staveBox.appendChild(this.stringLabels);
 
-        this.cellArray = [...cellArray];
-        this.cellArray.hasFocus = false;
-
-        this.drawGrid = (staveGrid, staveValues = false) => {
+        this.drawGrid = (staveGrid) => {
 
             let gridHeight = this.localTuning.length;
 
@@ -108,7 +125,7 @@ export class StaveBox {
                     let focused = false;
                     this.cellArray.hasFocus = false;
                     staveGridCell.classList.add('staveGridCell');
-                    staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
+                    staveGridCell.textContent = this.cellValues[index]?.textContent ?? '-';
 
 
                     staveGridCell.addEventListener('click', (event) => {

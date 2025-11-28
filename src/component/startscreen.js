@@ -1,5 +1,6 @@
 import { StaveBox } from "@/component/staveBox";
 import { TextBox } from "@/component/textBox";
+import { requestImportFile } from "@/lib/importFile";
 
 export function initStartscreen(foreground, workspace) {
 
@@ -16,7 +17,7 @@ export function initStartscreen(foreground, workspace) {
                 ${window.electronAPI.getIcon('projectFile')}
                 New Project
             </button>
-            <button class='menuButton' id='importProject' disabled>
+            <button class='menuButton' id='importProject'>
                 ${window.electronAPI.getIcon('importProject')}
                 Import Project
             </button>
@@ -36,6 +37,29 @@ export function initStartscreen(foreground, workspace) {
             foreground.active(false);
             startscreenContainer.classList.toggle('hidden', true);
             setTimeout(() => { startscreenContainer.remove() }, 500)
+        })
+
+        const importProjectButton = document.querySelector('#importProject');
+        if (!importProjectButton) {
+            console.warn('error initialising startscreen: cannot find new project button');
+            return false;
+        };
+
+        importProjectButton.addEventListener('click', async () => {
+            const projectObjects = await requestImportFile();
+            console.log(projectObjects);
+            projectObjects.forEach(obj => {
+
+                if (obj.el === "textbox"){
+                    workspace.ChildObjects.push(new TextBox(workspace, obj.contents));
+                } else if (obj.el === "stavebox"){
+                    workspace.ChildObjects.push(new StaveBox(workspace, obj.contents.gridLength, obj.contents.tuning, obj.contents.cellArray));
+                }
+
+                foreground.active(false);
+                startscreenContainer.classList.toggle('hidden', true);
+                setTimeout(() => { startscreenContainer.remove() }, 500)
+            });
         })
     })
 }

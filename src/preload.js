@@ -68,6 +68,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return icons[name] || null;
   },
   saveTextAsFile: (content, defaultFilename) => {
-    ipcRenderer.invoke('dialog:save-text-file', content, defaultFilename)
+    return ipcRenderer.invoke('dialog:save-text-file', content, defaultFilename);
+  },
+  importFile: () => {
+    return ipcRenderer.invoke('dialog:import-file');
   }
 });

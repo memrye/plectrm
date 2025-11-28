@@ -30,6 +30,33 @@ ipcMain.handle('dialog:save-text-file', async (event, content, defaultFilename =
   }
 })
 
+ipcMain.handle('dialog:import-file', async (event) => {
+  const { window } = BrowserWindow.fromWebContents(event.sender);
+
+  try {
+    const result = await dialog.showOpenDialog(window, {
+      title: 'Open File',
+      properties: ['openFile', 'dontAddToRecent'],
+      filters: [
+        { name: 'Text Files', extensions: ['txt'] }
+      ],
+    })
+
+    if (result.canceled || !result.filePaths.length){
+      return false;
+    }
+
+    const fh = await fs.open(result.filePaths.at(0), 'r');
+    const textbuf = await fh.readFile({encoding: 'utf8'});
+    fh.close();
+    return textbuf;
+
+  } catch (err) {
+    console.error('failed to open file:', err);
+    return false;
+  }
+})
+
 const createWindow = () => {
   const win = new BrowserWindow({
   icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrmbg32px.png')),
