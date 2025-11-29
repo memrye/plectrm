@@ -15,6 +15,8 @@ export class StaveBox {
         if (!Number.isInteger(w)) { console.error('Error creating StaveBox: Unexpected typeof gridWidth'); return; }
         else { this.gridWidth = w };
 
+        this.cellValues = [];
+
         if (cellValues.length){
             let v = parseCellValues(cellValues)
             if (v.err) { console.error('Error creating StaveBox:', t.err); return; }
@@ -121,12 +123,17 @@ export class StaveBox {
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < this.gridWidth; col++){
                     const index = (this.gridWidth * row) + (col);
+                    
                     const staveGridCell = document.createElement('div');
+
                     let focused = false;
                     this.cellArray.hasFocus = false;
                     staveGridCell.classList.add('staveGridCell');
-                    staveGridCell.textContent = this.cellValues[index]?.textContent ?? '-';
 
+                    if (this.cellValues.length) { 
+                        staveGridCell.textContent = this.cellValues[index].textContent 
+                    }
+                    else { staveGridCell.textContent = "-" };
 
                     staveGridCell.addEventListener('click', (event) => {
 
