@@ -3,7 +3,7 @@ import { TransientInput } from "@/lib/transientInput.js";
 
 export class StaveBox {
 
-    constructor(workspace, gridWidth, localTuning, cellArray = []) {
+    constructor(workspace, gridWidth, localTuning, cellValues = []) {
 
         this.resizeHandler = this.resizeHandler.bind(this);
 
@@ -15,6 +15,18 @@ export class StaveBox {
         if (!Number.isInteger(w)) { console.error('Error creating StaveBox: Unexpected typeof gridWidth'); return; }
         else { this.gridWidth = w };
 
+        this.cellValues = [];
+
+        if (cellValues.length){
+            let v = parseCellValues(cellValues)
+            if (v.err) { console.error('Error creating StaveBox:', t.err); return; }
+            else { 
+                this.cellValues = v;
+            };
+        }
+
+        this.cellArray = [];
+        this.cellArray.hasFocus = false;
         this.parentWorkspace = workspace;
 
         const Direction = {
@@ -57,15 +69,6 @@ export class StaveBox {
         });
         this.staveBox.appendChild(this.staveEnd);
 
-        function parseTuning(tuning_As_String) {
-            if (typeof(tuning_As_String) !== "string") { return { err: `Expected type string but recieved ${typeof(tuning_As_String)}` }; }
-            const t_string = tuning_As_String;
-            if (!t_string.includes('/')){ return { err: `Tunings must be seperated by '/'` } }
-            let t_array = t_string.split('/');
-            t_array = t_array.filter(Boolean);
-            return t_array;
-        }
-
         this.setTuning = (_tuning) => {
             this.stringLabels.textContent = '';
             let tuning = _tuning;
@@ -90,10 +93,7 @@ export class StaveBox {
         this.setTuning(this.localTuning);
         this.staveBox.appendChild(this.stringLabels);
 
-        this.cellArray = [...cellArray];
-        this.cellArray.hasFocus = false;
-
-        this.drawGrid = (staveGrid, staveValues = false) => {
+        this.drawGrid = (staveGrid) => {
 
             let gridHeight = this.localTuning.length;
 
@@ -104,12 +104,17 @@ export class StaveBox {
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < this.gridWidth; col++){
                     const index = (this.gridWidth * row) + (col);
+                    
                     const staveGridCell = document.createElement('div');
+
                     let focused = false;
                     this.cellArray.hasFocus = false;
                     staveGridCell.classList.add('staveGridCell');
-                    staveGridCell.textContent = staveValues[index]?.textContent ?? '-';
 
+                    if (this.cellValues.length && this.cellArray.length) { 
+                        staveGridCell.textContent = this.cellValues[index].textContent 
+                    }
+                    else { staveGridCell.textContent = "-" };
 
                     staveGridCell.addEventListener('click', (event) => {
 
@@ -555,7 +560,13 @@ export class StaveBox {
             this.gridWidth = tempWidth;
             this.cellArray.length = 0;
             this.staveBoxGrid.replaceChildren();
-            this.drawGrid(this.staveBoxGrid, tempCellArray);
+            let v = parseCellValues(tempCellArray)
+            if (v.err) { console.error('Error creating StaveBox:', t.err); return; }
+            else { 
+                this.cellValues = tempCellArray;
+            };
+
+            this.drawGrid(this.staveBoxGrid);
         }
     }
 
@@ -597,7 +608,7 @@ export class StaveBox {
     duplicate(){
         const index = this.parentWorkspace.ChildObjects.indexOf(this);
 
-        const cloneStavebox = new StaveBox(this.parentWorkspace, this.gridWidth, this.localTuning.join("/"));
+        const cloneStavebox = new StaveBox(this.parentWorkspace, this.gridWidth, this.localTuning.join("/"), this.cellArray);
 
         //we have to pass in the new cell array as dummy objects so that the new cells methods are initialised properly
         const dummyArray = this.cellArray.map(element => ({
@@ -639,4 +650,29 @@ export class StaveBox {
         this.parentWorkspace.ChildObjects.splice(index + 1, 0, this);
     }
 
+}
+
+
+function parseTuning(tuning_As_String) {
+    if (typeof(tuning_As_String) !== "string") { return { err: `Expected type string but recieved ${typeof(tuning_As_String)}` }; }
+    const t_string = tuning_As_String;
+    if (!t_string.includes('/')){ return { err: `Tunings must be seperated by '/'` } }
+    let t_array = t_string.split('/');
+    t_array = t_array.filter(Boolean);
+    return t_array;
+}
+
+function parseCellValues(_cellValues){
+    let r;
+    try {
+        // check if cell values have text content
+        // this would be the case if parsing an other staveboxes cellArray
+        if (Object.hasOwn(_cellValues[0], 'textContent')){
+            _cellValues = _cellValues.map(({ textContent }) => ({ textContent }));
+        };
+        r = [..._cellValues];
+        return r;
+    } catch (error) {
+        return {err: error};
+    };
 }

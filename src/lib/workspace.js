@@ -1,5 +1,5 @@
 import { AddTextBoxButton, AddStaveBoxButton } from "@/component/ribbon.js";
-import { exportFile } from '@/exportFile.js';
+import { exportFile } from '@/lib/exportFile.js';
 
 export class Workspace {
     
