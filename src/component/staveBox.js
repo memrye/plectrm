@@ -49,6 +49,7 @@ export class StaveBox {
 
         this.stringLabels = document.createElement('div');
         this.stringLabels.classList.add('staveTuningContainer');
+        this.stringLabels.title = "Change Tuning";
 
         this.staveEnd = document.createElement('div');
         this.staveEnd.classList.add('staveEnd');
@@ -342,7 +343,6 @@ export class StaveBox {
         this.drawGrid(this.staveBoxGrid, this.cellArray);
 
         const openTuningMenu = (mouseEvent) => {
-
             const popUpContextMenu = new TransientInput;
             popUpContextMenu.setPosition(mouseEvent, null);
             popUpContextMenu.createAndAddLabel('tuning:');
@@ -362,7 +362,7 @@ export class StaveBox {
             popUpContextMenu.endTransientInput();
         }
 
-        this.stringLabels.addEventListener('dblclick', openTuningMenu);
+        this.stringLabels.addEventListener('mousedown', openTuningMenu);
         this.stringLabels.addEventListener('contextmenu', openTuningMenu);
 
         this.initStaveArticulation = (artCellValues = nil) => {
@@ -472,6 +472,7 @@ export class StaveBox {
             this.hoverMenu = document.createElement('button');
             this.hoverMenu.classList.add('hoverMenu', 'hidden');
             this.hoverMenu.innerHTML = window.electronAPI.getIcon('addTabArticulation');
+            this.hoverMenu.title = "Add Articulation";
             document.body.appendChild(this.hoverMenu);
             this.staveContainer.addEventListener('mouseenter', this.openHoverMenu);
             this.hoverHelper.addEventListener('mouseenter', this.openHoverMenu);

@@ -6,6 +6,7 @@ export function AddTextBoxButton (_ribbon, workspace){
     const textBoxButton = document.createElement('button');
     textBoxButton.classList.add('ribbonButton');
     textBoxButton.innerHTML = window.electronAPI.getIcon('addText');
+    textBoxButton.title = "Add Text Box";
     textBoxButton.onclick = function(){
         workspace.ChildObjects.push(new TextBox(workspace))
     };
@@ -19,6 +20,7 @@ export function AddStaveBoxButton(_ribbon, workspace){
     const staveBoxButton = document.createElement('button');
     staveBoxButton.classList.add('ribbonSplitDropdownButton');
     staveBoxButton.innerHTML = window.electronAPI.getIcon('addStave');
+    staveBoxButton.title = "Add Stave Box";
     staveBoxButton.Options = {size: 24, tuning: 'E/A/D/G/B/e/'}
     staveBoxButton.onclick = function(){
         workspace.ChildObjects.push(new StaveBox(workspace, staveBoxButton.Options.size, staveBoxButton.Options.tuning))
@@ -27,6 +29,7 @@ export function AddStaveBoxButton(_ribbon, workspace){
     const staveBoxDropdown = document.createElement('button');
     staveBoxDropdown.classList.add('ribbonSplitDropdownDropdown');
     staveBoxDropdown.innerHTML = window.electronAPI.getIcon('collapse');
+    staveBoxDropdown.title = "Stave Box Options"
     staveBoxDropdown.onclick = function(){
         const staveBoxOptionsMenu = new TransientInput();
         const buttonRect = staveBoxDropdown.getBoundingClientRect();
