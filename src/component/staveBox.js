@@ -40,7 +40,7 @@ export class StaveBox {
         this.staveContainer.classList.add('prototypeContainer','stave');
         this.parentWorkspace.el.appendChild(this.staveContainer);
 
-        this.contextMenu = new ContextMenu(this, this.parentWorkspace.el);
+        this.contextMenu = new ContextMenu(this, this.parentWorkspace);
         this.staveContainer.appendChild(this.contextMenu);
 
         this.staveBox = document.createElement('div');
