@@ -1,7 +1,7 @@
 import { TransientInput } from "@/lib/transientInput.js";
 
 export class ContextMenu {
-    constructor(parentObject, workspaceContext) {
+    constructor(parentObject, workspace) {
         const parentContainer = parentObject.getRootContainer();
         const contextMenu = document.createElement('div');
         contextMenu.classList.add('contextMenu');
@@ -48,18 +48,22 @@ export class ContextMenu {
 
         const elementDragging = (event) => {
             const mouseY = event.clientY;
+            const elementRect = parentContainer.getBoundingClientRect();
             let distanceY = mouseY - elementCenterY;
             parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`
 
 
             //dragging up
             if (previousElement){
-                if (mouseY < (previousElementRect.top + (previousElementRect.height / 2))){
-                    yOffset += previousElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
+                if (elementRect.top < (previousElementRect.top + (previousElementRect.height / 2))){
+                    yOffset += previousElementRect.height + (workspace.emSize.height);
                     parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`;
 
+                    if (previousElement){previousElement.classList.toggle('glowBelow', false)};
+                    if (nextElement){nextElement.classList.toggle('glowAbove', false)};
+
                     parentObject.decPositionInWorkspace();
-                    workspaceContext.insertBefore(parentContainer, previousElement);
+                    workspace.el.insertBefore(parentContainer, previousElement);
 
                     //because inserting copies the object, css logic for displaying :active doesnt work
                     //so here I force it with a class and remove the class on mouseup
@@ -67,16 +71,26 @@ export class ContextMenu {
 
                     previousElement = parentContainer.previousElementSibling;
                     nextElement = parentContainer.nextElementSibling;
-                    if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
-                    if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
+
+                    if (previousElement){
+                        previousElementRect = previousElement.getBoundingClientRect();
+                        previousElement.classList.toggle('glowBelow', true);
+                    };
+                    if (nextElement){
+                        nextElementRect = nextElement.getBoundingClientRect();
+                        nextElement.classList.toggle('glowAbove', true);
+                    };
                 }
             }
 
             //dragging down
             if (nextElement){
-                if (mouseY > (nextElementRect.bottom - (nextElementRect.height/2))){
-                    yOffset -= nextElementRect.height + parseInt(window.getComputedStyle(parentContainer).paddingBottom);
-                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`
+                if (elementRect.bottom > (nextElementRect.bottom - (nextElementRect.height/2))){
+                    yOffset -= nextElementRect.height + (workspace.emSize.height);
+                    parentContainer.style.transform = `translateY(${distanceY + yOffset}px) scale(102%)`;
+
+                    if (previousElement){previousElement.classList.toggle('glowBelow', false)};
+                    if (nextElement){nextElement.classList.toggle('glowAbove', false)};
 
                     parentObject.incPositionInWorkspace();
                     nextElement.insertAdjacentElement('afterend', parentContainer);
@@ -86,8 +100,15 @@ export class ContextMenu {
 
                     previousElement = parentContainer.previousElementSibling;
                     nextElement = parentContainer.nextElementSibling;
-                    if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
-                    if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
+
+                    if (previousElement){
+                        previousElementRect = previousElement.getBoundingClientRect();
+                        previousElement.classList.toggle('glowBelow', true);
+                    };
+                    if (nextElement){
+                        nextElementRect = nextElement.getBoundingClientRect();
+                        nextElement.classList.toggle('glowAbove', true);
+                    };
                 }
             }
 
@@ -123,6 +144,10 @@ export class ContextMenu {
 
                 previousElement = parentContainer.previousElementSibling;
                 nextElement = parentContainer.nextElementSibling;
+
+                if (previousElement){previousElement.classList.toggle('glowBelow', true)};
+                if (nextElement){nextElement.classList.toggle('glowAbove', true)};
+
                 if (previousElement){previousElementRect = previousElement.getBoundingClientRect()};
                 if (nextElement){nextElementRect = nextElement.getBoundingClientRect()};
 
@@ -136,6 +161,13 @@ export class ContextMenu {
                     yOffset = 0;
                     parentContainer.classList.remove('dragged');
                     if (parentContainer.contains(event.target) && parentContainer.classList.contains('stave')) { parentObject.openHoverMenu(); }
+
+                    previousElement = parentContainer.previousElementSibling;
+                    nextElement = parentContainer.nextElementSibling;
+
+                    if (previousElement){previousElement.classList.toggle('glowBelow', false)};
+                    if (nextElement){nextElement.classList.toggle('glowAbove', false)};
+
                     document.removeEventListener('mousemove', elementDragging);
                 })
 

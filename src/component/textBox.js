@@ -9,7 +9,7 @@ export class TextBox {
         this.textContainer.classList.add('prototypeContainer','text');
         this.parentWorkspace.el.appendChild(this.textContainer);
 
-        const contextMenu = new ContextMenu(this, this.parentWorkspace.el);
+        const contextMenu = new ContextMenu(this, this.parentWorkspace);
         this.textContainer.appendChild(contextMenu);
 
         this.textBox = document.createElement('div');
