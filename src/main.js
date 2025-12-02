@@ -49,7 +49,7 @@ ipcMain.handle('dialog:import-file', async (event) => {
     const fh = await fs.open(result.filePaths.at(0), 'r');
     const textbuf = await fh.readFile({encoding: 'utf8'});
     fh.close();
-    return textbuf;
+    return {contents: textbuf, extension: result.filePaths[0].substring(result.filePaths[0].length - 3)};
 
   } catch (err) {
     console.error('failed to open file:', err);

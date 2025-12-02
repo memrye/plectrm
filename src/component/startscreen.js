@@ -47,19 +47,25 @@ export function initStartscreen(foreground, workspace) {
 
         importProjectButton.addEventListener('click', async () => {
             const projectObjects = await requestImportFile();
-            console.log(projectObjects);
-            projectObjects.forEach(obj => {
-
-                if (obj.el === "textbox"){
-                    workspace.ChildObjects.push(new TextBox(workspace, obj.contents));
-                } else if (obj.el === "stavebox"){
-                    workspace.ChildObjects.push(new StaveBox(workspace, obj.contents.gridLength, obj.contents.tuning, obj.contents.cellArray));
-                }
-
-                foreground.active(false);
-                startscreenContainer.classList.toggle('hidden', true);
-                setTimeout(() => { startscreenContainer.remove() }, 500)
-            });
+            if (projectObjects){
+                projectObjects.forEach(obj => {
+    
+                    if (obj.el === "textbox"){
+                        workspace.ChildObjects.push(new TextBox(workspace, obj.contents));
+                    } else if (obj.el === "stavebox"){
+                        const sb = new StaveBox(workspace, obj.contents.gridLength, obj.contents.tuning, obj.contents.cellArray)
+                        workspace.ChildObjects.push(sb);
+                        if (obj.contents.articulation){
+                            let event = new CustomEvent('click', { detail: obj.contents.articulation });
+                            sb.hoverMenu.dispatchEvent(event);
+                        }
+                    }
+    
+                    foreground.active(false);
+                    startscreenContainer.classList.toggle('hidden', true);
+                    setTimeout(() => { startscreenContainer.remove() }, 500)
+                });
+            }
         })
     })
 }
