@@ -255,7 +255,7 @@ body{
     border-radius: 1rem;
     box-shadow: 0 0 0px rgba(0,0,0,0);
     transition:
-        box-shadow 80ms ease-in-out;
+        all 120ms ease-in-out;
     padding: 0.5rem;
     min-height: 1em;
     width: fit-content;
@@ -286,6 +286,7 @@ body{
     outline: 0;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
     backdrop-filter: saturate(80%) brightness(93%) blur(4px);
+    transition: all 0ms linear;
 }
 
 .prototypeContainer.dragged:not(.dragHandle) div{
@@ -293,12 +294,12 @@ body{
 }
 
 .prototypeContainer.glowAbove{
-    box-shadow: 0px -4px 6px color-mix(in srgb, var(--color-light-secondary) 90%, transparent);
+    box-shadow: 0px -4px 6px color-mix(in srgb, var(--color-light-secondary) 50%, transparent);
     margin-top: 0.5em;
 }
 
 .prototypeContainer.glowBelow{
-    box-shadow: 0px 4px 6px color-mix(in srgb, var(--color-light-secondary) 90%, transparent);
+    box-shadow: 0px 4px 6px color-mix(in srgb, var(--color-light-secondary) 50%, transparent);
     margin-bottom: 0.5em;
 }
 
@@ -334,7 +335,7 @@ body{
     width: 2em;
     border-radius: 0.5rem 0rem 0rem 0.5rem;
     opacity: 0%;
-    transition: opacity 180ms ease-in-out;
+    transition: all 120ms ease-in-out;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -353,7 +354,7 @@ body{
     user-select: none;
     cursor: pointer;
     border: 0;
-    transition: all 80ms ease-in-out;
+    transition: all 120ms ease-in-out;
 }
 
 .dragHandle:hover{
@@ -393,7 +394,7 @@ body{
     user-select: none;
     cursor: pointer;
     border: 0;
-    transition: all 80ms ease-in-out;
+    transition: all 120ms ease-in-out;
     display: none;
 }
 
