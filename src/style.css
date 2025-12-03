@@ -12,6 +12,7 @@
     src: url('/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
     font-display: swap;
 }
+
 html{
     font-size: 14px;
     background-color: var(--color-dark-primary);
@@ -19,7 +20,7 @@ html{
 
 body{
     margin: 0;
-    font-family: 'FantasqueSansMono', monospace;
+    font-family: monospace;
     overflow: hidden;
     --color-dark-primary: #1d2021;
     --color-dark-secondary: #343434;
@@ -211,6 +212,7 @@ body{
     display: flex;
     flex-direction: column;
     gap: 1em;
+    font-family: 'FantasqueSansMono';
 }
 
 .workspaceContainer:focus{

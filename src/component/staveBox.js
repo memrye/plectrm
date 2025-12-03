@@ -98,9 +98,8 @@ export class StaveBox {
 
             let gridHeight = this.localTuning.length;
 
-
-            staveGrid.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
-            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1.04em)`
+            staveGrid.style.gridTemplateColumns = `repeat(${this.gridWidth}, ${workspace.emSize.width}px)`
+            staveGrid.style.gridTemplateRows = `repeat(${gridHeight}, ${workspace.emSize.height}px)`
 
             for (let row = 0; row < gridHeight; row++){
                 for (let col = 0; col < this.gridWidth; col++){
