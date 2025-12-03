@@ -10,7 +10,7 @@ export function initStartscreen(foreground, workspace) {
         startscreenContainer.classList.add('startscreen-container');
         startscreenContainer.innerHTML = `
         <div class='logo-container'>${window.electronAPI.getIcon('plectrmLogo')}</div>
-        <h1>Welcome to Plectrm!</h1>
+        <h1>Welcome to <strong>Plectrm!</strong></h1>
         <h2>Create or import a new project</h2>
         <div class='menu-container'>
             <button class='menuButton' id='newProject'>

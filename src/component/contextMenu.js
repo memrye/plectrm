@@ -122,12 +122,12 @@ export class ContextMenu {
                 popUpContextMenu.setPosition(event, null);
                 popUpContextMenu.createAndAddLabel(parentObject.getObjectNameAsString());
                 popUpContextMenu.createAndAddDivisor();
-                popUpContextMenu.createAndAddButton('remove', () => {
-                    parentObject.remove();
-                    return true;
-                })
                 popUpContextMenu.createAndAddButton('duplicate', () => {
                     parentObject.duplicate();
+                    return true;
+                })
+                popUpContextMenu.createAndAddButton('remove', () => {
+                    parentObject.remove();
                     return true;
                 })
                 popUpContextMenu.endTransientInput();

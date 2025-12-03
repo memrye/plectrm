@@ -20,7 +20,9 @@ html{
 
 body{
     margin: 0;
-    font-family: monospace;
+    font-family: sans-serif;
+    text-rendering: optimizeLegibility;
+    font-synthesis: weight;
     overflow: hidden;
     --color-dark-primary: #1d2021;
     --color-dark-secondary: #343434;
@@ -194,6 +196,7 @@ body{
 }
 
 .workspaceContainer{
+    font-family: 'FantasqueSansMono';
     height: fit-content;
     min-height: 110em;
     width: 80em;
@@ -212,7 +215,6 @@ body{
     display: flex;
     flex-direction: column;
     gap: 1em;
-    font-family: 'FantasqueSansMono';
 }
 
 .workspaceContainer:focus{
@@ -734,6 +736,10 @@ body{
     user-select: none;
 }
 
+.transientItem.transientLabel:first-of-type{
+    font-weight: bold;
+}
+
 .transientItem.transientDivisor{
     width: 100%;
     min-height: 1px;
@@ -762,11 +768,10 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     color: var(--color-light-primary);
     border-radius: 1rem;
-    padding: 0.5rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--color-dark-secondary) transparent;
@@ -779,7 +784,7 @@ body{
     color: var(--color-light-primary);
     font-size: 2rem;
     user-select: none;
-    font-weight: normal;
+    font-weight: 400;
     margin: 0;
 }
 
@@ -787,7 +792,7 @@ body{
     color: var(--color-light-primary);
     font-size: 1rem;
     user-select: none;
-    font-weight: normal;
+    font-weight: 400;
     margin: 0;
 }
 
@@ -808,7 +813,8 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
 .menuButton{
@@ -823,8 +829,9 @@ body{
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    font-family: 'FantasqueSansMono';
-    font-size: small;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 0.9rem;
     user-select: none;
 }
 
