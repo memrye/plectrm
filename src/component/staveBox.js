@@ -272,7 +272,10 @@ export class StaveBox {
 
                                     nextcell = this.cellArray[index - this.gridWidth];
 
-                                    if (nextcell === undefined){ nextcell = this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) - 1] }
+                                    if (nextcell === undefined){
+                                        if (altHeld) {nextcell =    this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1))]}
+                                        else {nextcell =            this.cellArray[index + (this.gridWidth * (this.localTuning.length - 1)) + 1]}
+                                    }
 
                                     if (nextcell === undefined) { return; }
 
