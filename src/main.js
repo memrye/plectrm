@@ -59,22 +59,23 @@ ipcMain.handle('dialog:import-file', async (event) => {
 
 const createWindow = () => {
   const win = new BrowserWindow({
-  icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrmbg32px.png')),
-  autoHideMenuBar : true,
-  width: 1280,
-  height: 720,
-  webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      devTools: true,
-  },
-
-  
+    backgroundColor: '#1d2021',
+    icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrmbg32px.png')),
+    autoHideMenuBar : true,
+    width: 1280,
+    height: 720,
+    webPreferences: {
+        preload: path.join(__dirname, 'preload.js'),
+        devTools: true,
+    },
+    show: false,
   })
 
   win.webContents.on('did-frame-finish-load', () => {
     if (process.env.NODE_ENV === 'development') {
       win.webContents.openDevTools({ mode: 'detach' });
     }
+    win.show();
   });
 
   if (process.env.NODE_ENV === 'development') {
