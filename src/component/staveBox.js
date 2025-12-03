@@ -367,6 +367,8 @@ export class StaveBox {
         this.stringLabels.addEventListener('mousedown', openTuningMenu);
         this.stringLabels.addEventListener('contextmenu', openTuningMenu);
 
+        this.articulationCellArray = [];
+
         this.initStaveArticulation = (artCellValues = nil) => {
             if(!this.staveContainer.classList.toggle('articulated', true )) {console.warn('failed applying stave articulation layout: style already applied');};
             this.staveArticulationContainer = document.createElement('div');
