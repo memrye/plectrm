@@ -373,7 +373,7 @@ export class StaveBox {
             if(!this.staveContainer.classList.toggle('articulated', true )) {console.warn('failed applying stave articulation layout: style already applied');};
             this.staveArticulationContainer = document.createElement('div');
             this.staveArticulationContainer.classList.add('staveArticulationContainer');
-            this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${this.gridWidth}, 1.04em)`
+            this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${this.gridWidth}, ${workspace.emSize.width}px)`
             this.staveContainer.appendChild(this.staveArticulationContainer);
             this.staveArticulationContainer.addEventListener('mousedown', (ev) => {
                 if (ev.button != 2) { return; }
@@ -540,10 +540,10 @@ export class StaveBox {
             if (tempWidth < this.gridWidth){
                 for (let row = 0; row < tempCellArray.length; row++){
                     tempCellArray[row] = tempCellArray[row].slice(0, tempWidth - this.gridWidth);
-                    if (this.articulationCellArray) {
+                    if (this.articulationCellArray.length) {
                         const tempArtCells = this.articulationCellArray.splice(0, tempWidth);
                         this.articulationCellArray.forEach((cell) => { cell.remove(); });
-                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
+                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, ${this.parentWorkspace.emSize.width}px)`;
                         this.articulationCellArray = tempArtCells;
                     };
                 };
@@ -553,10 +553,10 @@ export class StaveBox {
                     const diffArray = Array.from({ length: size }, () => ({ textContent: '-' }));
                     tempCellArray[row].push(...diffArray);
                 };
-                if (this.articulationCellArray) {
+                if (this.articulationCellArray.length) {
                     for (let i = this.gridWidth; i < tempWidth; i++){
                         this.createArtCell(i);
-                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, 1.04em)`;
+                        this.staveArticulationContainer.style.gridTemplateColumns = `repeat(${tempWidth}, ${this.parentWorkspace.emSize.width}px)`;
                     }
                 };
             }
