@@ -388,6 +388,7 @@ export class StaveBox {
                 popUpContextMenu.createAndAddButton('remove', (ev) => {
                   this.staveContainer.classList.toggle('articulated', false);
                   this.staveArticulationContainer.remove();
+                  this.articulationCellArray.length = 0;
                   this.initHoverMenu();
                   return true;
                 })
@@ -623,7 +624,7 @@ export class StaveBox {
         cloneStavebox.staveBoxGrid.replaceChildren();
         cloneStavebox.drawGrid(cloneStavebox.staveBoxGrid, dummyArray);
 
-        if (this.articulationCellArray){
+        if (this.articulationCellArray.length){
             const newartCells = this.articulationCellArray.map(div => div.textContent)
             let event = new CustomEvent('click', { detail: newartCells.join('') });
             cloneStavebox.hoverMenu.dispatchEvent(event);
