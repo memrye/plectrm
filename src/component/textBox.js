@@ -16,13 +16,41 @@ export class TextBox {
         this.textBox.classList.add('textBox');
         this.textBox.contentEditable = 'true';
         this.textBox.spellcheck = false;
-        this.textBox.textContent = textContent;
+
+        if (textContent.includes('<div>')){
+            this.textBox.innerHTML = textContent;
+        } else {
+            this.textBox.textContent = textContent;
+        }
+
         this.textContainer.appendChild(this.textBox);
         
     }
 
     parseStringContents(){
-        const textBuffer = this.textBox.textContent + '\n'
+        let xmlMarkupString = this.textBox.innerHTML;
+        let outputMarkup = "";
+        
+        
+        function parseTags(prevOpen, prevClose){
+            let openTag = xmlMarkupString.indexOf('<div>', prevOpen + 1);
+            let closeTag = xmlMarkupString.indexOf('</div>', prevClose + 1);
+            if (openTag > 0 && closeTag > 0){
+                outputMarkup += `${xmlMarkupString.slice(openTag + 5, closeTag)}\n`
+                parseTags(openTag, closeTag)
+            }
+            return;
+        }
+        
+        let linebreak = xmlMarkupString.indexOf('<div>');
+        if (linebreak > 0){
+            outputMarkup += `${xmlMarkupString.slice(0, linebreak)}\n`
+            parseTags(-1, -1)
+        } else {
+            outputMarkup = `${xmlMarkupString.trimEnd()}\n`;
+        }
+
+        const textBuffer = outputMarkup;
         return textBuffer;
     }
 
@@ -34,7 +62,7 @@ export class TextBox {
 
     duplicate(){
         const index = this.parentWorkspace.ChildObjects.indexOf(this);
-        const cloneTextbox = new TextBox(this.parentWorkspace, this.textBox.textContent);
+        const cloneTextbox = new TextBox(this.parentWorkspace, this.textBox.innerHTML);
         this.textContainer.insertAdjacentElement('afterend', cloneTextbox.textContainer);
         this.parentWorkspace.ChildObjects.splice(index + 1, 0, cloneTextbox);
     }
