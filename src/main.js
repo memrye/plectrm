@@ -60,7 +60,7 @@ ipcMain.handle('dialog:import-file', async (event) => {
 const createWindow = () => {
   const win = new BrowserWindow({
     backgroundColor: '#1d2021',
-    icon: nativeImage.createFromPath(path.join(__dirname, '../misc/plectrmbg32px.png')),
+    icon: nativeImage.createFromPath(path.join(__dirname, '../build/images/icon48.png')),
     autoHideMenuBar : true,
     width: 1280,
     height: 720,

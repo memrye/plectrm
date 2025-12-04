@@ -9,7 +9,7 @@
 
 @font-face{
     font-family: FantasqueSansMono;
-    src: url('/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
+    src: url('../build/fonts/FantasqueSansMono-Regular.ttf') format('truetype');
     font-display: swap;
 }
 
