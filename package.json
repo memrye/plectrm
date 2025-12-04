@@ -1,7 +1,7 @@
 {
   "name": "plectrm",
-  "version": "0.0.1",
-  "description": "Guitar Tab Notation Program",
+  "version": "0.1.0",
+  "description": "ASCII Tab Editor",
   "main": "src/main.js",
   "scripts": {
     "dev:vite": "vite",
