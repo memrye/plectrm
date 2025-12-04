@@ -628,6 +628,7 @@ body{
     height: fit-content;
     align-self: center;
     line-height: 1.5em;
+    white-space: pre-line;
 }
 
 .textBox:empty::before{

@@ -6,8 +6,12 @@ export async function requestImportFile () {
         let buf = String(response.contents).split('\n');
         let initProject = [];
         let staveOptions = new StaveOptions();
+        let textOptions = new TextOptions();
         buf.push("eof");
         for (let i = 0; i < buf.length; i++){
+
+            // trimming whitespace from either end of line
+            // if line only has control characters it should return as an empty string
             const line = buf.at(i).trim();
     
             if (line === "eof"){
@@ -15,14 +19,23 @@ export async function requestImportFile () {
                     initProject.push({el: 'stavebox', contents: staveOptions.getContents()})
                     staveOptions.reset();
                 }
+                if (textOptions.open){
+                    initProject.push({el: 'textbox', contents: textOptions.getContents()})
+                    textOptions.reset();
+                }
             } else {
-    
                 if (/^(?=.*-)(?=.*\|)(?=.*[A-Za-z0-9]).+$/.test(line)){
                     // create stavebox
+
+                    if (textOptions.open){
+                        initProject.push({el: 'textbox', contents: textOptions.getContents()})
+                        textOptions.reset();
+                    }
+
                     staveOptions.open = true;
 
                     // check if it is articulation
-                    //asuming syntax output by plectrm (one | at end of articulation)
+                    // asuming syntax output by plectrm (one | at end of articulation)
                     const verticalBarsPresent = line.match(/\|/g).length;
                     if (verticalBarsPresent === 1){
                         staveOptions.staveArticulation = {contents: line}
@@ -71,13 +84,22 @@ export async function requestImportFile () {
                         // unexpected amount of vertical bars
                     }
                 } else {
+                    // create text box
                     if (staveOptions.open){
                         initProject.push({el: 'stavebox', contents: staveOptions.getContents()})
                         staveOptions.reset();
                     }
-    
+
                     if (line !== ""){
-                        initProject.push({el: 'textbox', contents: line});
+                        if (textOptions.contents.length > 0){
+                            textOptions.contents += `<div>${line}</div>`;
+                        } else {
+                            textOptions.contents += `${line}`;
+                        }
+                        textOptions.open = true;
+                    } else if (textOptions.open){
+                        initProject.push({el: 'textbox', contents: textOptions.getContents()})
+                        textOptions.reset();
                     }
                 }
             }
@@ -118,5 +140,19 @@ function StaveOptions(){
         const r = {tuning: this.tuning.join("/"), gridLength: this.gridLength, cellArray: dummyArray, articulation: this.staveArticulation};
         return r;
     }
+
+    this.reset();
+}
+
+function TextOptions(){
+    this.reset = () => {
+        this.open = false;
+        this.contents = "";
+    }
+
+    this.getContents = () => {
+        return {contents: this.contents};
+    }
+
     this.reset();
 }

@@ -51,7 +51,7 @@ export function initStartscreen(foreground, workspace) {
                 projectObjects.forEach(obj => {
     
                     if (obj.el === "textbox"){
-                        workspace.ChildObjects.push(new TextBox(workspace, obj.contents));
+                        workspace.ChildObjects.push(new TextBox(workspace, obj.contents.contents));
                     } else if (obj.el === "stavebox"){
                         const sb = new StaveBox(workspace, obj.contents.gridLength, obj.contents.tuning, obj.contents.cellArray)
                         workspace.ChildObjects.push(sb);
