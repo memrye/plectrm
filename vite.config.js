@@ -3,6 +3,7 @@ import path from 'node:path';
 
 export default defineConfig({
   root: 'src/',
+  base: './',
 
   resolve: {
     alias: {
@@ -17,7 +18,6 @@ export default defineConfig({
   },
   build: {
     outDir: '../dist',
-    emptyOutDir: true,
-    sourcemap: true
+    emptyOutDir: true
   },
 });

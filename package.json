@@ -8,15 +8,28 @@
     "dev:electron": "wait-on tcp:3000 && cross-env NODE_ENV=development electron .",
     "dev": "concurrently -k -s first \"npm:dev:vite\" \"npm:dev:electron\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "app:dir": "npm run build && electron-builder --dir",
+    "app:dist": "npm run build && electron-builder"
   },
-  "author": "mama",
-  "license": "ISC",
+  "author": "memrye",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "concurrently": "^9.2.1",
     "cross-env": "^10.0.0",
     "electron": "^37.2.5",
+    "electron-builder": "^26.0.12",
     "vite": "^7.1.5",
     "wait-on": "^8.0.5"
+  },
+  "build": {
+    "productName": "plectrm",
+    "appId": "com.memrye.plectrm",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "files": [
+      "**/*",
+      "dist"
+    ]
   }
 }
