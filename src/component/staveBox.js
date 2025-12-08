@@ -349,16 +349,69 @@ export class StaveBox {
             popUpContextMenu.setPosition(mouseEvent, null);
             popUpContextMenu.createAndAddLabel('Tuning:');
             popUpContextMenu.createAndAddTextInput(this.localTuning.join('/'), (contents) => {
-              if (!contents.includes('/')) { return false; };
-              contents = contents.trim();
-              const t = parseTuning(contents);
-              if (!t) { return false; }
-              this.localTuning = t;
-              this.cellArray.length = 0;
-              this.staveBoxGrid.replaceChildren();
-              this.drawGrid(this.staveBoxGrid);
-              this.setTuning(this.localTuning);
-              return true;
+            if (!contents.includes('/')) { return false; };
+            contents = contents.trim();
+            const t = parseTuning(contents);
+            if (!t) { return false; }
+            if (t.toString() == this.localTuning.toString()) { return true; }
+
+            const prevTuning = this.localTuning;
+
+            if(t.length === prevTuning.length){
+                this.localTuning = t;
+            } else if (t.length > prevTuning.length){
+                this.localTuning = t;
+                const dif = t.length - prevTuning.length;
+                const prevStr = prevTuning.join('/');
+                const newStr = this.localTuning.join('/');
+
+                // handle whether new values added to start or end of tuning 
+                if (newStr.startsWith(prevStr + '/')){
+                    this.cellValues.length = 0;
+                    for (let y = 0; y < dif; y++){
+                        for (let x = 0; x < this.gridWidth; x++){
+                            const cell = { textContent: '-' };
+                            this.cellValues.push(cell);
+                        }
+                    }
+                    this.cellValues.push(...this.cellArray.map(element => ({
+                        textContent: element.textContent
+                    })));
+                } else {
+                    this.cellValues = this.cellArray.map(element => ({
+                        textContent: element.textContent
+                    }));
+                    for (let y = 0; y < dif; y++){
+                        for (let x = 0; x < this.gridWidth; x++){
+                            const cell = { textContent: '-' };
+                            this.cellValues.push(cell);
+                        }
+                    }
+                }
+            } else if (t.length < prevTuning.length){
+                this.localTuning = t;
+                const dif = prevTuning.length - t.length;
+                const prevStr = prevTuning.join('/');
+                const newStr = this.localTuning.join('/');
+
+                // handle whether values removed from start or end of tuning 
+                if (prevStr.startsWith(newStr + '/')){
+                    this.cellValues = this.cellArray.slice(dif * this.gridWidth).map(element => ({
+                        textContent: element.textContent
+                    }));
+                } else {
+                    this.cellValues = this.cellArray.slice(0, this.cellArray.length - (dif * this.gridWidth)).map(element => ({
+                        textContent: element.textContent
+                    }));
+                }
+                
+            }
+
+            this.cellArray.length = 0;
+            this.staveBoxGrid.replaceChildren();
+            this.drawGrid(this.staveBoxGrid);
+            this.setTuning(this.localTuning);
+            return true;
 
             });
             popUpContextMenu.endTransientInput();
