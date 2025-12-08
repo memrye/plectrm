@@ -13,6 +13,12 @@
     font-display: swap;
 }
 
+@font-face{
+    font-family: CarroisGothic;
+    src: url('../build/fonts/CarroisGothic-Regular.ttf') format('truetype');
+    font-display: swap;
+}
+
 html{
     font-size: 14px;
     background-color: var(--color-dark-primary);
@@ -20,7 +26,8 @@ html{
 
 body{
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'CarroisGothic', Segoe UI, system-ui, sans-serif;
+    letter-spacing: 0.02rem;
     text-rendering: optimizeLegibility;
     font-synthesis: weight;
     overflow: hidden;
